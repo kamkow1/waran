@@ -11,6 +11,8 @@
   "license": "ISC",
   "dependencies": {
     "@types/moo": "^0.5.5",
+    "commander": "^9.1.0",
+    "fs": "^0.0.1-security",
     "moo": "^0.5.1",
     "nearley": "^2.20.1",
     "ts-node": "^10.7.0",
