@@ -3,9 +3,14 @@
   "version": "1.0.0",
   "description": "an interpreted programming language",
   "main": "./build/index.js",
+  "bin": {
+    "wrn":  "./build/index.js"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "ts-node ./src/index.ts"
+    "build": "tsc",
+    "start": "ts-node ./src/index.ts",
+    "wrn": "node ./build/index.js"
   },
   "author": "kamkow1",
   "license": "ISC",

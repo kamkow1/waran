@@ -1,4 +1,6 @@
-import { lexer } from './lexer/lexer'
+#! /usr/bin/env node
+
+import { runLex } from './lexer/lexer'
 import { Command } from 'commander'
 import fs from 'fs'
 
@@ -28,12 +30,9 @@ app
             }
         }
 
-        const code = fs.readFileSync(path).toString('ascii');
-        const lexedCode = lexer.reset(code);
+        const code = fs.readFileSync(path).toString();
+        runLex(code);
     })
 
 
 app.parse();
-
-
-console.log('start');

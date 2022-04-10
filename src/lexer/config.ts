@@ -10,8 +10,8 @@ export const config = {
     identifier: /[a-zA-Z][a-zA-Z_0-9]*/,
     arrow: '->',
     assign: '=',
-    NL: { 
-        match: /\n/, 
+    nl: { 
+        match: /\r?\n/, 
         lineBreaks: true
     }
 };
