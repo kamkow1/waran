@@ -1,7 +1,7 @@
 export const config = {
     WS: /[ \t]+/,
-    Comment: /\/\/.*?$/,
-    Number:  /0|[1-9][0-9]*/,
+    comment: /\/\/.*?$/,
+    number:  /0|[1-9][0-9]*/,
     string:  /"(?:\\["\\]|[^\n"\\])*"/,
     lparen:  '(',
     rparen:  ')',

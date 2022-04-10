@@ -3,8 +3,6 @@ import { config } from './config';
 
 const lexer = moo.compile(config);
 
-//lexer.reset('abc = 6');
-
 export const runLex = (code: string) => {
     lexer.reset(code);
 

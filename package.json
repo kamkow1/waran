@@ -4,18 +4,20 @@
   "description": "an interpreted programming language",
   "main": "./build/index.js",
   "bin": {
-    "wrn":  "./build/index.js"
+    "wrn": "./build/index.js"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "tsc",
     "start": "ts-node ./src/index.ts",
-    "wrn": "node ./build/index.js"
+    "wrn": "node ./build/index.js",
+    "gen-prs": "nearleyc ./src/parser/generated/waran.ne -o ./src/parser/generated/waran.ts"
   },
   "author": "kamkow1",
   "license": "ISC",
   "dependencies": {
     "@types/moo": "^0.5.5",
+    "@types/nearley": "^2.11.2",
     "commander": "^9.1.0",
     "fs": "^0.0.1-security",
     "moo": "^0.5.1",
