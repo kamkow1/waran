@@ -1,0 +1,16 @@
+{
+  "name": "waran",
+  "version": "1.0.0",
+  "description": "an interpreted programming language",
+  "main": "./build/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "ts-node ./src/index.ts"
+  },
+  "author": "kamkow1",
+  "license": "ISC",
+  "dependencies": {
+    "ts-node": "^10.7.0",
+    "typescript": "^4.6.3"
+  }
+}
