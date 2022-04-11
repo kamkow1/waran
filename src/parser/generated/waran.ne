@@ -1,3 +1,9 @@
+@{%
+    const runLex = require(../../../lexer/lexer);
+%}
+
+@lexer runLex
+
 statement
     -> var_assign
 

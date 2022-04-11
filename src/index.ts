@@ -3,6 +3,7 @@
 import { runLex } from './lexer/lexer'
 import { Command } from 'commander'
 import fs from 'fs'
+import { runParse } from './parser/parser'
 
 const app = new Command();
 
@@ -31,7 +32,8 @@ app
         }
 
         const code = fs.readFileSync(path).toString();
-        runLex(code);
+        //runLex(code);
+        runParse(code);
     })
 
 

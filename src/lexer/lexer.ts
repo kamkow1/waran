@@ -12,7 +12,5 @@ export const runLex = (code: string) => {
         if (!token) {
             break;
         }
-    
-        console.log(token);
     }
 }

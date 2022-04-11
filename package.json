@@ -11,7 +11,7 @@
     "build": "tsc",
     "start": "ts-node ./src/index.ts",
     "wrn": "node ./build/index.js",
-    "gen-prs": "nearleyc ./src/parser/generated/waran.ne -o ./src/parser/generated/waran.ts"
+    "gen-prs": "nearleyc ./src/parser/generated/waran.ne -o ./src/parser/generated/grammar.ts"
   },
   "author": "kamkow1",
   "license": "ISC",
