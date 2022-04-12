@@ -32,18 +32,7 @@ app
                 const dirs = createDirConfig(astDir, waranDir, srcDir);
                 const config = createProjectConfig(info, dirs);      
 
-                fs.appendFileSync(wrnProj, JSON.stringify(config, null, '\t'));
-
-                if (!fs.existsSync(waranDir)){
-                    // waran working dir
-                    fs.mkdirSync(waranDir);
-        
-                    // ast dir
-                    fs.mkdirSync(astDir);
-
-                    // src dir
-                    fs.mkdirSync(srcDir);
-                }
+                fs.appendFileSync(wrnProj, JSON.stringify(config, null, '\t'));   
             });
     });
 
