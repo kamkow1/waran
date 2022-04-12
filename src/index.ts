@@ -8,6 +8,7 @@ import questions from './cli/cmd/init/questions'
 import { createDirConfig, createInfo, createProjectConfig } from './cli/cmd/init/config' 
 import { setupDirs, setupConfigJson } from './cli/cmd/init/dirSetup'
 import { loadConfig } from './utils/configLoader'
+import { generate } from './generator/generator'
 
 const app = new Command();
 
@@ -16,6 +17,7 @@ let waranDir: string
 let astDir: string
 let wrnProj: string;
 let srcDir: string;
+let build: string;
 
 app.name('wrn');
 
@@ -26,6 +28,8 @@ app
         astDir = waranDir + '/ast';
         wrnProj = initPath + '/wrn_proj.json';
         srcDir = initPath + '/src';
+        build = waranDir + '/build';
+
 
         if (fs.existsSync(wrnProj)) {
             console.log(clc.redBright(`${wrnProj} \na waran project already exists in this directory!`));
@@ -36,16 +40,16 @@ app
             .prompt(questions)
             .then(answers => {
                 const info = createInfo(answers);  
-                const dirs = createDirConfig(astDir, waranDir, srcDir);
+                const dirs = createDirConfig(astDir, waranDir, srcDir, build);
                 const config = createProjectConfig(info, dirs);    
                 
-                setupDirs(waranDir, astDir, srcDir);
+                setupDirs(waranDir, astDir, srcDir, build);
                 setupConfigJson(wrnProj, config);
             });
     });
 
 app
-    .command('exec')
+    .command('compile')
     .argument('<string>', 'path to .wr file')
     .action((str) => {
         let path = str;
@@ -61,7 +65,7 @@ app
             if (fs.existsSync(pathWithIndex)) {
                 path = pathWithIndex;
             } else {
-                console.error('file extension not recognized! only .ks files are executable');
+                console.error('file extension not recognized! only .wr files are executable');
                 return;
             }
         }
@@ -74,6 +78,11 @@ app
         const outputFile = configuration.config.dirs.ast_dir + '/' + name.replace('.wr', '.ast');
 
         fs.writeFileSync(outputFile, JSON.stringify(ast, null, '\t'));
+
+        const js =  generate(ast);
+        console.log(configuration.config.dirs.build + '/' + name.replace('.wr', '.js'));
+
+        fs.writeFileSync(configuration.config.dirs.build + '/' + name.replace('.wr', '.js'), js);
     })
 
 

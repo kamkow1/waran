@@ -1,12 +1,14 @@
 export const createDirConfig = (
     astDir: string, 
     waranDir: string, 
-    srcDir: string) => {
+    srcDir: string,
+    build: string) => {
 
     const config = {
         ast_dir: astDir,
         wrn_proj_dir: waranDir,
-        src_dir: srcDir
+        src_dir: srcDir,
+        build: build
     };
 
     return config;
@@ -44,14 +46,15 @@ interface Answers {
 }
 
 interface Dirs {
-    ast_dir: string,
-    wrn_proj_dir: string,
-    src_dir: string
+    ast_dir: string;
+    wrn_proj_dir: string;
+    src_dir: string;
+    build: string;
 }
 
 interface Info {
-    proj_name: string,
-    desc: string,
-    repo: string,
-    author: string
+    proj_name: string;
+    desc: string;
+    repo: string;
+    author: string;
 }
