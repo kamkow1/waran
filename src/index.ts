@@ -3,7 +3,8 @@ import { Command } from 'commander'
 import fs from 'fs'
 import { runParse } from './parser/parser'
 import clc from 'cli-color'
-import inquirer from 'inquirer';
+import inquirer from 'inquirer'
+import questions from './cli/utils/questions'
 
 const app = new Command();
 
@@ -26,28 +27,7 @@ app
         let basicConfig = {};
 
         inquirer
-            .prompt([
-                {
-                    name: 'name',
-                    message: 'name?',
-                    default: 'my waran project'
-                },
-                {
-                    name: 'desc',
-                    message: 'description?',
-                    default: 'no description'
-                },
-                {
-                    name: 'repo',
-                    message: 'github repository?',
-                    default: ''
-                },
-                {
-                    name: 'author',
-                    message: 'authors?',
-                    default: ''
-                },
-            ])
+            .prompt([questions])
             .then(answers => {
                 basicConfig =  {
                     project_info: {
