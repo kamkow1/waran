@@ -3,12 +3,12 @@
 // Bypasses TS6133. Allow declared but unused functions.
 // @ts-ignore
 function id(d: any[]): any { return d[0]; }
+declare var NL: any;
 declare var identifier: any;
 declare var string: any;
 declare var number: any;
-declare var WS: any;
 
-    const lexer = require("../../lexer/lexer").lexer;
+const lexer = require("../../lexer/lexer").lexer;
 
 interface NearleyToken {
   value: any;
@@ -37,10 +37,11 @@ interface Grammar {
   ParserStart: string;
 };
 
-export const grammar: Grammar = {
+const grammar: Grammar = {
   Lexer: lexer,
   ParserRules: [
-    {"name": "statement", "symbols": ["var_assign"], "postprocess": id},
+    {"name": "statement", "symbols": ["var_assign"]},
+    {"name": "statement", "symbols": ["var_assign", (lexer.has("NL") ? {type: "NL"} : NL)]},
     {"name": "var_assign", "symbols": [(lexer.has("identifier") ? {type: "identifier"} : identifier), "_", {"literal":"="}, "_", "expr"], "postprocess": 
         (data) => {
             return {
@@ -52,12 +53,7 @@ export const grammar: Grammar = {
                 },
     {"name": "expr", "symbols": [(lexer.has("string") ? {type: "string"} : string)], "postprocess": id},
     {"name": "expr", "symbols": [(lexer.has("number") ? {type: "number"} : number)], "postprocess": id},
-    {"name": "_$ebnf$1", "symbols": []},
-    {"name": "_$ebnf$1", "symbols": ["_$ebnf$1", (lexer.has("WS") ? {type: "WS"} : WS)], "postprocess": (d) => d[0].concat([d[1]])},
-    {"name": "_", "symbols": ["_$ebnf$1"]},
-    {"name": "__$ebnf$1", "symbols": [(lexer.has("WS") ? {type: "WS"} : WS)]},
-    {"name": "__$ebnf$1", "symbols": ["__$ebnf$1", (lexer.has("WS") ? {type: "WS"} : WS)], "postprocess": (d) => d[0].concat([d[1]])},
-    {"name": "__", "symbols": ["__$ebnf$1"]}
+    {"name": "_", "symbols": [(lexer.has("NL") ? {type: "NL"} : NL)]}
   ],
   ParserStart: "statement",
 };

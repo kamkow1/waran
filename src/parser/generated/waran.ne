@@ -1,13 +1,13 @@
 @preprocessor typescript
 
 @{%
-    const lexer = require("../../lexer/lexer").lexer;
+const lexer = require("../../lexer/lexer").lexer;
 %}
 
 @lexer lexer
 
-statement
-    -> var_assign {% id %}
+statement -> var_assign
+statement -> var_assign %NL
 
 var_assign
     -> %identifier _ "=" _ expr
@@ -25,7 +25,4 @@ expr
     -> %string {% id %}
     |  %number {% id %}
 
-_ -> %WS:*
-
-__ -> %WS:+
-
+_ -> %NL

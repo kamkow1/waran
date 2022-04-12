@@ -1,8 +1,7 @@
 import moo from 'moo'
 
 export const lexer = moo.compile({
-    NL:             { match: /\r\n/, lineBreaks: true },
-    WS:             /[ \t]+/,
+    NL:             { match: /\s+/, lineBreaks: true },
     comment:        /\/\/.*?$/,
     number:         /0|[1-9][0-9]*/,
     string:         /"(?:\\["\\]|[^\n"\\])*"/,
