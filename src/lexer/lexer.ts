@@ -1,9 +1,22 @@
 import moo from 'moo'
-import { config } from './config';
 
-const lexer = moo.compile(config);
+export const lexer = moo.compile({
+    WS:             /[ \t]+/,
+    NL:             { match: /\n/, lineBreaks: true },
+    comment:        /\/\/.*?$/,
+    number:         /0|[1-9][0-9]*/,
+    string:         /"(?:\\["\\]|[^\n"\\])*"/,
+    lparen:         '(',
+    rparen:         ')',
+    lbrace:         '{',
+    rbrace:         '}',
+    identifier:     /[a-zA-Z][a-zA-Z_0-9]*/,
+    arrow:          '->',
+    assign:         '='
+});
 
-export const runLex = (code: string) => {
+/*export const runLex = (code: string) => {
+    console.log(JSON.stringify(code));
     lexer.reset(code);
 
     while(true) {
@@ -13,4 +26,4 @@ export const runLex = (code: string) => {
             break;
         }
     }
-}
+}*/

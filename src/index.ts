@@ -1,6 +1,4 @@
 #! /usr/bin/env node
-
-import { runLex } from './lexer/lexer'
 import { Command } from 'commander'
 import fs from 'fs'
 import { runParse } from './parser/parser'
@@ -32,8 +30,9 @@ app
         }
 
         const code = fs.readFileSync(path).toString();
+        console.log(JSON.stringify(code));
         //runLex(code);
-        runParse(code);
+        runParse(code, name);
     })
 
 
