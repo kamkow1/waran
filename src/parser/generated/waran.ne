@@ -6,6 +6,20 @@ const lexer = require("../../lexer/lexer").lexer;
 
 @lexer lexer
 
+statements
+    -> statement
+    {%
+        (data) => {
+            return [data[0]];
+        }
+    %}
+    |  statements %NL statement
+    {%
+        (data) => {
+            return [...data[0], data[2]];
+        }
+    %}
+
 statement 
     -> var_assign {% id %}
     |  func_exec  {% id %}
@@ -64,6 +78,7 @@ args
 expr
     -> %string {% id %}
     |  %number {% id %}
+    |  %identifier {% id %}
 
 _ -> %NL:*
 

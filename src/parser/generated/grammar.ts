@@ -40,6 +40,16 @@ interface Grammar {
 const grammar: Grammar = {
   Lexer: lexer,
   ParserRules: [
+    {"name": "statements", "symbols": ["statement"], "postprocess": 
+        (data) => {
+            return [data[0]];
+        }
+            },
+    {"name": "statements", "symbols": ["statements", (lexer.has("NL") ? {type: "NL"} : NL), "statement"], "postprocess": 
+        (data) => {
+            return [...data[0], data[2]];
+        }
+            },
     {"name": "statement", "symbols": ["var_assign"], "postprocess": id},
     {"name": "statement", "symbols": ["func_exec"], "postprocess": id},
     {"name": "statement", "symbols": ["var_assign", (lexer.has("NL") ? {type: "NL"} : NL)]},
@@ -82,6 +92,7 @@ const grammar: Grammar = {
                 },
     {"name": "expr", "symbols": [(lexer.has("string") ? {type: "string"} : string)], "postprocess": id},
     {"name": "expr", "symbols": [(lexer.has("number") ? {type: "number"} : number)], "postprocess": id},
+    {"name": "expr", "symbols": [(lexer.has("identifier") ? {type: "identifier"} : identifier)], "postprocess": id},
     {"name": "_$ebnf$1", "symbols": []},
     {"name": "_$ebnf$1", "symbols": ["_$ebnf$1", (lexer.has("NL") ? {type: "NL"} : NL)], "postprocess": (d) => d[0].concat([d[1]])},
     {"name": "_", "symbols": ["_$ebnf$1"]},
@@ -89,7 +100,7 @@ const grammar: Grammar = {
     {"name": "__$ebnf$1", "symbols": ["__$ebnf$1", (lexer.has("NL") ? {type: "NL"} : NL)], "postprocess": (d) => d[0].concat([d[1]])},
     {"name": "__", "symbols": ["__$ebnf$1"]}
   ],
-  ParserStart: "statement",
+  ParserStart: "statements",
 };
 
 export default grammar;
