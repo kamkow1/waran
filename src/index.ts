@@ -4,7 +4,8 @@ import fs from 'fs'
 import { runParse } from './parser/parser'
 import clc from 'cli-color'
 import inquirer from 'inquirer'
-import questions from './cli/utils/questions'
+import questions from './cli/cmd/init/questions'
+import { createDirConfig, createInfo, createProjectConfig } from './cli/cmd/init/config' 
 
 const app = new Command();
 
@@ -24,30 +25,14 @@ app
             process.exit(1);
         }
 
-        let basicConfig = {};
-
         inquirer
             .prompt([questions])
             .then(answers => {
-                basicConfig =  {
-                    project_info: {
-                        proj_name: answers.name,
-                        desc: answers.desc,
-                        repo: answers.repo,
-                        author: answers.author
-                    },
-                    config: {
-                        dirs: {
-                            ast_dir: astDir,
-                            wrn_proj_dir: waranDir,
-                            srcDir: srcDir
-                        }
-                    },
-                    waran: 'https://github.com/kamkow1/waran',
-                    authors: 'kamkow1 && londek'
-                };
+                const info = createInfo(answers);  
+                const dirs = createDirConfig(astDir, waranDir, srcDir);
+                const config = createProjectConfig(info, dirs);      
 
-                fs.appendFileSync(wrnProj, JSON.stringify(basicConfig, null, '\t'));
+                fs.appendFileSync(wrnProj, JSON.stringify(config, null, '\t'));
 
                 if (!fs.existsSync(waranDir)){
                     // waran working dir
