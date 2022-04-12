@@ -13,16 +13,3 @@ export const lexer = moo.compile({
     arrow:          '->',
     assign:         '='
 });
-
-/*export const runLex = (code: string) => {
-    console.log(JSON.stringify(code));
-    lexer.reset(code);
-
-    while(true) {
-        const token = lexer.next();
-    
-        if (!token) {
-            break;
-        }
-    }
-}*/
