@@ -79,6 +79,7 @@ expr
     -> %string {% id %}
     |  %number {% id %}
     |  %identifier {% id %}
+    |  %func_exec {% id %}
 
 _ -> %NL:*
 

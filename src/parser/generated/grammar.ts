@@ -7,6 +7,7 @@ declare var NL: any;
 declare var identifier: any;
 declare var string: any;
 declare var number: any;
+declare var func_exec: any;
 
 const lexer = require("../../lexer/lexer").lexer;
 
@@ -93,6 +94,7 @@ const grammar: Grammar = {
     {"name": "expr", "symbols": [(lexer.has("string") ? {type: "string"} : string)], "postprocess": id},
     {"name": "expr", "symbols": [(lexer.has("number") ? {type: "number"} : number)], "postprocess": id},
     {"name": "expr", "symbols": [(lexer.has("identifier") ? {type: "identifier"} : identifier)], "postprocess": id},
+    {"name": "expr", "symbols": [(lexer.has("func_exec") ? {type: "func_exec"} : func_exec)], "postprocess": id},
     {"name": "_$ebnf$1", "symbols": []},
     {"name": "_$ebnf$1", "symbols": ["_$ebnf$1", (lexer.has("NL") ? {type: "NL"} : NL)], "postprocess": (d) => d[0].concat([d[1]])},
     {"name": "_", "symbols": ["_$ebnf$1"]},
