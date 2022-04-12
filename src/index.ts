@@ -7,19 +7,25 @@ import inquirer from 'inquirer'
 import questions from './cli/cmd/init/questions'
 import { createDirConfig, createInfo, createProjectConfig } from './cli/cmd/init/config' 
 import { setupDirs, setupConfigJson } from './cli/cmd/init/dirSetup'
+import { loadConfig } from './utils/configLoader'
 
 const app = new Command();
+
+let initPath: string = process.cwd();
+let waranDir: string
+let astDir: string
+let wrnProj: string;
+let srcDir: string;
 
 app.name('wrn');
 
 app
     .command('init')
     .action(() => {
-        const initPath = process.cwd();
-        const waranDir = initPath + '/.waran';
-        const astDir = waranDir + '/ast';
-        const wrnProj = initPath + '/wrn_proj.json';
-        const srcDir = initPath + '/src';
+        waranDir = initPath + '/.waran';
+        astDir = waranDir + '/ast';
+        wrnProj = initPath + '/wrn_proj.json';
+        srcDir = initPath + '/src';
 
         if (fs.existsSync(wrnProj)) {
             console.log(clc.redBright(`${wrnProj} \na waran project already exists in this directory!`));
@@ -61,7 +67,13 @@ app
         }
 
         const code = fs.readFileSync(path).toString();
-        runParse(code, name);
+        const ast = runParse(code);
+
+        const configuration = loadConfig(initPath + '/wrn_proj.json');
+
+        const outputFile = configuration.config.dirs.ast_dir + '/' + name.replace('.wr', '.ast');
+
+        fs.writeFileSync(outputFile, JSON.stringify(ast, null, '\t'));
     })
 
 
