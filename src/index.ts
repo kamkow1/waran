@@ -6,6 +6,7 @@ import clc from 'cli-color'
 import inquirer from 'inquirer'
 import questions from './cli/cmd/init/questions'
 import { createDirConfig, createInfo, createProjectConfig } from './cli/cmd/init/config' 
+import { setupDirs, setupConfigJson } from './cli/cmd/init/dirSetup'
 
 const app = new Command();
 
@@ -26,13 +27,14 @@ app
         }
 
         inquirer
-            .prompt([questions])
+            .prompt(questions)
             .then(answers => {
                 const info = createInfo(answers);  
                 const dirs = createDirConfig(astDir, waranDir, srcDir);
-                const config = createProjectConfig(info, dirs);      
-
-                fs.appendFileSync(wrnProj, JSON.stringify(config, null, '\t'));   
+                const config = createProjectConfig(info, dirs);    
+                
+                setupDirs(waranDir, astDir, srcDir);
+                setupConfigJson(wrnProj, config);
             });
     });
 
@@ -59,8 +61,6 @@ app
         }
 
         const code = fs.readFileSync(path).toString();
-        console.log(JSON.stringify(code));
-        //runLex(code);
         runParse(code, name);
     })
 

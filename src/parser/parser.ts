@@ -10,9 +10,7 @@ export const runParse = (code: string, filename: string) => {
     parser.feed(code);
 
     const ast = parser.results[0];
-    console.log(typeof ast)
-    console.log(ast)
-    fs.writeFileSync(outputFile, JSON.stringify(ast));
+    fs.writeFileSync(outputFile, JSON.stringify(ast, null, '\t'));
 
     console.log(parser.results);
 }
