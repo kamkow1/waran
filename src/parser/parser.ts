@@ -12,5 +12,5 @@ export const runParse = (code: string, filename: string) => {
     const ast = parser.results[0];
     fs.writeFileSync(outputFile, JSON.stringify(ast, null, '\t'));
 
-    console.log(parser.results);
+    console.log(ast);
 }
