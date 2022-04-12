@@ -9,6 +9,7 @@ import { createDirConfig, createInfo, createProjectConfig } from './cli/cmd/init
 import { setupDirs, setupConfigJson } from './cli/cmd/init/dirSetup'
 import { loadConfig } from './utils/configLoader'
 import { generate } from './generator/generator'
+import { exec } from 'child_process'
 
 const app = new Command();
 
@@ -83,6 +84,23 @@ app
         console.log(configuration.config.dirs.build + '/' + name.replace('.wr', '.js'));
 
         fs.writeFileSync(configuration.config.dirs.build + '/' + name.replace('.wr', '.js'), js);
+    })
+
+app
+    .command('exec')
+    .argument('<string>', 'path to .js file')
+    .action((str) => {
+        let path = str;
+
+        exec(`node ${path}`, (err: any | null, stdout: string, stderr: string) => {
+            if (err) {
+                console.log(clc.redBright(err));
+                process.exit(1);
+            }
+
+            console.log(clc.yellow('> output'));
+            console.log(clc.greenBright(stdout));
+        });        
     })
 
 
