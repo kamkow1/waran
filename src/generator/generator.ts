@@ -5,7 +5,7 @@ export const generate = (ast: any) => {
 
 const createJS = (ast: any) => {
     const lines = [];
-    for (let statement of ast) {
+    for (let statement of ast[0]) {
         const line = createStatement(statement);
         lines.push(line);
     }
@@ -14,10 +14,13 @@ const createJS = (ast: any) => {
 }
 
 const createStatement = (node: any) => {
+    console.log('wchodze');
+
     if (node.type === 'var_assign') {
         const name = node.var_name.value;
-        const expr = node.value.value
+        const expr = node.value.value;
         const js =  `var ${name} = ${expr};`;
+        console.log('to jest js | ' + js);
         return js;
     }
 

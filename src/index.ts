@@ -81,6 +81,8 @@ app
         fs.writeFileSync(outputFile, JSON.stringify(ast, null, '\t'));
 
         const js =  generate(ast);
+        console.log(js);
+
         console.log(configuration.config.dirs.build + '/' + name.replace('.wr', '.js'));
 
         fs.writeFileSync(configuration.config.dirs.build + '/' + name.replace('.wr', '.js'), js);
