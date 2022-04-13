@@ -24,7 +24,7 @@ statement
     -> var_assign {% id %}
     |  func_exec  {% id %}
 
-statement -> var_assign %NL
+statement -> var_assign
 
 var_assign
     -> %identifier _ "=" _ expr
@@ -81,6 +81,8 @@ expr
     |  %identifier {% id %}
     |  %func_exec {% id %}
 
-_ -> %NL:*
+NL -> %NL:+
 
-__ -> %NL:+
+_ -> %WS:*
+
+__ -> %WS:+

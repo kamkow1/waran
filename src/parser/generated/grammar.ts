@@ -8,6 +8,7 @@ declare var identifier: any;
 declare var string: any;
 declare var number: any;
 declare var func_exec: any;
+declare var WS: any;
 
 const lexer = require("../../lexer/lexer").lexer;
 
@@ -53,7 +54,7 @@ const grammar: Grammar = {
             },
     {"name": "statement", "symbols": ["var_assign"], "postprocess": id},
     {"name": "statement", "symbols": ["func_exec"], "postprocess": id},
-    {"name": "statement", "symbols": ["var_assign", (lexer.has("NL") ? {type: "NL"} : NL)]},
+    {"name": "statement", "symbols": ["var_assign"]},
     {"name": "var_assign", "symbols": [(lexer.has("identifier") ? {type: "identifier"} : identifier), "_", {"literal":"="}, "_", "expr"], "postprocess": 
         (data) => {
             return {
@@ -95,11 +96,14 @@ const grammar: Grammar = {
     {"name": "expr", "symbols": [(lexer.has("number") ? {type: "number"} : number)], "postprocess": id},
     {"name": "expr", "symbols": [(lexer.has("identifier") ? {type: "identifier"} : identifier)], "postprocess": id},
     {"name": "expr", "symbols": [(lexer.has("func_exec") ? {type: "func_exec"} : func_exec)], "postprocess": id},
+    {"name": "NL$ebnf$1", "symbols": [(lexer.has("NL") ? {type: "NL"} : NL)]},
+    {"name": "NL$ebnf$1", "symbols": ["NL$ebnf$1", (lexer.has("NL") ? {type: "NL"} : NL)], "postprocess": (d) => d[0].concat([d[1]])},
+    {"name": "NL", "symbols": ["NL$ebnf$1"]},
     {"name": "_$ebnf$1", "symbols": []},
-    {"name": "_$ebnf$1", "symbols": ["_$ebnf$1", (lexer.has("NL") ? {type: "NL"} : NL)], "postprocess": (d) => d[0].concat([d[1]])},
+    {"name": "_$ebnf$1", "symbols": ["_$ebnf$1", (lexer.has("WS") ? {type: "WS"} : WS)], "postprocess": (d) => d[0].concat([d[1]])},
     {"name": "_", "symbols": ["_$ebnf$1"]},
-    {"name": "__$ebnf$1", "symbols": [(lexer.has("NL") ? {type: "NL"} : NL)]},
-    {"name": "__$ebnf$1", "symbols": ["__$ebnf$1", (lexer.has("NL") ? {type: "NL"} : NL)], "postprocess": (d) => d[0].concat([d[1]])},
+    {"name": "__$ebnf$1", "symbols": [(lexer.has("WS") ? {type: "WS"} : WS)]},
+    {"name": "__$ebnf$1", "symbols": ["__$ebnf$1", (lexer.has("WS") ? {type: "WS"} : WS)], "postprocess": (d) => d[0].concat([d[1]])},
     {"name": "__", "symbols": ["__$ebnf$1"]}
   ],
   ParserStart: "statements",

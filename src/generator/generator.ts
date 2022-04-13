@@ -20,4 +20,18 @@ const createStatement = (node: any) => {
         const js =  `var ${name} = ${expr};`;
         return js;
     }
+
+    if (node.type === 'func_exec') {
+        const name = node.func_name.value;
+        let argList = node.arguments.map((arg: any) => {
+            return createStatement(arg);
+        })
+        .join(', ');
+
+        return `${name}(${argList})`;
+    }
+
+    if (node.type === 'number') return node.value;
+
+    if (node.type === 'string') return node.value;
 }
