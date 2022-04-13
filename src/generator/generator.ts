@@ -24,7 +24,6 @@ const createStatement = (node: any) => {
     } else if (node.type == 'func_exec') {
         const name = node.func_name.value;
         let argList = node.arguments.map((arg: any) => {
-            console.log(arg)
             return createStatement(arg);
         })
         .join(', ');
