@@ -19,6 +19,7 @@ let astDir: string
 let wrnProj: string;
 let srcDir: string;
 let build: string;
+let mainFile: string;
 
 app.name('wrn');
 
@@ -30,6 +31,8 @@ app
         wrnProj = initPath + '/wrn_proj.json';
         srcDir = initPath + '/src';
         build = waranDir + '/build';
+
+        mainFile = srcDir + '/main.wr';
 
 
         if (fs.existsSync(wrnProj)) {
@@ -46,6 +49,8 @@ app
                 
                 setupDirs(waranDir, astDir, srcDir, build);
                 setupConfigJson(wrnProj, config);
+
+                fs.appendFileSync(mainFile, 'variable = "hello waran!"\nstd_out(variable)');
             });
     });
 
@@ -59,16 +64,7 @@ app
         const name = pathElements[pathElements.length - 1];
 
         if (!name.includes('.wr')) {
-
-            const pathWithIndex = path + '/index.wr';
-            console.log(pathWithIndex);
-
-            if (fs.existsSync(pathWithIndex)) {
-                path = pathWithIndex;
-            } else {
-                console.error('file extension not recognized! only .wr files are executable');
-                return;
-            }
+            console.error('file extension not recognized! only .wr files can be compiled');
         }
 
         const code = fs.readFileSync(path).toString();
@@ -100,7 +96,7 @@ app
                 process.exit(1);
             }
 
-            console.log(clc.yellow('> output'));
+            console.log(clc.yellow('waran: \n'));
             console.log(clc.greenBright(stdout));
         });        
     })
