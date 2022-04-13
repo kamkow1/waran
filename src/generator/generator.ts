@@ -20,7 +20,6 @@ const createStatement = (node: any) => {
         const name = node.var_name.value;
         const expr = node.value.value;
         const js =  `var ${name} = ${expr};`;
-        console.log('to jest js | ' + js);
         return js;
     }
 
