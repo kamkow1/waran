@@ -50,7 +50,7 @@ app
     });
 
 app
-    .command('cfile')
+    .command('compile')
     .argument('<string>', 'path to .wr file')
     .action((str) => {
         let path = str;
@@ -72,6 +72,7 @@ app
         }
 
         const code = fs.readFileSync(path).toString();
+
         const ast = runParse(code);
 
         const configuration = loadConfig(initPath + '/wrn_proj.json');
