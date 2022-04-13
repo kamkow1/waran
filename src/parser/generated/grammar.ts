@@ -54,7 +54,6 @@ const grammar: Grammar = {
             },
     {"name": "statement", "symbols": ["var_assign"], "postprocess": id},
     {"name": "statement", "symbols": ["func_exec"], "postprocess": id},
-    {"name": "statement", "symbols": ["var_assign"]},
     {"name": "var_assign", "symbols": [(lexer.has("identifier") ? {type: "identifier"} : identifier), "_", {"literal":"="}, "_", "expr"], "postprocess": 
         (data) => {
             return {
