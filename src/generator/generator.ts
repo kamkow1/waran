@@ -22,14 +22,12 @@ const createStatement = (node: any) => {
         const js =  `var ${name} = ${expr};`;
         return js;
     } else if (node.type == 'func_exec') {
-        console.log('func');
         const name = node.func_name.value;
         let argList = node.arguments.map((arg: any) => {
+            console.log(arg)
             return createStatement(arg);
         })
         .join(', ');
-
-        console.log(argList)
 
         let funcExecName = "";
         for(let func of functions) {
@@ -39,6 +37,8 @@ const createStatement = (node: any) => {
         }
 
         return `${funcExecName}(${argList})`;
+    } else if (node.type == 'identifier') {
+        return node.value;
     } else if (node.type == 'number') {
         return node.value;
     } else if (node.type == 'string') {
