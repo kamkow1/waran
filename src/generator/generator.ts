@@ -14,8 +14,6 @@ const createJS = (ast: any) => {
 }
 
 const createStatement = (node: any) => {
-    console.log('wchodze');
-
     if (node.type === 'var_assign') {
         const name = node.var_name.value;
         const expr = node.value.value;

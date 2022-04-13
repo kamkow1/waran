@@ -50,7 +50,7 @@ app
     });
 
 app
-    .command('compile')
+    .command('cfile')
     .argument('<string>', 'path to .wr file')
     .action((str) => {
         let path = str;
