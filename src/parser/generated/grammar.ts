@@ -4,6 +4,7 @@
 // @ts-ignore
 function id(d: any[]): any { return d[0]; }
 declare var NL: any;
+declare var comment: any;
 declare var identifier: any;
 declare var string: any;
 declare var number: any;
@@ -54,6 +55,7 @@ const grammar: Grammar = {
             },
     {"name": "statement", "symbols": ["var_assign"], "postprocess": id},
     {"name": "statement", "symbols": ["func_exec"], "postprocess": id},
+    {"name": "statement", "symbols": [(lexer.has("comment") ? {type: "comment"} : comment)], "postprocess": id},
     {"name": "var_assign", "symbols": [(lexer.has("identifier") ? {type: "identifier"} : identifier), "_", {"literal":"="}, "_", "expr"], "postprocess": 
         (data) => {
             return {

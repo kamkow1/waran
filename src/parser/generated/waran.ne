@@ -23,6 +23,7 @@ statements
 statement 
     -> var_assign {% id %}
     |  func_exec  {% id %}
+    |  %comment   {% id %}
 
 var_assign
     -> %identifier _ "=" _ expr

@@ -65,6 +65,8 @@ const createStatement = (node: any) => {
         return node.value;
     } else if (node.type == 'string') {
         return node.value;
+    } else if (node.type == 'comment') {
+        return "";
     } else {
         console.log(clc.redBright('unhandled ast node'));
         process.exit(0);
