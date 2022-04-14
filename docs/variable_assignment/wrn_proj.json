@@ -7,10 +7,10 @@
 	},
 	"config": {
 		"dirs": {
-			"ast_dir": "C:\\Users\\kamil\\Desktop\\waran\\docs\\variable_assignment/.waran/ast",
-			"wrn_proj_dir": "C:\\Users\\kamil\\Desktop\\waran\\docs\\variable_assignment/.waran",
-			"src_dir": "C:\\Users\\kamil\\Desktop\\waran\\docs\\variable_assignment/src",
-			"build": "C:\\Users\\kamil\\Desktop\\waran\\docs\\variable_assignment/.waran/build"
+			"ast_dir": "C:\\Users\\root\\Development\\waran\\docs\\variable_assignment/.waran/ast",
+			"wrn_proj_dir": "C:\\Users\\root\\Development\\waran\\docs\\variable_assignment/.waran",
+			"src_dir": "C:\\Users\\root\\Development\\waran\\docs\\variable_assignment/src",
+			"build": "C:\\Users\\root\\Development\\waran\\docs\\variable_assignment/.waran/build"
 		}
 	},
 	"waran": "https://github.com/kamkow1/waran",

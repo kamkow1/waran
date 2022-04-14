@@ -11,35 +11,26 @@ import { loadConfig } from './utils/configLoader'
 import { generate } from './generator/generator'
 import { exec } from 'child_process'
 import UglifyJS from 'uglify-js'
+import path from 'path'
 
 const app = new Command();
-
-let initPath: string = process.cwd();
-let waranDir: string
-let astDir: string
-let wrnProj: string;
-let srcDir: string;
-let build: string;
-let mainFile: string;
+const initPath = process.cwd();
 
 app.name('wrn');
 
 app
     .command('init')
     .action(() => {
-        waranDir = initPath + '/.waran';
-        astDir = waranDir + '/ast';
-        wrnProj = initPath + '/wrn_proj.json';
-        srcDir = initPath + '/src';
-        build = waranDir + '/build';
+        const waranDir = path.join(initPath, '.waran');
+        const astDir   = path.join(waranDir, 'ast');
+        const wrnProj  = path.join(initPath, 'wrn_proj.json');
+        const srcDir   = path.join(initPath, 'src');
+        const build    = path.join(waranDir, 'build');
 
-        mainFile = srcDir + '/main.wr';
+        const mainFile = path.join(srcDir, 'main.wr');
 
-
-        if (fs.existsSync(wrnProj)) {
-            console.log(clc.redBright(`${wrnProj} \na waran project already exists in this directory!`));
-            process.exit(1);
-        }
+        if (fs.existsSync(wrnProj)) 
+            return console.log(clc.redBright(`${wrnProj}\na waran project already exists in this directory!`));
 
         inquirer
             .prompt(questions)
@@ -51,56 +42,50 @@ app
                 setupDirs(waranDir, astDir, srcDir, build);
                 setupConfigJson(wrnProj, config);
 
-                fs.appendFileSync(mainFile, 'hello = "hello"\r\nwaran="waran!"\r\nstd_out(hello waran)');
+                fs.appendFileSync(mainFile, 'hello = "hello"\nwaran="waran!"\nstd_out(hello waran)');
             });
     });
 
 app
     .command('compile')
     .argument('<string>', 'path to .wr file')
-    .action((str) => {
-        let path = str;
+    .action(pathStr => {
+        const name = path.basename(pathStr);
 
-        const pathElements = str.split('/');
-        const name = pathElements[pathElements.length - 1];
+        if (!name.includes('.wr'))
+            return console.error('file extension not recognized! only .wr files can be compiled');
 
-        if (!name.includes('.wr')) {
-            console.error('file extension not recognized! only .wr files can be compiled');
-        }
-
-        const code = fs.readFileSync(path).toString();
+        const code = fs.readFileSync(pathStr).toString();
 
         const ast = runParse(code);
 
-        const configuration = loadConfig(initPath + '/wrn_proj.json');
+        const { config } = loadConfig(path.join(initPath, 'wrn_proj.json'));
 
-        const outputFile = configuration.config.dirs.ast_dir + '/' + name.replace('.wr', '.ast');
+        const astDir = config.dirs.ast_dir;
+        const outputFile = path.join(astDir, name.replace('.wr', '.ast'));
 
         fs.writeFileSync(outputFile, JSON.stringify(ast, null, '\t'));
 
         const js =  generate(ast);
-        const minifiedJs = UglifyJS.minify(js);
+        const minifiedJs = UglifyJS.minify(js).code;
 
-        console.log(configuration.config.dirs.build + '/' + name.replace('.wr', '.js'));
+        const buildDir = config.dirs.build;
+        const buildFile = path.join(buildDir, name.replace('.wr', '.js'));
 
-        fs.writeFileSync(configuration.config.dirs.build + '/' + name.replace('.wr', '.js'), minifiedJs.code);
+        fs.writeFileSync(buildFile, minifiedJs);
     })
 
 app
     .command('exec')
     .argument('<string>', 'path to .js file')
-    .action((str) => {
-        let path = str;
-
-        exec(`node ${path}`, (err: any | null, stdout: string, stderr: string) => {
-            if (err) {
-                console.log(clc.redBright(err));
-                process.exit(1);
-            }
+    .action(path => {
+        exec(`node ${path}`, (err, stdout, stderr) => {
+            if (err)
+                return console.log(clc.redBright(err));
 
             console.log(clc.yellow('waran: \n'));
             console.log(clc.greenBright(stdout));
-        });        
+        });
     })
 
 
