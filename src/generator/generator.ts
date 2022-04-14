@@ -23,10 +23,15 @@ const createStatement = (node: any) => {
         return js;
     } else if (node.type == 'func_exec') {
         const name = node.func_name.value;
-        let argList = node.arguments.map((arg: any) => {
+        let arr = node.arguments.map((arg: any) => {
             return createStatement(arg);
         })
-        .join(', ');
+
+        let argList = "";
+        if (arr.length != 0) {
+            argList = arr.join(', ');
+        }
+        
 
         let funcExecName = "";
         if (functions.filter(f => f.alias == name).length != 0) {
@@ -35,19 +40,23 @@ const createStatement = (node: any) => {
             funcExecName = name;
         }
 
-        return `${funcExecName}(${argList})`;
+        return `${funcExecName}(${argList});`;
     } else if (node.type == 'lambda') {
         const params = node.parameters;
-        let paramNames = params.map((p: any) => {
+        let arr  = params.map((p: any) => {
             return createStatement(p);
-        })
-        .join(', ');
+        });
 
+        let paramNames = "";
+        if (arr.length != 0) {
+            paramNames = arr.join(', ');
+        }
+        
         let body = node.body.map((elem:any) => {
             return createStatement(elem);
         });
 
-        const js = `(${paramNames}) => {\n ${body} \n}`;
+        const js = `(${paramNames}) => {\n ${body.join('')} \n}`;
         return js;
     } else if (node.type == 'identifier') {
         console.log(typeof node.value);
