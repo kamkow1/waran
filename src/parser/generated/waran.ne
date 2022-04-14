@@ -24,6 +24,7 @@ statement
     -> var_assign {% id %}
     |  func_exec  {% id %}
     |  %comment   {% id %}
+    |  %ml_comment {% id %}
 
 var_assign
     -> %identifier _ "=" _ expr
