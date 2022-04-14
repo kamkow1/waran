@@ -2,4 +2,4 @@ hello = "hello"
 waran="waran!"
 std_out(hello waran)
 
-// this is a single line comment
+## this is a single line comment
