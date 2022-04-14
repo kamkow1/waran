@@ -63,15 +63,13 @@ const grammar: Grammar = {
             }
         }
                 },
-    {"name": "func_exec$ebnf$1$subexpression$1", "symbols": ["args", "_"]},
-    {"name": "func_exec$ebnf$1", "symbols": ["func_exec$ebnf$1$subexpression$1"], "postprocess": id},
-    {"name": "func_exec$ebnf$1", "symbols": [], "postprocess": () => null},
-    {"name": "func_exec", "symbols": [(lexer.has("identifier") ? {type: "identifier"} : identifier), "_", {"literal":"("}, "_", "func_exec$ebnf$1", {"literal":")"}], "postprocess": 
+    {"name": "func_exec$subexpression$1", "symbols": ["args", "_"]},
+    {"name": "func_exec", "symbols": [(lexer.has("identifier") ? {type: "identifier"} : identifier), "_", {"literal":"("}, "_", "func_exec$subexpression$1", {"literal":")"}], "postprocess": 
         (data) => {
             return {
                 type: "func_exec",
                 func_name: data[0],
-                arguments: data[4]
+                arguments: data[4][0]
             }
         }
             },

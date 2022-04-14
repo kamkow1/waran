@@ -43,7 +43,12 @@ const createStatement = (node: any) => {
         })
         .join(', ');
 
-        const js = `(${paramNames}) =>`;
+        let body = node.body.map((elem:any) => {
+            console.log(JSON.stringify(elem, null, 4));
+            return createStatement(elem);
+        });
+
+        const js = `(${paramNames}) => {\n ${body} \n}`;
         return js;
     } else if (node.type == 'identifier') {
         return node.value;
@@ -52,6 +57,7 @@ const createStatement = (node: any) => {
     } else if (node.type == 'string') {
         return node.value;
     } else {
+        console.log(JSON.stringify(node, null, 4));
         throw new Error('unhandled ast node');
     }
 }

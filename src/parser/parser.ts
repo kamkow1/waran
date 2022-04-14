@@ -8,7 +8,6 @@ export const runParse = (code: string) => {
     parser.feed(code);
 
     const ast = parser.results[0];
-    console.log(JSON.stringify(ast, null, 4));
 
     return ast;
 }

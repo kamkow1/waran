@@ -37,13 +37,13 @@ var_assign
         %}
 
 func_exec
-    -> %identifier _ "(" _ (args _):? ")"
+    -> %identifier _ "(" _ (args _) ")"
     {%
         (data) => {
             return {
                 type: "func_exec",
                 func_name: data[0],
-                arguments: data[4]
+                arguments: data[4][0]
             }
         }
     %}
