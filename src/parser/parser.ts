@@ -1,6 +1,5 @@
 import { Parser, Grammar } from 'nearley'
 import grammar from './generated/grammar'
-import fs from 'fs'
 
 const parser = new Parser(Grammar.fromCompiled(grammar));
 
