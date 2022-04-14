@@ -36,6 +36,15 @@ const createStatement = (node: any) => {
         }
 
         return `${funcExecName}(${argList})`;
+    } else if (node.type == 'lambda') {
+        const params = node.parameters;
+        let paramNames = params.map((p: any) => {
+            return createStatement(p);
+        })
+        .join(', ');
+
+        const js = `(${paramNames}) =>`;
+        return js;
     } else if (node.type == 'identifier') {
         return node.value;
     } else if (node.type == 'number') {
