@@ -10,6 +10,7 @@ import { setupDirs, setupConfigJson } from './cli/cmd/init/dirSetup'
 import { loadConfig } from './utils/configLoader'
 import { generate } from './generator/generator'
 import { exec } from 'child_process'
+import UglifyJS from 'uglify-js'
 
 const app = new Command();
 
@@ -78,10 +79,11 @@ app
         fs.writeFileSync(outputFile, JSON.stringify(ast, null, '\t'));
 
         const js =  generate(ast);
+        const minifiedJs = UglifyJS.minify(js);
 
         console.log(configuration.config.dirs.build + '/' + name.replace('.wr', '.js'));
 
-        fs.writeFileSync(configuration.config.dirs.build + '/' + name.replace('.wr', '.js'), js);
+        fs.writeFileSync(configuration.config.dirs.build + '/' + name.replace('.wr', '.js'), minifiedJs.code);
     })
 
 app
