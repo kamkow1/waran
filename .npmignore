@@ -6,3 +6,4 @@ src
 .gitignore
 .git
 package-lock.json
+docs
