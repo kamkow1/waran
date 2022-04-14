@@ -1,0 +1,15 @@
+std_out("this text will be printed to the standard output")
+
+std_out(7759)
+
+variable = "text"
+
+std_out(variable)
+
+num = 684
+
+std_out(num)
+
+std_out(variable num)
+
+std_out(variable " " num)

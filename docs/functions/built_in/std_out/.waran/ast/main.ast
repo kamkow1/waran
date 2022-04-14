@@ -1,0 +1,209 @@
+[
+	{
+		"type": "func_exec",
+		"func_name": {
+			"type": "identifier",
+			"value": "std_out",
+			"text": "std_out",
+			"offset": 0,
+			"lineBreaks": 0,
+			"line": 1,
+			"col": 1
+		},
+		"arguments": [
+			{
+				"type": "string",
+				"value": "\"this text will be printed to the standard output\"",
+				"text": "\"this text will be printed to the standard output\"",
+				"offset": 8,
+				"lineBreaks": 0,
+				"line": 1,
+				"col": 9
+			}
+		]
+	},
+	{
+		"type": "func_exec",
+		"func_name": {
+			"type": "identifier",
+			"value": "std_out",
+			"text": "std_out",
+			"offset": 63,
+			"lineBreaks": 0,
+			"line": 3,
+			"col": 1
+		},
+		"arguments": [
+			{
+				"type": "number",
+				"value": "7759",
+				"text": "7759",
+				"offset": 71,
+				"lineBreaks": 0,
+				"line": 3,
+				"col": 9
+			}
+		]
+	},
+	{
+		"type": "var_assign",
+		"var_name": {
+			"type": "identifier",
+			"value": "variable",
+			"text": "variable",
+			"offset": 80,
+			"lineBreaks": 0,
+			"line": 5,
+			"col": 1
+		},
+		"value": {
+			"type": "string",
+			"value": "\"text\"",
+			"text": "\"text\"",
+			"offset": 91,
+			"lineBreaks": 0,
+			"line": 5,
+			"col": 12
+		}
+	},
+	{
+		"type": "func_exec",
+		"func_name": {
+			"type": "identifier",
+			"value": "std_out",
+			"text": "std_out",
+			"offset": 101,
+			"lineBreaks": 0,
+			"line": 7,
+			"col": 1
+		},
+		"arguments": [
+			{
+				"type": "identifier",
+				"value": "variable",
+				"text": "variable",
+				"offset": 109,
+				"lineBreaks": 0,
+				"line": 7,
+				"col": 9
+			}
+		]
+	},
+	{
+		"type": "var_assign",
+		"var_name": {
+			"type": "identifier",
+			"value": "num",
+			"text": "num",
+			"offset": 122,
+			"lineBreaks": 0,
+			"line": 9,
+			"col": 1
+		},
+		"value": {
+			"type": "number",
+			"value": "684",
+			"text": "684",
+			"offset": 128,
+			"lineBreaks": 0,
+			"line": 9,
+			"col": 7
+		}
+	},
+	{
+		"type": "func_exec",
+		"func_name": {
+			"type": "identifier",
+			"value": "std_out",
+			"text": "std_out",
+			"offset": 135,
+			"lineBreaks": 0,
+			"line": 11,
+			"col": 1
+		},
+		"arguments": [
+			{
+				"type": "identifier",
+				"value": "num",
+				"text": "num",
+				"offset": 143,
+				"lineBreaks": 0,
+				"line": 11,
+				"col": 9
+			}
+		]
+	},
+	{
+		"type": "func_exec",
+		"func_name": {
+			"type": "identifier",
+			"value": "std_out",
+			"text": "std_out",
+			"offset": 151,
+			"lineBreaks": 0,
+			"line": 13,
+			"col": 1
+		},
+		"arguments": [
+			{
+				"type": "identifier",
+				"value": "variable",
+				"text": "variable",
+				"offset": 159,
+				"lineBreaks": 0,
+				"line": 13,
+				"col": 9
+			},
+			{
+				"type": "identifier",
+				"value": "num",
+				"text": "num",
+				"offset": 168,
+				"lineBreaks": 0,
+				"line": 13,
+				"col": 18
+			}
+		]
+	},
+	{
+		"type": "func_exec",
+		"func_name": {
+			"type": "identifier",
+			"value": "std_out",
+			"text": "std_out",
+			"offset": 176,
+			"lineBreaks": 0,
+			"line": 15,
+			"col": 1
+		},
+		"arguments": [
+			{
+				"type": "identifier",
+				"value": "variable",
+				"text": "variable",
+				"offset": 184,
+				"lineBreaks": 0,
+				"line": 15,
+				"col": 9
+			},
+			{
+				"type": "string",
+				"value": "\" \"",
+				"text": "\" \"",
+				"offset": 193,
+				"lineBreaks": 0,
+				"line": 15,
+				"col": 18
+			},
+			{
+				"type": "identifier",
+				"value": "num",
+				"text": "num",
+				"offset": 197,
+				"lineBreaks": 0,
+				"line": 15,
+				"col": 22
+			}
+		]
+	}
+]

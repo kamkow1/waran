@@ -1,0 +1,18 @@
+{
+	"project_info": {
+		"proj_name": "std_out_function",
+		"desc": "no description",
+		"repo": "",
+		"author": ""
+	},
+	"config": {
+		"dirs": {
+			"ast_dir": "C:\\Users\\kamil\\Desktop\\waran\\docs\\functions\\built_in\\std_out/.waran/ast",
+			"wrn_proj_dir": "C:\\Users\\kamil\\Desktop\\waran\\docs\\functions\\built_in\\std_out/.waran",
+			"src_dir": "C:\\Users\\kamil\\Desktop\\waran\\docs\\functions\\built_in\\std_out/src",
+			"build": "C:\\Users\\kamil\\Desktop\\waran\\docs\\functions\\built_in\\std_out/.waran/build"
+		}
+	},
+	"waran": "https://github.com/kamkow1/waran",
+	"authors": "kamkow1 && londek"
+}
