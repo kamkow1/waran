@@ -35,14 +35,6 @@ const createStatement = (node: any) => {
             funcExecName = name;
         }
 
-        /*for(let func of functions) {
-            if (name == func.alias) {
-                funcExecName = func.exec;
-            } else {
-                funcExecName = name;
-            }
-        }*/
-
         return `${funcExecName}(${argList})`;
     } else if (node.type == 'lambda') {
         const params = node.parameters;
