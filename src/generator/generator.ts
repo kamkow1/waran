@@ -29,11 +29,19 @@ const createStatement = (node: any) => {
         .join(', ');
 
         let funcExecName = "";
-        for(let func of functions) {
-            if (name === func.alias) {
-                funcExecName = func.exec;
-            } 
+        if (functions.filter(f => f.alias == name).length != 0) {
+            funcExecName = functions.find(f => f.alias == name).exec;
+        } else {
+            funcExecName = name;
         }
+
+        /*for(let func of functions) {
+            if (name == func.alias) {
+                funcExecName = func.exec;
+            } else {
+                funcExecName = name;
+            }
+        }*/
 
         return `${funcExecName}(${argList})`;
     } else if (node.type == 'lambda') {
@@ -44,13 +52,13 @@ const createStatement = (node: any) => {
         .join(', ');
 
         let body = node.body.map((elem:any) => {
-            console.log(JSON.stringify(elem, null, 4));
             return createStatement(elem);
         });
 
         const js = `(${paramNames}) => {\n ${body} \n}`;
         return js;
     } else if (node.type == 'identifier') {
+        console.log(typeof node.value);
         return node.value;
     } else if (node.type == 'number') {
         return node.value;
