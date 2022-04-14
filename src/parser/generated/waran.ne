@@ -7,16 +7,16 @@ const lexer = require("../../lexer/lexer").lexer;
 @lexer lexer
 
 statements
-    -> statement
+    -> _ statement _
     {%
         (data) => {
-            return [data[0]];
+            return [data[1]];
         }
     %}
-    |  statements %NL statement
+    |  statements %NL _ statement _
     {%
         (data) => {
-            return [...data[0], data[2]];
+            return [...data[0], data[3]];
         }
     %}
 
@@ -37,7 +37,7 @@ var_assign
         %}
 
 func_exec
-    -> %identifier _ "(" _ args _ ")"
+    -> %identifier _ "(" _ (args _):? ")"
     {%
         (data) => {
             return {
@@ -78,6 +78,48 @@ expr
     |  %number {% id %}
     |  %identifier {% id %}
     |  %func_exec {% id %}
+    |  lambda {% id %}
+
+lambda -> "(" _ (params _):? ")" _ "->" _ lambda_body
+{%
+    (data) => {
+        return {
+            type: "lambda",
+            parameters: data[2] ? data[2][0] : [],
+            body: data[7]
+        }
+    }
+%}
+
+params
+    -> %identifier
+    {%
+        (data) => {
+            return [data[0]];
+        }
+    %}
+    | params __ %identifier
+    {%
+        (data) => {
+            return [...data[0], data[2]];
+        }
+    %}
+    
+
+lambda_body 
+    -> expr 
+    {% 
+        (data) => {
+            return [data[0]];
+        }
+
+     %}
+    |  "{" _ %NL statements %NL _ "}"
+    {%
+        (data) => {
+            return data[3];
+        }
+    %}
 
 NL -> %NL:+
 

@@ -42,14 +42,14 @@ interface Grammar {
 const grammar: Grammar = {
   Lexer: lexer,
   ParserRules: [
-    {"name": "statements", "symbols": ["statement"], "postprocess": 
+    {"name": "statements", "symbols": ["_", "statement", "_"], "postprocess": 
         (data) => {
-            return [data[0]];
+            return [data[1]];
         }
             },
-    {"name": "statements", "symbols": ["statements", (lexer.has("NL") ? {type: "NL"} : NL), "statement"], "postprocess": 
+    {"name": "statements", "symbols": ["statements", (lexer.has("NL") ? {type: "NL"} : NL), "_", "statement", "_"], "postprocess": 
         (data) => {
-            return [...data[0], data[2]];
+            return [...data[0], data[3]];
         }
             },
     {"name": "statement", "symbols": ["var_assign"], "postprocess": id},
@@ -63,7 +63,10 @@ const grammar: Grammar = {
             }
         }
                 },
-    {"name": "func_exec", "symbols": [(lexer.has("identifier") ? {type: "identifier"} : identifier), "_", {"literal":"("}, "_", "args", "_", {"literal":")"}], "postprocess": 
+    {"name": "func_exec$ebnf$1$subexpression$1", "symbols": ["args", "_"]},
+    {"name": "func_exec$ebnf$1", "symbols": ["func_exec$ebnf$1$subexpression$1"], "postprocess": id},
+    {"name": "func_exec$ebnf$1", "symbols": [], "postprocess": () => null},
+    {"name": "func_exec", "symbols": [(lexer.has("identifier") ? {type: "identifier"} : identifier), "_", {"literal":"("}, "_", "func_exec$ebnf$1", {"literal":")"}], "postprocess": 
         (data) => {
             return {
                 type: "func_exec",
@@ -95,6 +98,40 @@ const grammar: Grammar = {
     {"name": "expr", "symbols": [(lexer.has("number") ? {type: "number"} : number)], "postprocess": id},
     {"name": "expr", "symbols": [(lexer.has("identifier") ? {type: "identifier"} : identifier)], "postprocess": id},
     {"name": "expr", "symbols": [(lexer.has("func_exec") ? {type: "func_exec"} : func_exec)], "postprocess": id},
+    {"name": "expr", "symbols": ["lambda"], "postprocess": id},
+    {"name": "lambda$ebnf$1$subexpression$1", "symbols": ["params", "_"]},
+    {"name": "lambda$ebnf$1", "symbols": ["lambda$ebnf$1$subexpression$1"], "postprocess": id},
+    {"name": "lambda$ebnf$1", "symbols": [], "postprocess": () => null},
+    {"name": "lambda", "symbols": [{"literal":"("}, "_", "lambda$ebnf$1", {"literal":")"}, "_", {"literal":"->"}, "_", "lambda_body"], "postprocess": 
+        (data) => {
+            return {
+                type: "lambda",
+                parameters: data[2] ? data[2][0] : [],
+                body: data[7]
+            }
+        }
+        },
+    {"name": "params", "symbols": [(lexer.has("identifier") ? {type: "identifier"} : identifier)], "postprocess": 
+        (data) => {
+            return [data[0]];
+        }
+            },
+    {"name": "params", "symbols": ["params", "__", (lexer.has("identifier") ? {type: "identifier"} : identifier)], "postprocess": 
+        (data) => {
+            return [...data[0], data[2]];
+        }
+            },
+    {"name": "lambda_body", "symbols": ["expr"], "postprocess":  
+        (data) => {
+            return [data[0]];
+        }
+        
+             },
+    {"name": "lambda_body", "symbols": [{"literal":"{"}, "_", (lexer.has("NL") ? {type: "NL"} : NL), "statements", (lexer.has("NL") ? {type: "NL"} : NL), "_", {"literal":"}"}], "postprocess": 
+        (data) => {
+            return data[3];
+        }
+            },
     {"name": "NL$ebnf$1", "symbols": [(lexer.has("NL") ? {type: "NL"} : NL)]},
     {"name": "NL$ebnf$1", "symbols": ["NL$ebnf$1", (lexer.has("NL") ? {type: "NL"} : NL)], "postprocess": (d) => d[0].concat([d[1]])},
     {"name": "NL", "symbols": ["NL$ebnf$1"]},
