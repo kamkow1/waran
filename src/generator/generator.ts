@@ -1,3 +1,4 @@
+import clc from 'cli-color';
 import { functions } from '../functions/functions';
 
 export const generate = (ast: any) => {
@@ -59,14 +60,13 @@ const createStatement = (node: any) => {
         const js = `(${paramNames}) => {\n ${body.join('')} \n}`;
         return js;
     } else if (node.type == 'identifier') {
-        console.log(typeof node.value);
         return node.value;
     } else if (node.type == 'number') {
         return node.value;
     } else if (node.type == 'string') {
         return node.value;
     } else {
-        console.log(JSON.stringify(node, null, 4));
-        throw new Error('unhandled ast node');
+        console.log(clc.redBright('unhandled ast node'));
+        process.exit(0);
     }
 }
