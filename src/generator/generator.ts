@@ -1,5 +1,4 @@
 import clc from 'cli-color';
-import functions from '../functions';
 
 export const generate = (ast: any) => createJS(ast);
 
@@ -25,12 +24,7 @@ const createStatement = (node: any) => {
 
         const argList = arr.join(', ');
 
-        let funcExecName = name;
-        if (functions.filter(f => f.alias == name).length != 0) {
-            funcExecName = functions.find(f => f.alias == name).exec;
-        }
-
-        return `${funcExecName}(${argList});`;
+        return `${name}(${argList});`;
     } else if (node.type == 'lambda') {
         const params = node.parameters;
         const arr  = params.map((param: any) => createStatement(param));

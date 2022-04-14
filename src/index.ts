@@ -21,13 +21,15 @@ app.name('wrn');
 app
     .command('init')
     .action(() => {
-        const waranDir = path.join(initPath, '.waran');
-        const astDir   = path.join(waranDir, 'ast');
-        const wrnProj  = path.join(initPath, 'wrn_proj.json');
-        const srcDir   = path.join(initPath, 'src');
-        const build    = path.join(waranDir, 'build');
+        const waranDir      = path.join(initPath, '.waran');
+        const astDir        = path.join(waranDir, 'ast');
+        const wrnProj       = path.join(initPath, 'wrn_proj.json');
+        const srcDir        = path.join(initPath, 'src');
+        const build         = path.join(waranDir, 'build');
 
-        const mainFile = path.join(srcDir, 'main.wr');
+        const mainFile      = path.join(srcDir, 'main.wr');
+        const runtimeDir    = path.join(initPath, 'runtime');
+        const runtimeFilePath   = path.join(runtimeDir, 'index.js');
 
         if (fs.existsSync(wrnProj)) 
             return console.log(clc.redBright(`${wrnProj}\na waran project already exists in this directory!`));
@@ -41,6 +43,9 @@ app
                 
                 setupDirs(waranDir, astDir, srcDir, build);
                 setupConfigJson(wrnProj, config);
+
+                const runtimeFile = fs.readFileSync('./runtime/index.js');
+                fs.appendFileSync(runtimeFilePath, runtimeFile);
 
                 fs.appendFileSync(mainFile, 'hello = "hello"\nwaran="waran!"\nstd_out(hello waran)');
             });
@@ -66,7 +71,8 @@ app
 
         fs.writeFileSync(outputFile, JSON.stringify(ast, null, '\t'));
 
-        const js =  generate(ast);
+        const runtime = fs.readFileSync('./runtime/index.js');
+        const js =  generate(ast) + runtime;
         const minifiedJs = UglifyJS.minify(js).code;
 
         const buildDir = config.dirs.build;
