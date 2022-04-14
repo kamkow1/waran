@@ -50,7 +50,7 @@ app
                 setupDirs(waranDir, astDir, srcDir, build);
                 setupConfigJson(wrnProj, config);
 
-                fs.appendFileSync(mainFile, 'variable = "hello waran!"\nstd_out(variable)');
+                fs.appendFileSync(mainFile, 'hello = "hello"\r\nwaran="waran!"\r\nstd_out(hello waran)');
             });
     });
 
