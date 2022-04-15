@@ -10,3 +10,5 @@ another_function = () -> {
 }
 
 another_function()
+
+std_out(add(8 5))

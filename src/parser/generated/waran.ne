@@ -39,13 +39,13 @@ var_assign
         %}
 
 func_exec
-    -> %identifier _ "(" _ (args _) ")"
+    -> %identifier _ "(" _ (args _):? ")"
     {%
         (data) => {
             return {
                 type: "func_exec",
                 func_name: data[0],
-                arguments: data[4][0]
+                arguments: data[4] ? data[4][0] : []
             }
         }
     %}
@@ -79,7 +79,7 @@ expr
     -> %string {% id %}
     |  %number {% id %}
     |  %identifier {% id %}
-    |  %func_exec {% id %}
+    |  statement {% id %}
     |  lambda {% id %}
 
 lambda -> "(" _ (params _):? ")" _ "->" _ lambda_body

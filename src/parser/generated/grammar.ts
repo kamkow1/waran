@@ -9,7 +9,6 @@ declare var ml_comment: any;
 declare var identifier: any;
 declare var string: any;
 declare var number: any;
-declare var func_exec: any;
 declare var WS: any;
 
 const lexer = require("../../lexer/lexer").lexer;
@@ -67,13 +66,15 @@ const grammar: Grammar = {
             }
         }
                 },
-    {"name": "func_exec$subexpression$1", "symbols": ["args", "_"]},
-    {"name": "func_exec", "symbols": [(lexer.has("identifier") ? {type: "identifier"} : identifier), "_", {"literal":"("}, "_", "func_exec$subexpression$1", {"literal":")"}], "postprocess": 
+    {"name": "func_exec$ebnf$1$subexpression$1", "symbols": ["args", "_"]},
+    {"name": "func_exec$ebnf$1", "symbols": ["func_exec$ebnf$1$subexpression$1"], "postprocess": id},
+    {"name": "func_exec$ebnf$1", "symbols": [], "postprocess": () => null},
+    {"name": "func_exec", "symbols": [(lexer.has("identifier") ? {type: "identifier"} : identifier), "_", {"literal":"("}, "_", "func_exec$ebnf$1", {"literal":")"}], "postprocess": 
         (data) => {
             return {
                 type: "func_exec",
                 func_name: data[0],
-                arguments: data[4][0]
+                arguments: data[4] ? data[4][0] : []
             }
         }
             },
@@ -99,7 +100,7 @@ const grammar: Grammar = {
     {"name": "expr", "symbols": [(lexer.has("string") ? {type: "string"} : string)], "postprocess": id},
     {"name": "expr", "symbols": [(lexer.has("number") ? {type: "number"} : number)], "postprocess": id},
     {"name": "expr", "symbols": [(lexer.has("identifier") ? {type: "identifier"} : identifier)], "postprocess": id},
-    {"name": "expr", "symbols": [(lexer.has("func_exec") ? {type: "func_exec"} : func_exec)], "postprocess": id},
+    {"name": "expr", "symbols": ["statement"], "postprocess": id},
     {"name": "expr", "symbols": ["lambda"], "postprocess": id},
     {"name": "lambda$ebnf$1$subexpression$1", "symbols": ["params", "_"]},
     {"name": "lambda$ebnf$1", "symbols": ["lambda$ebnf$1$subexpression$1"], "postprocess": id},

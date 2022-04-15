@@ -17,14 +17,14 @@ const createStatement = (node: any) => {
         const name = node.var_name.value;
         const expr: any = createStatement(node.value);
         
-        return `var ${name} = ${expr};`;
+        return `var ${name} = ${expr};\n`;
     } else if (node.type == 'func_exec') {
         const name = node.func_name.value;
         const arr = node.arguments.map((arg: any) => createStatement(arg));
 
-        const argList = arr.join(', ');
+        const argList = arr.join(',');
 
-        return `${name}(${argList});`;
+        return `${name}(${argList})\n`;
     } else if (node.type == 'lambda') {
         const params = node.parameters;
         const arr  = params.map((param: any) => createStatement(param));

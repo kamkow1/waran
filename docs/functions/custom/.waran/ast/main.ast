@@ -147,5 +147,51 @@
 			"col": 1
 		},
 		"arguments": []
+	},
+	{
+		"type": "func_exec",
+		"func_name": {
+			"type": "identifier",
+			"value": "std_out",
+			"text": "std_out",
+			"offset": 161,
+			"lineBreaks": 0,
+			"line": 14,
+			"col": 1
+		},
+		"arguments": [
+			{
+				"type": "func_exec",
+				"func_name": {
+					"type": "identifier",
+					"value": "add",
+					"text": "add",
+					"offset": 169,
+					"lineBreaks": 0,
+					"line": 14,
+					"col": 9
+				},
+				"arguments": [
+					{
+						"type": "number",
+						"value": "8",
+						"text": "8",
+						"offset": 173,
+						"lineBreaks": 0,
+						"line": 14,
+						"col": 13
+					},
+					{
+						"type": "number",
+						"value": "5",
+						"text": "5",
+						"offset": 175,
+						"lineBreaks": 0,
+						"line": 14,
+						"col": 15
+					}
+				]
+			}
+		]
 	}
 ]
