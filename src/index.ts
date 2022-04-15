@@ -9,7 +9,7 @@ import { createDirConfig, createInfo, createProjectConfig } from './cli/cmd/init
 import { setupDirs, setupConfigJson } from './cli/cmd/init/dirSetup'
 import { loadConfig } from './utils/configLoader'
 import { generate } from './generator/generator'
-import { exec } from 'child_process'
+import { exec, spawn } from 'child_process'
 import UglifyJS from 'uglify-js'
 import path from 'path'
 
@@ -75,25 +75,27 @@ app
 
         const runtime = fs.readFileSync(runtimeFilePath).toString();
         const js =  generate(ast) + runtime;
-        //const minifiedJs = UglifyJS.minify(js).code;
-        console.log(js)
+        const minifiedJs = UglifyJS.minify(js).code;
 
         const buildDir = config.dirs.build;
         const buildFile = path.join(buildDir, name.replace('.wr', '.js'));
 
-        fs.writeFileSync(buildFile, js);
+        fs.writeFileSync(buildFile, minifiedJs);
     })
 
 app
     .command('exec')
     .argument('<string>', 'path to .js file')
     .action(path => {
-        exec(`node ${path}`, (err, stdout, stderr) => {
+        /*let subProcess = spawn(`node ${path}`, (err, stdout, stderr) => {
             if (err)
                 return console.log(clc.redBright(err));
 
             console.log(clc.yellow('waran: \n'));
             console.log(clc.greenBright(stdout));
+        });*/
+        spawn(`node`, [path], {
+            stdio: [0, process.stdout, 'pipe'] //[0, 'pipe']
         });
     })
 
