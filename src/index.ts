@@ -14,23 +14,23 @@ import UglifyJS from 'uglify-js'
 import path from 'path'
 
 const app = new Command();
-const initPath = process.cwd();
+
+
+const initPath          = process.cwd();
+const waranDir          = path.join(initPath, '.waran');
+const astDir            = path.join(waranDir, 'ast');
+const wrnProj           = path.join(initPath, 'wrn_proj.json');
+const srcDir            = path.join(initPath, 'src');
+const build             = path.join(waranDir, 'build');
+const mainFile          = path.join(srcDir, 'main.wr');
+const runtimeDir        = path.join(waranDir, 'runtime');
+const runtimeFilePath   = path.join(runtimeDir, 'index.js');
 
 app.name('wrn');
 
 app
     .command('init')
     .action(() => {
-        const waranDir      = path.join(initPath, '.waran');
-        const astDir        = path.join(waranDir, 'ast');
-        const wrnProj       = path.join(initPath, 'wrn_proj.json');
-        const srcDir        = path.join(initPath, 'src');
-        const build         = path.join(waranDir, 'build');
-
-        const mainFile      = path.join(srcDir, 'main.wr');
-        const runtimeDir    = path.join(initPath, 'runtime');
-        const runtimeFilePath   = path.join(runtimeDir, 'index.js');
-
         if (fs.existsSync(wrnProj)) 
             return console.log(clc.redBright(`${wrnProj}\na waran project already exists in this directory!`));
 
@@ -44,8 +44,10 @@ app
                 setupDirs(waranDir, astDir, srcDir, build);
                 setupConfigJson(wrnProj, config);
 
-                const runtimeFile = fs.readFileSync('./runtime/index.js');
-                fs.appendFileSync(runtimeFilePath, runtimeFile);
+                fs.mkdirSync(runtimeDir);
+                const runtimePath = path.join(__dirname, '/runtime/index.js');
+                const runtime = fs.readFileSync(runtimePath).toString();
+                fs.appendFileSync(runtimeFilePath, runtime);
 
                 fs.appendFileSync(mainFile, 'hello = "hello"\nwaran="waran!"\nstd_out(hello waran)');
             });
@@ -71,7 +73,7 @@ app
 
         fs.writeFileSync(outputFile, JSON.stringify(ast, null, '\t'));
 
-        const runtime = fs.readFileSync('./runtime/index.js');
+        const runtime = fs.readFileSync(runtimeFilePath).toString();
         const js =  generate(ast) + runtime;
         const minifiedJs = UglifyJS.minify(js).code;
 
