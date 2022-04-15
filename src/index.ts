@@ -75,12 +75,13 @@ app
 
         const runtime = fs.readFileSync(runtimeFilePath).toString();
         const js =  generate(ast) + runtime;
-        const minifiedJs = UglifyJS.minify(js).code;
+        //const minifiedJs = UglifyJS.minify(js).code;
+        console.log(js)
 
         const buildDir = config.dirs.build;
         const buildFile = path.join(buildDir, name.replace('.wr', '.js'));
 
-        fs.writeFileSync(buildFile, minifiedJs);
+        fs.writeFileSync(buildFile, js);
     })
 
 app
