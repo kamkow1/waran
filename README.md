@@ -7,8 +7,8 @@ The waran compiler is implemented in typescript and required node.js to run.
 
 ### credits
 <p>
-made by <a href="https://github.com/kamkow1">kamkow1</a> with help from 
-<a href="https://github.com/londek">londek</a>
+made by <a href="https://github.com/kamkow1">kamkow1</a> <br />
+special thanks to <a href="https://github.com/londek">londek</a> for helping out ;)
 </p>
 
 ### table of contents
