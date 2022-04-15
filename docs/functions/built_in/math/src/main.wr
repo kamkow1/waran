@@ -17,3 +17,11 @@ std_out(add(6 8))
 variable_name = add(1 6)
 
 std_out(variable_name)
+
+std_out(mult(5 7 4)) ## 5 * 7 * 4
+
+std_out(div(3 5 3)) ## (3 / 5) / 3
+
+std_out(subtr(3 4 6)) ## 3 - 4 - 6
+
+std_out(pow(3 5 6)) ## (3^5)^6

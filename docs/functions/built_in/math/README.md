@@ -1,6 +1,7 @@
-# add()
+# math functions
+# add() mult() div() subtr() pow()
 ## syntax
-### adding predefined values
+### using predefined values
 
 ```properties
 num1 = 3
@@ -8,7 +9,7 @@ num2 = 5
 add(num1 num2)
 ```
 
-### adding values inside of arguments
+### using values inside of arguments
 
 ```properties
 add(1 6)
