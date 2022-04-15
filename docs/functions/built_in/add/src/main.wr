@@ -1,0 +1,19 @@
+## adding predefined values
+
+num1 = 3
+num2 = 5
+add(num1 num2)
+
+## adding values inside of arguments
+
+add(1 6)
+
+## using the returned value
+
+std_out(add(6 8))
+
+## assigning the return value
+
+variable_name = add(1 6)
+
+std_out(variable_name)

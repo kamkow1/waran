@@ -1,0 +1,18 @@
+{
+	"project_info": {
+		"proj_name": "add_function",
+		"desc": "no description",
+		"repo": "",
+		"author": ""
+	},
+	"config": {
+		"dirs": {
+			"ast_dir": "C:\\Users\\kamil\\Desktop\\waran\\docs\\functions\\built_in\\add\\.waran\\ast",
+			"wrn_proj_dir": "C:\\Users\\kamil\\Desktop\\waran\\docs\\functions\\built_in\\add\\.waran",
+			"src_dir": "C:\\Users\\kamil\\Desktop\\waran\\docs\\functions\\built_in\\add\\src",
+			"build": "C:\\Users\\kamil\\Desktop\\waran\\docs\\functions\\built_in\\add\\.waran\\build"
+		}
+	},
+	"waran": "https://github.com/kamkow1/waran",
+	"authors": "kamkow1 && londek"
+}
