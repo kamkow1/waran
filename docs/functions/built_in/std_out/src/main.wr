@@ -1,3 +1,5 @@
+## std_out()
+
 std_out("this text will be printed to the standard output")
 
 std_out(7759)

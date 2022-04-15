@@ -1,13 +1,22 @@
 [
 	{
+		"type": "comment",
+		"value": "## std_out()",
+		"text": "## std_out()",
+		"offset": 0,
+		"lineBreaks": 0,
+		"line": 1,
+		"col": 1
+	},
+	{
 		"type": "func_exec",
 		"func_name": {
 			"type": "identifier",
 			"value": "std_out",
 			"text": "std_out",
-			"offset": 0,
+			"offset": 16,
 			"lineBreaks": 0,
-			"line": 1,
+			"line": 3,
 			"col": 1
 		},
 		"arguments": [
@@ -15,9 +24,9 @@
 				"type": "string",
 				"value": "\"this text will be printed to the standard output\"",
 				"text": "\"this text will be printed to the standard output\"",
-				"offset": 8,
+				"offset": 24,
 				"lineBreaks": 0,
-				"line": 1,
+				"line": 3,
 				"col": 9
 			}
 		]
@@ -28,9 +37,9 @@
 			"type": "identifier",
 			"value": "std_out",
 			"text": "std_out",
-			"offset": 63,
+			"offset": 79,
 			"lineBreaks": 0,
-			"line": 3,
+			"line": 5,
 			"col": 1
 		},
 		"arguments": [
@@ -38,9 +47,9 @@
 				"type": "number",
 				"value": "7759",
 				"text": "7759",
-				"offset": 71,
+				"offset": 87,
 				"lineBreaks": 0,
-				"line": 3,
+				"line": 5,
 				"col": 9
 			}
 		]
@@ -51,18 +60,18 @@
 			"type": "identifier",
 			"value": "variable",
 			"text": "variable",
-			"offset": 80,
+			"offset": 96,
 			"lineBreaks": 0,
-			"line": 5,
+			"line": 7,
 			"col": 1
 		},
 		"value": {
 			"type": "string",
 			"value": "\"text\"",
 			"text": "\"text\"",
-			"offset": 91,
+			"offset": 107,
 			"lineBreaks": 0,
-			"line": 5,
+			"line": 7,
 			"col": 12
 		}
 	},
@@ -72,9 +81,9 @@
 			"type": "identifier",
 			"value": "std_out",
 			"text": "std_out",
-			"offset": 101,
+			"offset": 117,
 			"lineBreaks": 0,
-			"line": 7,
+			"line": 9,
 			"col": 1
 		},
 		"arguments": [
@@ -82,9 +91,9 @@
 				"type": "identifier",
 				"value": "variable",
 				"text": "variable",
-				"offset": 109,
+				"offset": 125,
 				"lineBreaks": 0,
-				"line": 7,
+				"line": 9,
 				"col": 9
 			}
 		]
@@ -95,43 +104,20 @@
 			"type": "identifier",
 			"value": "num",
 			"text": "num",
-			"offset": 122,
+			"offset": 138,
 			"lineBreaks": 0,
-			"line": 9,
+			"line": 11,
 			"col": 1
 		},
 		"value": {
 			"type": "number",
 			"value": "684",
 			"text": "684",
-			"offset": 128,
-			"lineBreaks": 0,
-			"line": 9,
-			"col": 7
-		}
-	},
-	{
-		"type": "func_exec",
-		"func_name": {
-			"type": "identifier",
-			"value": "std_out",
-			"text": "std_out",
-			"offset": 135,
+			"offset": 144,
 			"lineBreaks": 0,
 			"line": 11,
-			"col": 1
-		},
-		"arguments": [
-			{
-				"type": "identifier",
-				"value": "num",
-				"text": "num",
-				"offset": 143,
-				"lineBreaks": 0,
-				"line": 11,
-				"col": 9
-			}
-		]
+			"col": 7
+		}
 	},
 	{
 		"type": "func_exec",
@@ -147,20 +133,43 @@
 		"arguments": [
 			{
 				"type": "identifier",
-				"value": "variable",
-				"text": "variable",
+				"value": "num",
+				"text": "num",
 				"offset": 159,
 				"lineBreaks": 0,
 				"line": 13,
+				"col": 9
+			}
+		]
+	},
+	{
+		"type": "func_exec",
+		"func_name": {
+			"type": "identifier",
+			"value": "std_out",
+			"text": "std_out",
+			"offset": 167,
+			"lineBreaks": 0,
+			"line": 15,
+			"col": 1
+		},
+		"arguments": [
+			{
+				"type": "identifier",
+				"value": "variable",
+				"text": "variable",
+				"offset": 175,
+				"lineBreaks": 0,
+				"line": 15,
 				"col": 9
 			},
 			{
 				"type": "identifier",
 				"value": "num",
 				"text": "num",
-				"offset": 168,
+				"offset": 184,
 				"lineBreaks": 0,
-				"line": 13,
+				"line": 15,
 				"col": 18
 			}
 		]
@@ -171,9 +180,9 @@
 			"type": "identifier",
 			"value": "std_out",
 			"text": "std_out",
-			"offset": 176,
+			"offset": 192,
 			"lineBreaks": 0,
-			"line": 15,
+			"line": 17,
 			"col": 1
 		},
 		"arguments": [
@@ -181,27 +190,27 @@
 				"type": "identifier",
 				"value": "variable",
 				"text": "variable",
-				"offset": 184,
+				"offset": 200,
 				"lineBreaks": 0,
-				"line": 15,
+				"line": 17,
 				"col": 9
 			},
 			{
 				"type": "string",
 				"value": "\" \"",
 				"text": "\" \"",
-				"offset": 193,
+				"offset": 209,
 				"lineBreaks": 0,
-				"line": 15,
+				"line": 17,
 				"col": 18
 			},
 			{
 				"type": "identifier",
 				"value": "num",
 				"text": "num",
-				"offset": 197,
+				"offset": 213,
 				"lineBreaks": 0,
-				"line": 15,
+				"line": 17,
 				"col": 22
 			}
 		]
