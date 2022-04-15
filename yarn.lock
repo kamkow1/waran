@@ -62,6 +62,11 @@
   "resolved" "https://registry.npmjs.org/@types/node/-/node-17.0.24.tgz"
   "version" "17.0.24"
 
+"@types/readline-sync@^1.4.4":
+  "integrity" "sha512-cFjVIoiamX7U6zkO2VPvXyTxbFDdiRo902IarJuPVxBhpDnXhwSaVE86ip+SCuyWBbEioKCkT4C88RNTxBM1Dw=="
+  "resolved" "https://registry.npmjs.org/@types/readline-sync/-/readline-sync-1.4.4.tgz"
+  "version" "1.4.4"
+
 "@types/through@*":
   "integrity" "sha512-FvnCJljyxhPM3gkRgWmxmDZyAQSiBQQWLI0A0VFL0K7W1oRUrPJSqNO0NvTnLkBcotdlp3lKvaT0JrnyRDkzOg=="
   "resolved" "https://registry.npmjs.org/@types/through/-/through-0.0.30.tgz"
@@ -491,6 +496,11 @@
     "inherits" "^2.0.3"
     "string_decoder" "^1.1.1"
     "util-deprecate" "^1.0.1"
+
+"readline-sync@^1.4.10":
+  "integrity" "sha512-gNva8/6UAe8QYepIQH/jQ2qn91Qj0B9sYjMBBs3QOB8F2CXcKgLxQaJRP76sWVRQt+QU+8fAkCbCvjjMFu7Ycw=="
+  "resolved" "https://registry.npmjs.org/readline-sync/-/readline-sync-1.4.10.tgz"
+  "version" "1.4.10"
 
 "restore-cursor@^3.1.0":
   "integrity" "sha512-l+sSefzHpj5qimhFSE5a8nufZYAM3sBSVMAPtYkmC+4EH2anSGaEMXSD0izRQbu9nfyQ9y5JrVmp7E8oZrUjvA=="
