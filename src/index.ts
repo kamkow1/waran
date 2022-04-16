@@ -54,7 +54,16 @@ app
                     fs.appendFileSync(path.join(libDir, lib), libCode);
                 }
 
-                fs.appendFileSync(mainFile, 'hello = "hello"\nwaran="waran!"\nstd_out(hello waran)');
+                const template = `
+~ <io>
+
+hello = "hello"
+waran = "waran!"
+
+std_out(hello waran)
+                `;
+
+                fs.appendFileSync(mainFile, template);
             });
     });
 
