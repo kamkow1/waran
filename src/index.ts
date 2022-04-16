@@ -47,17 +47,12 @@ app
                 fs.mkdirSync(runtimeDir);
                 fs.mkdirSync(libDir);
                 const libs = fs.readdirSync(path.join(__dirname, '/runtime/libs/'));
-                console.log(__dirname);
+
                 for(let lib of libs) {
                     const libPath = path.join(__dirname, '/runtime/libs/', lib);
                     const libCode = fs.readFileSync(libPath).toString();
-                    console.log(libDir + lib)
                     fs.appendFileSync(path.join(libDir, lib), libCode);
                 }
-                //const runtimePath = path.join(__dirname, '/runtime/index.js');
-                //const runtime = fs.readFileSync(runtimePath).toString();
-                //fs.appendFileSync(runtimeFilePath, runtime);
-
 
                 fs.appendFileSync(mainFile, 'hello = "hello"\nwaran="waran!"\nstd_out(hello waran)');
             });
@@ -83,7 +78,6 @@ app
 
         fs.writeFileSync(outputFile, JSON.stringify(ast, null, '\t'));
 
-        //const runtime = fs.readFileSync(runtimeFilePath).toString();
         const js =  generate(ast);
         const minifiedJs = UglifyJS.minify(js).code;
 
@@ -97,13 +91,6 @@ app
     .command('exec')
     .argument('<string>', 'path to .js file')
     .action(path => {
-        /*let subProcess = spawn(`node ${path}`, (err, stdout, stderr) => {
-            if (err)
-                return console.log(clc.redBright(err));
-
-            console.log(clc.yellow('waran: \n'));
-            console.log(clc.greenBright(stdout));
-        });*/
         spawn(`node`, [path], {
             stdio: [0, process.stdout, 'pipe'] //[0, 'pipe']
         });

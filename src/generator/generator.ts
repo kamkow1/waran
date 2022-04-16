@@ -39,7 +39,6 @@ const createStatement = (node: any) => {
     } else if (node.type == 'use_mod') {
         const name = node.mod_name;
 
-        console.log(path.resolve(`./.waran//runtime/libs/${name}.js`));
         const module = fs.readFileSync(path.resolve(`./.waran//runtime/libs/${name}.js`)).toString();
         return module;
     } else if (node.type == 'identifier') {
