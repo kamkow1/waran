@@ -1,3 +1,5 @@
+var nl = '\n'
+
 function std_out(...args) {
     let text = args.join(' ');
     process.stdout.pipe(process.stdin);
