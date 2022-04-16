@@ -6,7 +6,10 @@ function id(d: any[]): any { return d[0]; }
 declare var NL: any;
 declare var comment: any;
 declare var ml_comment: any;
+declare var use: any;
+declare var luse: any;
 declare var identifier: any;
+declare var ruse: any;
 declare var string: any;
 declare var number: any;
 declare var WS: any;
@@ -57,6 +60,15 @@ const grammar: Grammar = {
     {"name": "statement", "symbols": ["func_exec"], "postprocess": id},
     {"name": "statement", "symbols": [(lexer.has("comment") ? {type: "comment"} : comment)], "postprocess": id},
     {"name": "statement", "symbols": [(lexer.has("ml_comment") ? {type: "ml_comment"} : ml_comment)], "postprocess": id},
+    {"name": "statement", "symbols": ["use_mod"], "postprocess": id},
+    {"name": "use_mod", "symbols": [(lexer.has("use") ? {type: "use"} : use), "_", (lexer.has("luse") ? {type: "luse"} : luse), "_", (lexer.has("identifier") ? {type: "identifier"} : identifier), "_", (lexer.has("ruse") ? {type: "ruse"} : ruse)], "postprocess": 
+        (data) => {
+            return {
+                type: "use_mod",
+                mod_name: data[4]
+            }
+        }
+        },
     {"name": "var_assign", "symbols": [(lexer.has("identifier") ? {type: "identifier"} : identifier), "_", {"literal":"="}, "_", "expr"], "postprocess": 
         (data) => {
             return {

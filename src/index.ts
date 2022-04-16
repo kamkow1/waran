@@ -24,7 +24,7 @@ const srcDir            = path.join(initPath, 'src');
 const build             = path.join(waranDir, 'build');
 const mainFile          = path.join(srcDir, 'main.wr');
 const runtimeDir        = path.join(waranDir, 'runtime');
-const runtimeFilePath   = path.join(runtimeDir, 'index.js');
+const libDir            = path.join(runtimeDir, 'libs');
 
 app.name('wrn');
 
@@ -45,9 +45,19 @@ app
                 setupConfigJson(wrnProj, config);
 
                 fs.mkdirSync(runtimeDir);
-                const runtimePath = path.join(__dirname, '/runtime/index.js');
-                const runtime = fs.readFileSync(runtimePath).toString();
-                fs.appendFileSync(runtimeFilePath, runtime);
+                fs.mkdirSync(libDir);
+                const libs = fs.readdirSync(path.join(__dirname, '/runtime/libs/'));
+                console.log(__dirname);
+                for(let lib of libs) {
+                    const libPath = path.join(__dirname, '/runtime/libs/', lib);
+                    const libCode = fs.readFileSync(libPath).toString();
+                    console.log(libDir + lib)
+                    fs.appendFileSync(path.join(libDir, lib), libCode);
+                }
+                //const runtimePath = path.join(__dirname, '/runtime/index.js');
+                //const runtime = fs.readFileSync(runtimePath).toString();
+                //fs.appendFileSync(runtimeFilePath, runtime);
+
 
                 fs.appendFileSync(mainFile, 'hello = "hello"\nwaran="waran!"\nstd_out(hello waran)');
             });
@@ -73,8 +83,8 @@ app
 
         fs.writeFileSync(outputFile, JSON.stringify(ast, null, '\t'));
 
-        const runtime = fs.readFileSync(runtimeFilePath).toString();
-        const js =  generate(ast) + runtime;
+        //const runtime = fs.readFileSync(runtimeFilePath).toString();
+        const js =  generate(ast);
         const minifiedJs = UglifyJS.minify(js).code;
 
         const buildDir = config.dirs.build;

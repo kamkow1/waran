@@ -1,4 +1,6 @@
 import clc from 'cli-color';
+import fs from 'fs'
+import * as path from 'path'
 
 export const generate = (ast: any) => createJS(ast);
 
@@ -34,6 +36,12 @@ const createStatement = (node: any) => {
         const body = node.body.map((elem: any) => createStatement(elem));
 
         return `(${paramNames}) => {\n ${body.join('')} \n}`;
+    } else if (node.type == 'use_mod') {
+        const name = node.mod_name;
+
+        console.log(path.resolve(`./.waran//runtime/libs/${name}.js`));
+        const module = fs.readFileSync(path.resolve(`./.waran//runtime/libs/${name}.js`)).toString();
+        return module;
     } else if (node.type == 'identifier') {
         return node.value;
     } else if (node.type == 'number') {

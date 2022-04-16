@@ -25,6 +25,18 @@ statement
     |  func_exec  {% id %}
     |  %comment   {% id %}
     |  %ml_comment {% id %}
+    |  use_mod {% id %}
+
+use_mod
+    -> %use _ %luse _ %identifier _ %ruse
+{%
+    (data) => {
+        return {
+            type: "use_mod",
+            mod_name: data[4]
+        }
+    }
+%}
 
 var_assign
     -> %identifier _ "=" _ expr

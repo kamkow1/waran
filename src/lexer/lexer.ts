@@ -13,5 +13,8 @@ export const lexer = moo.compile({
     rbrace:         '}',
     identifier:     /[a-zA-Z][a-zA-Z_0-9]*/,
     arrow:          '->',
-    assign:         '='
+    assign:         '=',
+    use:            '~',
+    luse:           '<',
+    ruse:           '>'
 });
