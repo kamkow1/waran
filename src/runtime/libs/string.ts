@@ -1,4 +1,4 @@
-var nl = '\n'
+const nl = '\n'
 
 function concat(...args: string[]) {
     return args.reduce((prev, curr) => {
