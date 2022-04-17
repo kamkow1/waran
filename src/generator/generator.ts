@@ -36,6 +36,8 @@ const createStatement = (node: any) => {
         
         const body = node.body.map((elem: any) => createStatement(elem));
 
+        //onst asyncWord = node.isAsync? "async " : ""
+
         return `(${paramNames}) => {\n ${body.join('')} \n}`;
     } else if (node.type == 'use_mod') {
         const name = node.mod_name;
