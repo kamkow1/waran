@@ -1,26 +1,25 @@
 function std_out(...args) {
     let text = args.join(' ');
-    process.stdout.pipe(process.stdin);
-    process.stdout.write(text);
+    /*process.stdout.pipe(process.stdin);
+    process.stdout.write(text);*/
+    console.log(text);
 }
 
 function std_in() {
-    process.stdin.pipe(process.stdout);
-    let text = process.stdin.on('readable', () => {
-        let data = '';
-        let chunk;
-        while ((chunk = process.stdin.read()) !== null) {
-            if (getPosition(chunk, '\n', 2) != 0) {
-                break;
-            }
-            chunk += data
-        }
+    const stdin = process.openStdin();
 
-        return data;
+    let input = '';
+    stdin.addListener('data', function(d: string) {
+        if (/\r|\n/.test(d)) {
+            stdin.removeAllListeners();
+        }
+        input += d;
     });
-    return text.read();
+
+    return input;
 }
 
 function getPosition(string, subString, index) {
     return string.split(subString, index).join(subString).length;
 }
+

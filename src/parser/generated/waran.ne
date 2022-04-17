@@ -51,13 +51,14 @@ var_assign
         %}
 
 func_exec
-    -> %identifier _ "(" _ (args _):? ")"
+    -> ("await"):? _ %identifier _ "(" _ (args _):? ")"
     {%
         (data) => {
             return {
                 type: "func_exec",
-                func_name: data[0],
-                arguments: data[4] ? data[4][0] : []
+                hasAwait: data[0] ? true : false,
+                func_name: data[2],
+                arguments: data[6] ? data[6][0] : []
             }
         }
     %}

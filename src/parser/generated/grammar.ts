@@ -78,15 +78,19 @@ const grammar: Grammar = {
             }
         }
                 },
-    {"name": "func_exec$ebnf$1$subexpression$1", "symbols": ["args", "_"]},
+    {"name": "func_exec$ebnf$1$subexpression$1", "symbols": [{"literal":"await"}]},
     {"name": "func_exec$ebnf$1", "symbols": ["func_exec$ebnf$1$subexpression$1"], "postprocess": id},
     {"name": "func_exec$ebnf$1", "symbols": [], "postprocess": () => null},
-    {"name": "func_exec", "symbols": [(lexer.has("identifier") ? {type: "identifier"} : identifier), "_", {"literal":"("}, "_", "func_exec$ebnf$1", {"literal":")"}], "postprocess": 
+    {"name": "func_exec$ebnf$2$subexpression$1", "symbols": ["args", "_"]},
+    {"name": "func_exec$ebnf$2", "symbols": ["func_exec$ebnf$2$subexpression$1"], "postprocess": id},
+    {"name": "func_exec$ebnf$2", "symbols": [], "postprocess": () => null},
+    {"name": "func_exec", "symbols": ["func_exec$ebnf$1", "_", (lexer.has("identifier") ? {type: "identifier"} : identifier), "_", {"literal":"("}, "_", "func_exec$ebnf$2", {"literal":")"}], "postprocess": 
         (data) => {
             return {
                 type: "func_exec",
-                func_name: data[0],
-                arguments: data[4] ? data[4][0] : []
+                hasAwait: data[0] ? true : false,
+                func_name: data[2],
+                arguments: data[6] ? data[6][0] : []
             }
         }
             },

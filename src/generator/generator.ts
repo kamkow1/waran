@@ -25,8 +25,9 @@ const createStatement = (node: any) => {
         const arr = node.arguments.map((arg: any) => createStatement(arg));
 
         const argList = arr.join(',');
+        const awaitWord = node.hasAwait? "await " : "";
 
-        return `${name}(${argList})\n`;
+        return `${awaitWord}${name}(${argList})\n`;
     } else if (node.type == 'lambda') {
         const params = node.parameters;
         const arr  = params.map((param: any) => createStatement(param));

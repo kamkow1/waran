@@ -54,14 +54,13 @@ app
                     fs.appendFileSync(path.join(libDir, lib), libCode);
                 }
 
-                const template = `
-~ <io>
+                const template = 
+`~ <io>
 
 hello = "hello"
 waran = "waran!"
 
-std_out(hello waran)
-                `;
+std_out(hello waran)`;
 
                 fs.appendFileSync(mainFile, template);
             });
@@ -88,12 +87,12 @@ app
         fs.writeFileSync(outputFile, JSON.stringify(ast, null, '\t'));
 
         const js =  generate(ast);
-        const minifiedJs = UglifyJS.minify(js).code;
+        //const minifiedJs = UglifyJS.minify(js).code;
 
         const buildDir = config.dirs.build;
         const buildFile = path.join(buildDir, name.replace('.wr', '.js'));
 
-        fs.writeFileSync(buildFile, minifiedJs);
+        fs.writeFileSync(buildFile, js);
     })
 
 app
