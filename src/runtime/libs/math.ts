@@ -58,3 +58,9 @@ function pow(...args: number[]) {
         return prev ** curr;
     });
 }
+
+function mod(...args: number[]) {
+    return args.reduce((prev, curr) => {
+        return prev % curr;
+    });
+}
