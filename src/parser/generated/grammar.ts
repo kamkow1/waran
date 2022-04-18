@@ -13,6 +13,8 @@ declare var ruse: any;
 declare var assign: any;
 declare var string: any;
 declare var number: any;
+declare var _bool: any;
+declare var if_expr: any;
 declare var func: any;
 declare var and: any;
 declare var or: any;
@@ -88,6 +90,15 @@ const grammar: Grammar = {
             }
         }
                 },
+    {"name": "var_assign", "symbols": [(lexer.has("identifier") ? {type: "identifier"} : identifier), "_", (lexer.has("assign") ? {type: "assign"} : assign), "_", "if_expr"], "postprocess": 
+        (data) => {
+            return {
+                type: "var_assign",
+                var_name: data[0],
+                value: data[4]
+            }
+        }
+                },
     {"name": "func_exec$ebnf$1$subexpression$1", "symbols": [{"literal":"await"}]},
     {"name": "func_exec$ebnf$1", "symbols": ["func_exec$ebnf$1$subexpression$1"], "postprocess": id},
     {"name": "func_exec$ebnf$1", "symbols": [], "postprocess": () => null},
@@ -128,6 +139,8 @@ const grammar: Grammar = {
                 },
     {"name": "expr", "symbols": [(lexer.has("string") ? {type: "string"} : string)], "postprocess": id},
     {"name": "expr", "symbols": [(lexer.has("number") ? {type: "number"} : number)], "postprocess": id},
+    {"name": "expr", "symbols": [(lexer.has("_bool") ? {type: "_bool"} : _bool)], "postprocess": id},
+    {"name": "expr", "symbols": [(lexer.has("if_expr") ? {type: "if_expr"} : if_expr)], "postprocess": id},
     {"name": "expr", "symbols": [(lexer.has("identifier") ? {type: "identifier"} : identifier)], "postprocess": id},
     {"name": "expr", "symbols": ["statement"], "postprocess": id},
     {"name": "expr", "symbols": ["lambda"], "postprocess": id},

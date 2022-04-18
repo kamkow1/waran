@@ -60,19 +60,16 @@ const createStatement = (node: any) => {
 
         return `else {\n${body}\n}`;
     } else if (node.type == 'identifier') {
-
         return node.value;
     } else if (node.type == 'number') {
-
+        return node.value;
+    } else if (node.type == '_bool') {
         return node.value;
     } else if (node.type == 'string') {
-
         return node.value;
     } else if (node.type == 'comment') {
-
         return '';
     } else if (node.type == 'ml_comment') {
-
         return '';
     } else if (node.type == 'is') {
         return node.value;

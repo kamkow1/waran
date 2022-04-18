@@ -51,6 +51,16 @@ var_assign
                 }
             }
         %}
+    |   %identifier _ %assign _ if_expr
+        {%
+            (data) => {
+                return {
+                    type: "var_assign",
+                    var_name: data[0],
+                    value: data[4]
+                }
+            }
+        %}
 
 func_exec
     -> ("await"):? _ %identifier _ "(" _ (args _):? ")"
@@ -93,6 +103,8 @@ args
 expr
     -> %string {% id %}
     |  %number {% id %}
+    |  %_bool {% id %}
+    |  %if_expr {% id %}
     |  %identifier {% id %}
     |  statement {% id %}
     |  lambda {% id %}

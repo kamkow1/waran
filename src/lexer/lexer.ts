@@ -3,6 +3,7 @@ import moo from 'moo'
 export const lexer = moo.compile({
     _else:           'else',
     func:           'func',
+    _bool:          /true|false/,
     or:             '||',
     and:            '&&',
     not_is:         '!=',
