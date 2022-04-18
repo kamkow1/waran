@@ -97,13 +97,13 @@ expr
     |  statement {% id %}
     |  lambda {% id %}
 
-lambda -> "(" _ (params _):? ")" _ "->" _ lambda_body
+lambda -> %func _ "(" _ (params _):? ")" _ "->" _ lambda_body
 {%
     (data) => {
         return {
             type: "lambda",
-            parameters: data[2] ? data[2][0] : [],
-            body: data[7]
+            parameters: data[4] ? data[4][0] : [],
+            body: data[9]
         }
     }
 %}

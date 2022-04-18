@@ -13,6 +13,7 @@ declare var ruse: any;
 declare var assign: any;
 declare var string: any;
 declare var number: any;
+declare var func: any;
 declare var and: any;
 declare var or: any;
 declare var not: any;
@@ -133,12 +134,12 @@ const grammar: Grammar = {
     {"name": "lambda$ebnf$1$subexpression$1", "symbols": ["params", "_"]},
     {"name": "lambda$ebnf$1", "symbols": ["lambda$ebnf$1$subexpression$1"], "postprocess": id},
     {"name": "lambda$ebnf$1", "symbols": [], "postprocess": () => null},
-    {"name": "lambda", "symbols": [{"literal":"("}, "_", "lambda$ebnf$1", {"literal":")"}, "_", {"literal":"->"}, "_", "lambda_body"], "postprocess": 
+    {"name": "lambda", "symbols": [(lexer.has("func") ? {type: "func"} : func), "_", {"literal":"("}, "_", "lambda$ebnf$1", {"literal":")"}, "_", {"literal":"->"}, "_", "lambda_body"], "postprocess": 
         (data) => {
             return {
                 type: "lambda",
-                parameters: data[2] ? data[2][0] : [],
-                body: data[7]
+                parameters: data[4] ? data[4][0] : [],
+                body: data[9]
             }
         }
         },
