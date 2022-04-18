@@ -56,9 +56,7 @@ const createStatement = (node: any) => {
 
         return `(${left} ${op} ${right})`;
     } else if (node.type == 'else') {
-        console.log('mam else');
         let body = node.body? node.body.map((elem: any) => createStatement(elem)).join('') : '';
-        console.log(body);
 
         return `else {\n${body}\n}`;
     } else if (node.type == 'identifier') {
