@@ -17,6 +17,8 @@ declare var and: any;
 declare var or: any;
 declare var not: any;
 declare var is: any;
+declare var not_is: any;
+declare var _else: any;
 declare var WS: any;
 
 const lexer = require("../../lexer/lexer").lexer;
@@ -67,6 +69,7 @@ const grammar: Grammar = {
     {"name": "statement", "symbols": [(lexer.has("ml_comment") ? {type: "ml_comment"} : ml_comment)], "postprocess": id},
     {"name": "statement", "symbols": ["use_mod"], "postprocess": id},
     {"name": "statement", "symbols": ["if"], "postprocess": id},
+    {"name": "statement", "symbols": ["else"], "postprocess": id},
     {"name": "use_mod", "symbols": [(lexer.has("use") ? {type: "use"} : use), "_", (lexer.has("luse") ? {type: "luse"} : luse), "_", (lexer.has("identifier") ? {type: "identifier"} : identifier), "_", (lexer.has("ruse") ? {type: "ruse"} : ruse)], "postprocess": 
         (data) => {
             return {
@@ -164,15 +167,30 @@ const grammar: Grammar = {
     {"name": "operator", "symbols": [(lexer.has("or") ? {type: "or"} : or)], "postprocess": id},
     {"name": "operator", "symbols": [(lexer.has("not") ? {type: "not"} : not)], "postprocess": id},
     {"name": "operator", "symbols": [(lexer.has("is") ? {type: "is"} : is)], "postprocess": id},
+    {"name": "operator", "symbols": [(lexer.has("not_is") ? {type: "not_is"} : not_is)], "postprocess": id},
     {"name": "if$ebnf$1$subexpression$1", "symbols": ["statements", (lexer.has("NL") ? {type: "NL"} : NL), "_"]},
     {"name": "if$ebnf$1", "symbols": ["if$ebnf$1$subexpression$1"], "postprocess": id},
     {"name": "if$ebnf$1", "symbols": [], "postprocess": () => null},
-    {"name": "if", "symbols": [{"literal":"if"}, "_", {"literal":"("}, "_", "if_expr", "_", {"literal":")"}, "_", {"literal":"{"}, "_", (lexer.has("NL") ? {type: "NL"} : NL), "if$ebnf$1", {"literal":"}"}], "postprocess": 
+    {"name": "if$ebnf$2$subexpression$1", "symbols": ["else"]},
+    {"name": "if$ebnf$2", "symbols": ["if$ebnf$2$subexpression$1"], "postprocess": id},
+    {"name": "if$ebnf$2", "symbols": [], "postprocess": () => null},
+    {"name": "if", "symbols": [{"literal":"if"}, "_", {"literal":"("}, "_", "if_expr", "_", {"literal":")"}, "_", (lexer.has("NL") ? {type: "NL"} : NL), {"literal":"{"}, "_", (lexer.has("NL") ? {type: "NL"} : NL), "if$ebnf$1", {"literal":"}"}, "_", "if$ebnf$2"], "postprocess": 
         (data) => {
             return {
                 type: "if",
                 bexpr: data[4],
-                body: data[11] ? data[11][0] : []
+                body: data[12] ? data[12][0] : []
+            }
+        }
+        },
+    {"name": "else$ebnf$1$subexpression$1", "symbols": ["statements", (lexer.has("NL") ? {type: "NL"} : NL), "_"]},
+    {"name": "else$ebnf$1", "symbols": ["else$ebnf$1$subexpression$1"], "postprocess": id},
+    {"name": "else$ebnf$1", "symbols": [], "postprocess": () => null},
+    {"name": "else", "symbols": [(lexer.has("_else") ? {type: "_else"} : _else), "_", (lexer.has("NL") ? {type: "NL"} : NL), {"literal":"{"}, "_", (lexer.has("NL") ? {type: "NL"} : NL), "else$ebnf$1", {"literal":"}"}], "postprocess": 
+        (data) => {
+            return {
+                type: "else",
+                body: data[6] ? data[6][0] : []
             }
         }
         },

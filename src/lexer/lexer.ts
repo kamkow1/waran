@@ -1,6 +1,12 @@
 import moo from 'moo'
 
 export const lexer = moo.compile({
+    _else:           'else',
+    or:             '||',
+    and:            '&&',
+    not_is:         '!=',
+    is:             '==',
+    not:            '!',
     NL:             { match: /[\r\n]+/, lineBreaks: true },
     WS:             /[ \t]+/,
     comment:        /\#\#.*?$/,
@@ -18,8 +24,4 @@ export const lexer = moo.compile({
     use:            '~',
     luse:           '<',
     ruse:           '>',
-    or:             '||',
-    and:            '&&',
-    is:             '==',
-    not:            '!',
 });

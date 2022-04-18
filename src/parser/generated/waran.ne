@@ -27,6 +27,7 @@ statement
     |  %ml_comment {% id %}
     |  use_mod {% id %}
     |  if {% id %}
+    |  else {% id %}
 
 use_mod
     -> %use _ %luse _ %identifier _ %ruse
@@ -142,15 +143,27 @@ operator
     | %or {% id %}
     | %not {% id %}
     | %is {% id %}
+    | %not_is {% id %}
 
 if 
-    -> "if" _ "(" _ if_expr _ ")" _ "{" _ %NL (statements %NL _):? "}"
+    -> "if" _ "(" _ if_expr _ ")" _ %NL "{" _ %NL (statements %NL _):? "}" _ (else):?
 {%
     (data) => {
         return {
             type: "if",
             bexpr: data[4],
-            body: data[11] ? data[11][0] : []
+            body: data[12] ? data[12][0] : []
+        }
+    }
+%}
+
+else 
+    -> %_else _ %NL "{" _ %NL (statements %NL _):? "}"
+{%
+    (data) => {
+        return {
+            type: "else",
+            body: data[6] ? data[6][0] : []
         }
     }
 %}
