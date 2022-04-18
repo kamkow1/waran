@@ -19,6 +19,8 @@ export const lexer = moo.compile({
     rparen:         ')',
     lbrace:         '{',
     rbrace:         '}',
+    l_sqbr:         '[',
+    r_sqbr:         ']',
     identifier:     /[a-zA-Z][a-zA-Z_0-9]*/,
     //identifier:     /[a-zA-Z][a-zA-Z_0-9][^and][^or][^is][^not]*/,
     arrow:          '->',

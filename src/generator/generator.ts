@@ -59,6 +59,15 @@ const createStatement = (node: any) => {
         let body = node.body? node.body.map((elem: any) => createStatement(elem)).join('') : '';
 
         return `else {\n${body}\n}`;
+    } else if (node.type == 'array') {
+        const elems = node.elems? node.elems.map((elem: any) => createStatement(elem)).join(',') : '';
+
+        return `[${elems}]`;
+    } else if (node.type == 'get_arr_elem') {
+        const index = createStatement(node.index);
+        const name = createStatement(node.name);
+
+        return `${name}[${index}]`;
     } else if (node.type == 'identifier') {
         return node.value;
     } else if (node.type == 'number') {

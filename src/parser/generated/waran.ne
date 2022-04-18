@@ -105,9 +105,46 @@ expr
     |  %number {% id %}
     |  %_bool {% id %}
     |  %if_expr {% id %}
+    |  array {% id %}
+    |  get_arr_elem {% id %}
     |  %identifier {% id %}
     |  statement {% id %}
     |  lambda {% id %}
+
+array -> %l_sqbr _ (arr_elems _):?  %r_sqbr
+{%
+    (data) => {
+        return {
+            type: "array",
+            elems: data[2] ? data[2][0] : []
+        }
+    }
+%}
+
+get_arr_elem -> %identifier _ %l_sqbr _ expr _ %r_sqbr
+{%
+    (data) => {
+        return {
+            type: "get_arr_elem",
+            index: data[4],
+            name: data[0]
+        }
+    }
+%}
+
+arr_elems 
+    -> expr
+    {%
+        (data) => {
+            return [data[0]];
+        }
+    %}
+    | arr_elems __ expr
+    {%
+        (data) => {
+            return [...data[0], data[2]];
+        }
+    %}
 
 lambda -> %func _ "(" _ (params _):? ")" _ "->" _ lambda_body
 {%
@@ -158,7 +195,7 @@ operator
     | %not_is {% id %}
 
 if 
-    -> "if" _ "(" _ if_expr _ ")" _ %NL "{" _ %NL (statements %NL _):? "}" _ (else):?
+    -> "if" _ "(" _ if_expr _ ")" _ "{" %NL _ (statements _ %NL):? "}" _ (else):?
 {%
     (data) => {
         return {
@@ -170,7 +207,7 @@ if
 %}
 
 else 
-    -> %_else _ %NL "{" _ %NL (statements %NL _):? "}"
+    -> %_else _ "{" %NL _ (statements _ %NL):? "}"
 {%
     (data) => {
         return {
