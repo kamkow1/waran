@@ -26,6 +26,7 @@ statement
     |  %comment   {% id %}
     |  %ml_comment {% id %}
     |  use_mod {% id %}
+    |  if {% id %}
 
 use_mod
     -> %use _ %luse _ %identifier _ %ruse
@@ -39,7 +40,7 @@ use_mod
 %}
 
 var_assign
-    -> %identifier _ "=" _ expr
+    -> %identifier _ %assign _ expr
         {%
             (data) => {
                 return {
@@ -62,7 +63,7 @@ func_exec
             }
         }
     %}
-    | %identifier _ "(" _ ")"
+    | ("await"):? %identifier _ "(" _ ")"
     {%
         (data) => {
             return {
@@ -135,6 +136,36 @@ lambda_body
             return data[3];
         }
     %}
+
+operator 
+    -> %and {% id %}
+    | %or {% id %}
+    | %not {% id %}
+    | %is {% id %}
+
+if 
+    -> "if" _ "(" _ if_expr _ ")" _ "{" _ %NL (statements %NL _):? "}"
+{%
+    (data) => {
+        return {
+            type: "if",
+            bexpr: data[4],
+            body: data[11] ? data[11][0] : []
+        }
+    }
+%}
+
+if_expr -> expr _ operator _ expr
+{%
+    (data) => {
+        return {
+            type: "if_expr",
+            left: data[0],
+            op: data[2],
+            right: data[4]
+        }
+    }
+%}
 
 NL -> %NL:+
 

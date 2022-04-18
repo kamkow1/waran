@@ -12,9 +12,14 @@ export const lexer = moo.compile({
     lbrace:         '{',
     rbrace:         '}',
     identifier:     /[a-zA-Z][a-zA-Z_0-9]*/,
+    //identifier:     /[a-zA-Z][a-zA-Z_0-9][^and][^or][^is][^not]*/,
     arrow:          '->',
-    assign:         '=',
+    assign:         ':=',
     use:            '~',
     luse:           '<',
-    ruse:           '>'
+    ruse:           '>',
+    or:             '||',
+    and:            '&&',
+    is:             '==',
+    not:            '!',
 });

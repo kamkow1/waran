@@ -10,8 +10,13 @@ declare var use: any;
 declare var luse: any;
 declare var identifier: any;
 declare var ruse: any;
+declare var assign: any;
 declare var string: any;
 declare var number: any;
+declare var and: any;
+declare var or: any;
+declare var not: any;
+declare var is: any;
 declare var WS: any;
 
 const lexer = require("../../lexer/lexer").lexer;
@@ -61,6 +66,7 @@ const grammar: Grammar = {
     {"name": "statement", "symbols": [(lexer.has("comment") ? {type: "comment"} : comment)], "postprocess": id},
     {"name": "statement", "symbols": [(lexer.has("ml_comment") ? {type: "ml_comment"} : ml_comment)], "postprocess": id},
     {"name": "statement", "symbols": ["use_mod"], "postprocess": id},
+    {"name": "statement", "symbols": ["if"], "postprocess": id},
     {"name": "use_mod", "symbols": [(lexer.has("use") ? {type: "use"} : use), "_", (lexer.has("luse") ? {type: "luse"} : luse), "_", (lexer.has("identifier") ? {type: "identifier"} : identifier), "_", (lexer.has("ruse") ? {type: "ruse"} : ruse)], "postprocess": 
         (data) => {
             return {
@@ -69,7 +75,7 @@ const grammar: Grammar = {
             }
         }
         },
-    {"name": "var_assign", "symbols": [(lexer.has("identifier") ? {type: "identifier"} : identifier), "_", {"literal":"="}, "_", "expr"], "postprocess": 
+    {"name": "var_assign", "symbols": [(lexer.has("identifier") ? {type: "identifier"} : identifier), "_", (lexer.has("assign") ? {type: "assign"} : assign), "_", "expr"], "postprocess": 
         (data) => {
             return {
                 type: "var_assign",
@@ -94,7 +100,10 @@ const grammar: Grammar = {
             }
         }
             },
-    {"name": "func_exec", "symbols": [(lexer.has("identifier") ? {type: "identifier"} : identifier), "_", {"literal":"("}, "_", {"literal":")"}], "postprocess": 
+    {"name": "func_exec$ebnf$3$subexpression$1", "symbols": [{"literal":"await"}]},
+    {"name": "func_exec$ebnf$3", "symbols": ["func_exec$ebnf$3$subexpression$1"], "postprocess": id},
+    {"name": "func_exec$ebnf$3", "symbols": [], "postprocess": () => null},
+    {"name": "func_exec", "symbols": ["func_exec$ebnf$3", (lexer.has("identifier") ? {type: "identifier"} : identifier), "_", {"literal":"("}, "_", {"literal":")"}], "postprocess": 
         (data) => {
             return {
                 type: "func_exec",
@@ -151,6 +160,32 @@ const grammar: Grammar = {
             return data[3];
         }
             },
+    {"name": "operator", "symbols": [(lexer.has("and") ? {type: "and"} : and)], "postprocess": id},
+    {"name": "operator", "symbols": [(lexer.has("or") ? {type: "or"} : or)], "postprocess": id},
+    {"name": "operator", "symbols": [(lexer.has("not") ? {type: "not"} : not)], "postprocess": id},
+    {"name": "operator", "symbols": [(lexer.has("is") ? {type: "is"} : is)], "postprocess": id},
+    {"name": "if$ebnf$1$subexpression$1", "symbols": ["statements", (lexer.has("NL") ? {type: "NL"} : NL), "_"]},
+    {"name": "if$ebnf$1", "symbols": ["if$ebnf$1$subexpression$1"], "postprocess": id},
+    {"name": "if$ebnf$1", "symbols": [], "postprocess": () => null},
+    {"name": "if", "symbols": [{"literal":"if"}, "_", {"literal":"("}, "_", "if_expr", "_", {"literal":")"}, "_", {"literal":"{"}, "_", (lexer.has("NL") ? {type: "NL"} : NL), "if$ebnf$1", {"literal":"}"}], "postprocess": 
+        (data) => {
+            return {
+                type: "if",
+                bexpr: data[4],
+                body: data[11] ? data[11][0] : []
+            }
+        }
+        },
+    {"name": "if_expr", "symbols": ["expr", "_", "operator", "_", "expr"], "postprocess": 
+        (data) => {
+            return {
+                type: "if_expr",
+                left: data[0],
+                op: data[2],
+                right: data[4]
+            }
+        }
+        },
     {"name": "NL$ebnf$1", "symbols": [(lexer.has("NL") ? {type: "NL"} : NL)]},
     {"name": "NL$ebnf$1", "symbols": ["NL$ebnf$1", (lexer.has("NL") ? {type: "NL"} : NL)], "postprocess": (d) => d[0].concat([d[1]])},
     {"name": "NL", "symbols": ["NL$ebnf$1"]},

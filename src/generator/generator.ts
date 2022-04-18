@@ -44,17 +44,41 @@ const createStatement = (node: any) => {
 
         const module = fs.readFileSync(path.resolve(`./.waran//runtime/libs/${name}.js`)).toString();
         return module;
+    } else if (node.type == 'if') {
+        const expr = createStatement(node.bexpr);
+        let body = node.body? node.body.map((elem: any) => createStatement(elem)).join('') : '';
+
+        return `if ${expr}{\n ${body} \n}`;
+    } else if (node.type == 'if_expr') {
+        const left = createStatement(node.left);
+        const right = createStatement(node.right);
+        const op = node.op.value;
+
+        return `(${left} ${op} ${right})`;
     } else if (node.type == 'identifier') {
+
         return node.value;
     } else if (node.type == 'number') {
+
         return node.value;
     } else if (node.type == 'string') {
+
         return node.value;
     } else if (node.type == 'comment') {
+
         return '';
     } else if (node.type == 'ml_comment') {
+
         return '';
-    } else {
+    } else if (node.type == 'is') {
+        return node.value;
+    } else if (node.type == 'and') {
+        return node.value;
+    } else if (node.type == 'not') {
+        return node.value;
+    } else if (node.type == 'or') {
+        return node.value;
+    }   else {
         console.log(clc.redBright('unhandled ast node'));
         process.exit(0);
     }
