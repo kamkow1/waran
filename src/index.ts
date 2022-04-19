@@ -56,12 +56,22 @@ app
 
                 const template = 
 `import @io
+import @math
+
+add_five := func(number) -> {
+    result := add(number 5)
+    return result
+}
 
 counter := 0
 
 main := func() -> {
     hello := "hello"
     waran := "waran!"
+
+    ## calling custom function
+    ## prints 9 to the console
+    std_out(add_five(4)) 
 
     std_out(hello waran)
 
