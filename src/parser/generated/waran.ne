@@ -42,6 +42,7 @@ statement
     |  code_block {% id %}
     |  while_loop {% id %}
     |  increment_decrement {% id %}
+    |  %_break {% id %}
 
 increment_decrement -> %identifier %inc_dec
 {%
@@ -77,6 +78,17 @@ condition -> expr _ %luse _ expr
     }
 %}
 
+while_loop -> %_while _ "(" _ expr _ ")" _ statement
+{%
+    (data) => {
+        return {
+            type: "while_loop",
+            condition: data[4],
+            body: data[8]
+        }
+    }
+%}
+
 for_loop -> %_for _ "(" _ var_assign _ "|" _ expr _ "|" _ %identifier %inc_dec _ ")" _ statement
 {%
     (data) => {
@@ -87,17 +99,6 @@ for_loop -> %_for _ "(" _ var_assign _ "|" _ expr _ "|" _ %identifier %inc_dec _
             var_name: data[12],
             op: data[13],
             body: data[17]
-        }
-    }
-%}
-
-while_loop -> %_while _ "(" _ expr _ ")" _ statement
-{%
-    (data) => {
-        return {
-            type: "while_loop",
-            condition: data[4],
-            body: data[8]
         }
     }
 %}
@@ -147,17 +148,6 @@ func_exec
             }
         }
     %}
-    | ("await"):? %identifier _ "(" _ ")"
-    {%
-        (data) => {
-            return {
-                type: "func_exec",
-                func_name: data[0],
-                arguments: []
-            }
-        }
-    %}
-    
 
 args
     -> expr 
@@ -184,6 +174,27 @@ expr
     |  statement {% id %}
     |  lambda {% id %}
     |  condition {% id %}
+
+if -> "if" _ "(" _ if_expr _ ")" statement
+{%
+    (data) => {
+        return {
+            type: "if",
+            bexpr: data[4],
+            body: data[8]
+        }
+    }
+%}
+
+else -> %_else _ statement
+{%
+    (data) => {
+        return {
+            type: "else",
+            body: data[5]
+        }
+    }
+%}
 
 array -> %l_sqbr _ (arr_elems _):?  %r_sqbr
 {%
@@ -267,29 +278,6 @@ operator
     | %not {% id %}
     | %is {% id %}
     | %not_is {% id %}
-
-if 
-    -> "if" _ "(" _ if_expr _ ")" _ statement _ (else):?
-{%
-    (data) => {
-        return {
-            type: "if",
-            bexpr: data[4],
-            body: data[8]
-        }
-    }
-%}
-
-else 
-    -> %_else _ "{" %NL _ statement
-{%
-    (data) => {
-        return {
-            type: "else",
-            body: data[5]
-        }
-    }
-%}
 
 if_expr -> expr _ operator _ expr
 {%

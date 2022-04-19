@@ -6,18 +6,20 @@ function id(d: any[]): any { return d[0]; }
 declare var NL: any;
 declare var comment: any;
 declare var ml_comment: any;
+declare var _break: any;
 declare var identifier: any;
 declare var inc_dec: any;
 declare var luse: any;
 declare var ruse: any;
-declare var _for: any;
 declare var _while: any;
+declare var _for: any;
 declare var use: any;
 declare var assign: any;
 declare var string: any;
 declare var number: any;
 declare var _bool: any;
 declare var if_expr: any;
+declare var _else: any;
 declare var l_sqbr: any;
 declare var r_sqbr: any;
 declare var func: any;
@@ -26,7 +28,6 @@ declare var or: any;
 declare var not: any;
 declare var is: any;
 declare var not_is: any;
-declare var _else: any;
 declare var WS: any;
 
 const lexer = require("../../lexer/lexer").lexer;
@@ -93,6 +94,7 @@ const grammar: Grammar = {
     {"name": "statement", "symbols": ["code_block"], "postprocess": id},
     {"name": "statement", "symbols": ["while_loop"], "postprocess": id},
     {"name": "statement", "symbols": ["increment_decrement"], "postprocess": id},
+    {"name": "statement", "symbols": [(lexer.has("_break") ? {type: "_break"} : _break)], "postprocess": id},
     {"name": "increment_decrement", "symbols": [(lexer.has("identifier") ? {type: "identifier"} : identifier), (lexer.has("inc_dec") ? {type: "inc_dec"} : inc_dec)], "postprocess": 
         (data) => {
             return {
@@ -122,6 +124,15 @@ const grammar: Grammar = {
             }
         }
         },
+    {"name": "while_loop", "symbols": [(lexer.has("_while") ? {type: "_while"} : _while), "_", {"literal":"("}, "_", "expr", "_", {"literal":")"}, "_", "statement"], "postprocess": 
+        (data) => {
+            return {
+                type: "while_loop",
+                condition: data[4],
+                body: data[8]
+            }
+        }
+        },
     {"name": "for_loop", "symbols": [(lexer.has("_for") ? {type: "_for"} : _for), "_", {"literal":"("}, "_", "var_assign", "_", {"literal":"|"}, "_", "expr", "_", {"literal":"|"}, "_", (lexer.has("identifier") ? {type: "identifier"} : identifier), (lexer.has("inc_dec") ? {type: "inc_dec"} : inc_dec), "_", {"literal":")"}, "_", "statement"], "postprocess": 
         (data) => {
             return {
@@ -131,15 +142,6 @@ const grammar: Grammar = {
                 var_name: data[12],
                 op: data[13],
                 body: data[17]
-            }
-        }
-        },
-    {"name": "while_loop", "symbols": [(lexer.has("_while") ? {type: "_while"} : _while), "_", {"literal":"("}, "_", "expr", "_", {"literal":")"}, "_", "statement"], "postprocess": 
-        (data) => {
-            return {
-                type: "while_loop",
-                condition: data[4],
-                body: data[8]
             }
         }
         },
@@ -185,18 +187,6 @@ const grammar: Grammar = {
             }
         }
             },
-    {"name": "func_exec$ebnf$3$subexpression$1", "symbols": [{"literal":"await"}]},
-    {"name": "func_exec$ebnf$3", "symbols": ["func_exec$ebnf$3$subexpression$1"], "postprocess": id},
-    {"name": "func_exec$ebnf$3", "symbols": [], "postprocess": () => null},
-    {"name": "func_exec", "symbols": ["func_exec$ebnf$3", (lexer.has("identifier") ? {type: "identifier"} : identifier), "_", {"literal":"("}, "_", {"literal":")"}], "postprocess": 
-        (data) => {
-            return {
-                type: "func_exec",
-                func_name: data[0],
-                arguments: []
-            }
-        }
-            },
     {"name": "args", "symbols": ["expr"], "postprocess": 
         (data) => {
             return [data[0]];
@@ -217,6 +207,23 @@ const grammar: Grammar = {
     {"name": "expr", "symbols": ["statement"], "postprocess": id},
     {"name": "expr", "symbols": ["lambda"], "postprocess": id},
     {"name": "expr", "symbols": ["condition"], "postprocess": id},
+    {"name": "if", "symbols": [{"literal":"if"}, "_", {"literal":"("}, "_", "if_expr", "_", {"literal":")"}, "statement"], "postprocess": 
+        (data) => {
+            return {
+                type: "if",
+                bexpr: data[4],
+                body: data[8]
+            }
+        }
+        },
+    {"name": "else", "symbols": [(lexer.has("_else") ? {type: "_else"} : _else), "_", "statement"], "postprocess": 
+        (data) => {
+            return {
+                type: "else",
+                body: data[5]
+            }
+        }
+        },
     {"name": "array$ebnf$1$subexpression$1", "symbols": ["arr_elems", "_"]},
     {"name": "array$ebnf$1", "symbols": ["array$ebnf$1$subexpression$1"], "postprocess": id},
     {"name": "array$ebnf$1", "symbols": [], "postprocess": () => null},
@@ -285,26 +292,6 @@ const grammar: Grammar = {
     {"name": "operator", "symbols": [(lexer.has("not") ? {type: "not"} : not)], "postprocess": id},
     {"name": "operator", "symbols": [(lexer.has("is") ? {type: "is"} : is)], "postprocess": id},
     {"name": "operator", "symbols": [(lexer.has("not_is") ? {type: "not_is"} : not_is)], "postprocess": id},
-    {"name": "if$ebnf$1$subexpression$1", "symbols": ["else"]},
-    {"name": "if$ebnf$1", "symbols": ["if$ebnf$1$subexpression$1"], "postprocess": id},
-    {"name": "if$ebnf$1", "symbols": [], "postprocess": () => null},
-    {"name": "if", "symbols": [{"literal":"if"}, "_", {"literal":"("}, "_", "if_expr", "_", {"literal":")"}, "_", "statement", "_", "if$ebnf$1"], "postprocess": 
-        (data) => {
-            return {
-                type: "if",
-                bexpr: data[4],
-                body: data[8]
-            }
-        }
-        },
-    {"name": "else", "symbols": [(lexer.has("_else") ? {type: "_else"} : _else), "_", {"literal":"{"}, (lexer.has("NL") ? {type: "NL"} : NL), "_", "statement"], "postprocess": 
-        (data) => {
-            return {
-                type: "else",
-                body: data[5]
-            }
-        }
-        },
     {"name": "if_expr", "symbols": ["expr", "_", "operator", "_", "expr"], "postprocess": 
         (data) => {
             return {
