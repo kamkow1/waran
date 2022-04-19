@@ -100,6 +100,9 @@ const createStatement = (node: any) => {
         const expr2 = createStatement(node.expr2);
 
         return `${expr1} ${sign} ${expr2}`;
+    } else if (node.type == 'return_statement') {
+        const val = node.returned_val;
+        return `return ${val}`;
     } else if (node.type == 'identifier') {
         return node.value;
     } else if (node.type == 'number') {

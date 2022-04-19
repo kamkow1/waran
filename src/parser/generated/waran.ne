@@ -44,6 +44,17 @@ statement
     |  increment_decrement {% id %}
     |  %_break {% id %}
     |  %_continue {% id %}
+    |  return_statement {% id %}
+
+return_statement -> %_return _ expr
+{%
+    (data) => {
+        return {
+            type: "return_statement",
+            returned_val: data[2]
+        }
+    }
+%}
 
 increment_decrement -> %identifier %inc_dec
 {%

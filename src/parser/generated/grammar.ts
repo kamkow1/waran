@@ -8,6 +8,7 @@ declare var comment: any;
 declare var ml_comment: any;
 declare var _break: any;
 declare var _continue: any;
+declare var _return: any;
 declare var identifier: any;
 declare var inc_dec: any;
 declare var _while: any;
@@ -101,6 +102,15 @@ const grammar: Grammar = {
     {"name": "statement", "symbols": ["increment_decrement"], "postprocess": id},
     {"name": "statement", "symbols": [(lexer.has("_break") ? {type: "_break"} : _break)], "postprocess": id},
     {"name": "statement", "symbols": [(lexer.has("_continue") ? {type: "_continue"} : _continue)], "postprocess": id},
+    {"name": "statement", "symbols": ["return_statement"], "postprocess": id},
+    {"name": "return_statement", "symbols": [(lexer.has("_return") ? {type: "_return"} : _return), "_", "expr"], "postprocess": 
+        (data) => {
+            return {
+                type: "return_statement",
+                returned_val: data[2]
+            }
+        }
+        },
     {"name": "increment_decrement", "symbols": [(lexer.has("identifier") ? {type: "identifier"} : identifier), (lexer.has("inc_dec") ? {type: "inc_dec"} : inc_dec)], "postprocess": 
         (data) => {
             return {

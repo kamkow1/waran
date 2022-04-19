@@ -5,6 +5,7 @@ export const lexer = moo.compile({
     _else:          'else',
     _break:         'break',
     _continue:      'continue',
+    _return:        'return',
     _if:            'if',
     inc_dec:        /\++|\--/,
     increment:      '++',
