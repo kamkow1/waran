@@ -20,6 +20,16 @@ statements
         }
     %}
 
+code_block -> "{" _ %NL statements %NL _  "}"
+{%
+    (data) => {
+        return {
+            type: "code_block",
+            body: data[3]
+        }
+    }
+%}
+
 statement 
     -> var_assign {% id %}
     |  func_exec  {% id %}
@@ -29,6 +39,7 @@ statement
     |  if {% id %}
     |  else {% id %}
     |  for_loop {% id %}
+    |  code_block {% id %}
 
 condition -> expr _ %luse _ expr
 {%
@@ -53,7 +64,7 @@ condition -> expr _ %luse _ expr
     }
 %}
 
-for_loop -> %_for _ "(" _ var_assign _ "|" _ expr _ "|" _ %identifier %increment _ ")" _ "{" _ %NL statements %NL _ "}"
+for_loop -> %_for _ "(" _ var_assign _ "|" _ expr _ "|" _ %identifier %increment _ ")" _ statement
 {%
     (data) => {
         return {
@@ -66,7 +77,7 @@ for_loop -> %_for _ "(" _ var_assign _ "|" _ expr _ "|" _ %identifier %increment
         }
     }
 %}
-|    %_for _ "(" _ var_assign _ "|" _ expr _ "|" _ %identifier %decrement _ ")" _ "{" _ %NL statements %NL _ "}"
+|    %_for _ "(" _ var_assign _ "|" _ expr _ "|" _ %identifier %decrement _ ")" _ statement
 {%
     (data) => {
         return {
@@ -75,7 +86,7 @@ for_loop -> %_for _ "(" _ var_assign _ "|" _ expr _ "|" _ %identifier %increment
             loop_condition: data[8],
             var_name: data[12],
             op: data[13],
-            body: data[20]
+            body: data[17]
         }
     }
 %}
@@ -247,24 +258,24 @@ operator
     | %not_is {% id %}
 
 if 
-    -> "if" _ "(" _ if_expr _ ")" _ "{" %NL _ (statements _ %NL):? "}" _ (else):?
+    -> "if" _ "(" _ if_expr _ ")" _ statement _ (else):?
 {%
     (data) => {
         return {
             type: "if",
             bexpr: data[4],
-            body: data[12] ? data[12][0] : []
+            body: data[8]
         }
     }
 %}
 
 else 
-    -> %_else _ "{" %NL _ (statements _ %NL):? "}"
+    -> %_else _ "{" %NL _ statement
 {%
     (data) => {
         return {
             type: "else",
-            body: data[6] ? data[6][0] : []
+            body: data[5]
         }
     }
 %}

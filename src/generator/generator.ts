@@ -46,9 +46,9 @@ const createStatement = (node: any) => {
         return module;
     } else if (node.type == 'if') {
         const expr = createStatement(node.bexpr);
-        let body = node.body? node.body.map((elem: any) => createStatement(elem)).join('') : '';
+        const body = createStatement(node.body);
 
-        return `if ${expr}{\n ${body} \n}`;
+        return `if ${expr}${body}`;
     } else if (node.type == 'if_expr') {
         const left = createStatement(node.left);
         const right = createStatement(node.right);
@@ -56,9 +56,9 @@ const createStatement = (node: any) => {
 
         return `(${left} ${op} ${right})`;
     } else if (node.type == 'else') {
-        let body = node.body? node.body.map((elem: any) => createStatement(elem)).join('') : '';
+        const body = createStatement(node.body);
 
-        return `else {\n${body}\n}`;
+        return `else ${body}`;
     } else if (node.type == 'array') {
         const elems = node.elems? node.elems.map((elem: any) => createStatement(elem)).join(',') : '';
 
@@ -73,9 +73,13 @@ const createStatement = (node: any) => {
         const condition = createStatement(node.loop_condition);
         const varName = createStatement(node.var_name);
         const operator = node.op.value;
-        let body = node.body? node.body.map((elem: any) => createStatement(elem)).join('') : '';
+        const body = createStatement(node.body);
 
-       return `for(${assignment} ${condition}; ${varName}${operator}) {\n${body}\n}`;
+       return `for(${assignment} ${condition}; ${varName}${operator})${body}`;
+    } else if (node.type == 'code_block') {
+        const code = node.body? node.body.map((elem: any) => createStatement(elem)).join('') : '';
+
+        return `{\n${code}\n}\n`;
     } else if (node.type == 'condition') {
         const sign = node.sign
         const expr1 = createStatement(node.expr1);
