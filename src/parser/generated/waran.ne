@@ -20,12 +20,12 @@ statements
         }
     %}
 
-code_block -> "{" _ %NL statements %NL _  "}" _
+code_block -> "{" _ %NL (statements %NL _):?  "}" _
 {%
     (data) => {
         return {
             type: "code_block",
-            body: data[3]
+            body: data[3] ? data[3][0] : []
         }
     }
 %}

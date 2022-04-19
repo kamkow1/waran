@@ -71,11 +71,14 @@ const grammar: Grammar = {
             return [...data[0], data[3]];
         }
             },
-    {"name": "code_block", "symbols": [{"literal":"{"}, "_", (lexer.has("NL") ? {type: "NL"} : NL), "statements", (lexer.has("NL") ? {type: "NL"} : NL), "_", {"literal":"}"}, "_"], "postprocess": 
+    {"name": "code_block$ebnf$1$subexpression$1", "symbols": ["statements", (lexer.has("NL") ? {type: "NL"} : NL), "_"]},
+    {"name": "code_block$ebnf$1", "symbols": ["code_block$ebnf$1$subexpression$1"], "postprocess": id},
+    {"name": "code_block$ebnf$1", "symbols": [], "postprocess": () => null},
+    {"name": "code_block", "symbols": [{"literal":"{"}, "_", (lexer.has("NL") ? {type: "NL"} : NL), "code_block$ebnf$1", {"literal":"}"}, "_"], "postprocess": 
         (data) => {
             return {
                 type: "code_block",
-                body: data[3]
+                body: data[3] ? data[3][0] : []
             }
         }
         },
