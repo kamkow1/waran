@@ -3,6 +3,7 @@ import moo from 'moo'
 export const lexer = moo.compile({
     use:            'import',
     _else:          'else',
+    inc_dec:        /\++|\--/,
     increment:      '++',
     decrement:      '--',
     _for:           'for',

@@ -6,12 +6,11 @@ function id(d: any[]): any { return d[0]; }
 declare var NL: any;
 declare var comment: any;
 declare var ml_comment: any;
+declare var inc_dec: any;
 declare var luse: any;
 declare var ruse: any;
 declare var _for: any;
 declare var identifier: any;
-declare var increment: any;
-declare var decrement: any;
 declare var use: any;
 declare var assign: any;
 declare var string: any;
@@ -88,6 +87,7 @@ const grammar: Grammar = {
     {"name": "statement", "symbols": ["else"], "postprocess": id},
     {"name": "statement", "symbols": ["for_loop"], "postprocess": id},
     {"name": "statement", "symbols": ["code_block"], "postprocess": id},
+    {"name": "statement", "symbols": [(lexer.has("inc_dec") ? {type: "inc_dec"} : inc_dec)], "postprocess": id},
     {"name": "condition", "symbols": ["expr", "_", (lexer.has("luse") ? {type: "luse"} : luse), "_", "expr"], "postprocess": 
         (data) => {
             return {
@@ -108,19 +108,7 @@ const grammar: Grammar = {
             }
         }
         },
-    {"name": "for_loop", "symbols": [(lexer.has("_for") ? {type: "_for"} : _for), "_", {"literal":"("}, "_", "var_assign", "_", {"literal":"|"}, "_", "expr", "_", {"literal":"|"}, "_", (lexer.has("identifier") ? {type: "identifier"} : identifier), (lexer.has("increment") ? {type: "increment"} : increment), "_", {"literal":")"}, "_", "statement"], "postprocess": 
-        (data) => {
-            return {
-                type: "for_loop",
-                assignment: data[4],
-                loop_condition: data[8],
-                var_name: data[12],
-                op: data[13],
-                body: data[17]
-            }
-        }
-        },
-    {"name": "for_loop", "symbols": [(lexer.has("_for") ? {type: "_for"} : _for), "_", {"literal":"("}, "_", "var_assign", "_", {"literal":"|"}, "_", "expr", "_", {"literal":"|"}, "_", (lexer.has("identifier") ? {type: "identifier"} : identifier), (lexer.has("decrement") ? {type: "decrement"} : decrement), "_", {"literal":")"}, "_", "statement"], "postprocess": 
+    {"name": "for_loop", "symbols": [(lexer.has("_for") ? {type: "_for"} : _for), "_", {"literal":"("}, "_", "var_assign", "_", {"literal":"|"}, "_", "expr", "_", {"literal":"|"}, "_", (lexer.has("identifier") ? {type: "identifier"} : identifier), (lexer.has("inc_dec") ? {type: "inc_dec"} : inc_dec), "_", {"literal":")"}, "_", "statement"], "postprocess": 
         (data) => {
             return {
                 type: "for_loop",

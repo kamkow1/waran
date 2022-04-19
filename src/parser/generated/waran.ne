@@ -40,6 +40,7 @@ statement
     |  else {% id %}
     |  for_loop {% id %}
     |  code_block {% id %}
+    |  %inc_dec {% id %}
 
 condition -> expr _ %luse _ expr
 {%
@@ -64,20 +65,7 @@ condition -> expr _ %luse _ expr
     }
 %}
 
-for_loop -> %_for _ "(" _ var_assign _ "|" _ expr _ "|" _ %identifier %increment _ ")" _ statement
-{%
-    (data) => {
-        return {
-            type: "for_loop",
-            assignment: data[4],
-            loop_condition: data[8],
-            var_name: data[12],
-            op: data[13],
-            body: data[17]
-        }
-    }
-%}
-|    %_for _ "(" _ var_assign _ "|" _ expr _ "|" _ %identifier %decrement _ ")" _ statement
+for_loop -> %_for _ "(" _ var_assign _ "|" _ expr _ "|" _ %identifier %inc_dec _ ")" _ statement
 {%
     (data) => {
         return {
