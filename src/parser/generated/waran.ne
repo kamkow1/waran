@@ -73,7 +73,7 @@ for_loop -> %_for _ "(" _ var_assign _ "|" _ expr _ "|" _ %identifier %increment
             loop_condition: data[8],
             var_name: data[12],
             op: data[13],
-            body: data[20]
+            body: data[17]
         }
     }
 %}
