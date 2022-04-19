@@ -40,8 +40,19 @@ statement
     |  else {% id %}
     |  for_loop {% id %}
     |  code_block {% id %}
-    |  %inc_dec {% id %}
     |  while_loop {% id %}
+    |  increment_decrement {% id %}
+
+increment_decrement -> %identifier %inc_dec
+{%
+    (data) => {
+        return {
+            type: "increment_decrement",
+            name: data[0],
+            op: data[1]
+        }
+    }
+%}
 
 condition -> expr _ %luse _ expr
 {%

@@ -68,6 +68,11 @@ const createStatement = (node: any) => {
         const name = createStatement(node.name);
 
         return `${name}[${index}]`;
+    } else if (node.type == 'increment_decrement') {
+        const name = node.name;
+        const op = node.op;
+
+        return `${name}${op}`;
     } else if (node.type == 'while_loop') {
         const body = createStatement(node.body);
         const condition = createStatement(node.condition);

@@ -6,11 +6,11 @@ function id(d: any[]): any { return d[0]; }
 declare var NL: any;
 declare var comment: any;
 declare var ml_comment: any;
+declare var identifier: any;
 declare var inc_dec: any;
 declare var luse: any;
 declare var ruse: any;
 declare var _for: any;
-declare var identifier: any;
 declare var _while: any;
 declare var use: any;
 declare var assign: any;
@@ -91,8 +91,17 @@ const grammar: Grammar = {
     {"name": "statement", "symbols": ["else"], "postprocess": id},
     {"name": "statement", "symbols": ["for_loop"], "postprocess": id},
     {"name": "statement", "symbols": ["code_block"], "postprocess": id},
-    {"name": "statement", "symbols": [(lexer.has("inc_dec") ? {type: "inc_dec"} : inc_dec)], "postprocess": id},
     {"name": "statement", "symbols": ["while_loop"], "postprocess": id},
+    {"name": "statement", "symbols": ["increment_decrement"], "postprocess": id},
+    {"name": "increment_decrement", "symbols": [(lexer.has("identifier") ? {type: "identifier"} : identifier), (lexer.has("inc_dec") ? {type: "inc_dec"} : inc_dec)], "postprocess": 
+        (data) => {
+            return {
+                type: "increment_decrement",
+                name: data[0],
+                op: data[1]
+            }
+        }
+        },
     {"name": "condition", "symbols": ["expr", "_", (lexer.has("luse") ? {type: "luse"} : luse), "_", "expr"], "postprocess": 
         (data) => {
             return {
