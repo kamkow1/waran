@@ -7,6 +7,7 @@ export const lexer = moo.compile({
     increment:      '++',
     decrement:      '--',
     _for:           'for',
+    _while:         'while',
     func:           'func',
     _bool:          /true|false/,
     or:             '||',

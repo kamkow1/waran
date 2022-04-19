@@ -11,6 +11,7 @@ declare var luse: any;
 declare var ruse: any;
 declare var _for: any;
 declare var identifier: any;
+declare var _while: any;
 declare var use: any;
 declare var assign: any;
 declare var string: any;
@@ -70,7 +71,7 @@ const grammar: Grammar = {
             return [...data[0], data[3]];
         }
             },
-    {"name": "code_block", "symbols": [{"literal":"{"}, "_", (lexer.has("NL") ? {type: "NL"} : NL), "statements", (lexer.has("NL") ? {type: "NL"} : NL), "_", {"literal":"}"}], "postprocess": 
+    {"name": "code_block", "symbols": [{"literal":"{"}, "_", (lexer.has("NL") ? {type: "NL"} : NL), "statements", (lexer.has("NL") ? {type: "NL"} : NL), "_", {"literal":"}"}, "_"], "postprocess": 
         (data) => {
             return {
                 type: "code_block",
@@ -88,6 +89,7 @@ const grammar: Grammar = {
     {"name": "statement", "symbols": ["for_loop"], "postprocess": id},
     {"name": "statement", "symbols": ["code_block"], "postprocess": id},
     {"name": "statement", "symbols": [(lexer.has("inc_dec") ? {type: "inc_dec"} : inc_dec)], "postprocess": id},
+    {"name": "statement", "symbols": ["while_loop"], "postprocess": id},
     {"name": "condition", "symbols": ["expr", "_", (lexer.has("luse") ? {type: "luse"} : luse), "_", "expr"], "postprocess": 
         (data) => {
             return {
@@ -117,6 +119,15 @@ const grammar: Grammar = {
                 var_name: data[12],
                 op: data[13],
                 body: data[17]
+            }
+        }
+        },
+    {"name": "while_loop", "symbols": [(lexer.has("_while") ? {type: "_while"} : _while), "_", {"literal":"("}, "_", "expr", "_", {"literal":")"}, "_", "statement"], "postprocess": 
+        (data) => {
+            return {
+                type: "while_loop",
+                condition: data[4],
+                body: data[8]
             }
         }
         },

@@ -20,7 +20,7 @@ statements
         }
     %}
 
-code_block -> "{" _ %NL statements %NL _  "}"
+code_block -> "{" _ %NL statements %NL _  "}" _
 {%
     (data) => {
         return {
@@ -41,6 +41,7 @@ statement
     |  for_loop {% id %}
     |  code_block {% id %}
     |  %inc_dec {% id %}
+    |  while_loop {% id %}
 
 condition -> expr _ %luse _ expr
 {%
@@ -75,6 +76,17 @@ for_loop -> %_for _ "(" _ var_assign _ "|" _ expr _ "|" _ %identifier %inc_dec _
             var_name: data[12],
             op: data[13],
             body: data[17]
+        }
+    }
+%}
+
+while_loop -> %_while _ "(" _ expr _ ")" _ statement
+{%
+    (data) => {
+        return {
+            type: "while_loop",
+            condition: data[4],
+            body: data[8]
         }
     }
 %}
