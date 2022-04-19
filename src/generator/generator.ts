@@ -88,6 +88,8 @@ const createStatement = (node: any) => {
        return `for(${assignment} ${condition}; ${varName}${operator})${body}`;
     } else if (node.type == '_break') {
         return node.value;
+    } else if (node.type == '_continue') {
+        return node.value;
     } else if (node.type == 'code_block') {
         const code = node.body? node.body.map((elem: any) => createStatement(elem)).join('') : '';
 

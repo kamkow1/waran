@@ -43,6 +43,7 @@ statement
     |  while_loop {% id %}
     |  increment_decrement {% id %}
     |  %_break {% id %}
+    |  %_continue {% id %}
 
 increment_decrement -> %identifier %inc_dec
 {%
