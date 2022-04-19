@@ -2,7 +2,10 @@ import moo from 'moo'
 
 export const lexer = moo.compile({
     use:            'import',
-    _else:           'else',
+    _else:          'else',
+    increment:      '++',
+    decrement:      '--',
+    _for:           'for',
     func:           'func',
     _bool:          /true|false/,
     or:             '||',
@@ -29,4 +32,5 @@ export const lexer = moo.compile({
     assign:         ':=',
     luse:           '<',
     ruse:           '>',
+    pipe:           '|'
 });

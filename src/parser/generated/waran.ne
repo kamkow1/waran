@@ -28,6 +28,57 @@ statement
     |  use_mod {% id %}
     |  if {% id %}
     |  else {% id %}
+    |  for_loop {% id %}
+
+condition -> expr _ %luse _ expr
+{%
+    (data) => {
+        return {
+            type: "condition",
+            expr1: data[0],
+            expr2: data[4],
+            sign: data[2]
+        }
+    }
+%}
+|   expr _ %ruse _ expr
+{%
+    (data) => {
+        return {
+            type: "condition",
+            expr1: data[0],
+            expr2: data[4],
+            sign: data[2]
+        }
+    }
+%}
+
+for_loop -> %_for _ "(" _ var_assign _ "|" _ expr _ "|" _ %identifier %increment _ ")" _ "{" _ %NL statements %NL _ "}"
+{%
+    (data) => {
+        return {
+            type: "for_loop",
+            assignment: data[4],
+            loop_condition: data[8],
+            var_name: data[12],
+            op: data[13],
+            body: data[20]
+        }
+    }
+%}
+|    %_for _ "(" _ var_assign _ "|" _ expr _ "|" _ %identifier %decrement _ ")" _ "{" _ %NL statements %NL _ "}"
+{%
+    (data) => {
+        return {
+            type: "for_loop",
+            assignment: data[4],
+            loop_condition: data[8],
+            var_name: data[12],
+            op: data[13],
+            body: data[20]
+        }
+    }
+%}
 
 use_mod
     -> %use _ %luse _ %identifier _ %ruse
@@ -110,6 +161,7 @@ expr
     |  %identifier {% id %}
     |  statement {% id %}
     |  lambda {% id %}
+    |  condition {% id %}
 
 array -> %l_sqbr _ (arr_elems _):?  %r_sqbr
 {%

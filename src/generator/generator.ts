@@ -19,7 +19,7 @@ const createStatement = (node: any) => {
         const name = node.var_name.value;
         const expr: any = createStatement(node.value);
         
-        return `var ${name} = ${expr};\n`;
+        return `var ${name} = ${expr};`;
     } else if (node.type == 'func_exec') {
         const name = node.func_name.value;
         const arr = node.arguments.map((arg: any) => createStatement(arg));
@@ -68,6 +68,20 @@ const createStatement = (node: any) => {
         const name = createStatement(node.name);
 
         return `${name}[${index}]`;
+    } else if (node.type == 'for_loop') {
+        const assignment = createStatement(node.assignment);
+        const condition = createStatement(node.loop_condition);
+        const varName = createStatement(node.var_name);
+        const operator = node.op.value;
+        let body = node.body? node.body.map((elem: any) => createStatement(elem)).join('') : '';
+
+       return `for(${assignment} ${condition}; ${varName}${operator}) {\n${body}\n}`;
+    } else if (node.type == 'condition') {
+        const sign = node.sign
+        const expr1 = createStatement(node.expr1);
+        const expr2 = createStatement(node.expr2);
+
+        return `${expr1} ${sign} ${expr2}`;
     } else if (node.type == 'identifier') {
         return node.value;
     } else if (node.type == 'number') {

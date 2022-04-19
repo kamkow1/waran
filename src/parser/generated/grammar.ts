@@ -6,10 +6,13 @@ function id(d: any[]): any { return d[0]; }
 declare var NL: any;
 declare var comment: any;
 declare var ml_comment: any;
-declare var use: any;
 declare var luse: any;
-declare var identifier: any;
 declare var ruse: any;
+declare var _for: any;
+declare var identifier: any;
+declare var increment: any;
+declare var decrement: any;
+declare var use: any;
 declare var assign: any;
 declare var string: any;
 declare var number: any;
@@ -75,6 +78,51 @@ const grammar: Grammar = {
     {"name": "statement", "symbols": ["use_mod"], "postprocess": id},
     {"name": "statement", "symbols": ["if"], "postprocess": id},
     {"name": "statement", "symbols": ["else"], "postprocess": id},
+    {"name": "statement", "symbols": ["for_loop"], "postprocess": id},
+    {"name": "condition", "symbols": ["expr", "_", (lexer.has("luse") ? {type: "luse"} : luse), "_", "expr"], "postprocess": 
+        (data) => {
+            return {
+                type: "condition",
+                expr1: data[0],
+                expr2: data[4],
+                sign: data[2]
+            }
+        }
+        },
+    {"name": "condition", "symbols": ["expr", "_", (lexer.has("ruse") ? {type: "ruse"} : ruse), "_", "expr"], "postprocess": 
+        (data) => {
+            return {
+                type: "condition",
+                expr1: data[0],
+                expr2: data[4],
+                sign: data[2]
+            }
+        }
+        },
+    {"name": "for_loop", "symbols": [(lexer.has("_for") ? {type: "_for"} : _for), "_", {"literal":"("}, "_", "var_assign", "_", {"literal":"|"}, "_", "expr", "_", {"literal":"|"}, "_", (lexer.has("identifier") ? {type: "identifier"} : identifier), (lexer.has("increment") ? {type: "increment"} : increment), "_", {"literal":")"}, "_", {"literal":"{"}, "_", (lexer.has("NL") ? {type: "NL"} : NL), "statements", (lexer.has("NL") ? {type: "NL"} : NL), "_", {"literal":"}"}], "postprocess": 
+        (data) => {
+            return {
+                type: "for_loop",
+                assignment: data[4],
+                loop_condition: data[8],
+                var_name: data[12],
+                op: data[13],
+                body: data[20]
+            }
+        }
+        },
+    {"name": "for_loop", "symbols": [(lexer.has("_for") ? {type: "_for"} : _for), "_", {"literal":"("}, "_", "var_assign", "_", {"literal":"|"}, "_", "expr", "_", {"literal":"|"}, "_", (lexer.has("identifier") ? {type: "identifier"} : identifier), (lexer.has("decrement") ? {type: "decrement"} : decrement), "_", {"literal":")"}, "_", {"literal":"{"}, "_", (lexer.has("NL") ? {type: "NL"} : NL), "statements", (lexer.has("NL") ? {type: "NL"} : NL), "_", {"literal":"}"}], "postprocess": 
+        (data) => {
+            return {
+                type: "for_loop",
+                assignment: data[4],
+                loop_condition: data[8],
+                var_name: data[12],
+                op: data[13],
+                body: data[20]
+            }
+        }
+        },
     {"name": "use_mod", "symbols": [(lexer.has("use") ? {type: "use"} : use), "_", (lexer.has("luse") ? {type: "luse"} : luse), "_", (lexer.has("identifier") ? {type: "identifier"} : identifier), "_", (lexer.has("ruse") ? {type: "ruse"} : ruse)], "postprocess": 
         (data) => {
             return {
@@ -148,6 +196,7 @@ const grammar: Grammar = {
     {"name": "expr", "symbols": [(lexer.has("identifier") ? {type: "identifier"} : identifier)], "postprocess": id},
     {"name": "expr", "symbols": ["statement"], "postprocess": id},
     {"name": "expr", "symbols": ["lambda"], "postprocess": id},
+    {"name": "expr", "symbols": ["condition"], "postprocess": id},
     {"name": "array$ebnf$1$subexpression$1", "symbols": ["arr_elems", "_"]},
     {"name": "array$ebnf$1", "symbols": ["array$ebnf$1$subexpression$1"], "postprocess": id},
     {"name": "array$ebnf$1", "symbols": [], "postprocess": () => null},
