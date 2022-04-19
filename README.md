@@ -11,6 +11,54 @@ made by <a href="https://github.com/kamkow1">kamkow1</a> <br />
 special thanks to <a href="https://github.com/londek">londek</a> for helping out ;)
 </p>
 
+### example waran program
+```properties
+#import built-in modules
+import @io
+import @math
+
+add_five := func(number) -> {
+    result := add(number 5)
+    return result
+}
+
+counter := 0
+
+main := func() -> {
+    hello := "hello"
+    waran := "waran!"
+
+    ## calling custom function
+    ## prints 9 to the console
+    std_out(add_five(4)) 
+
+    std_out(hello waran)
+
+    ## for loop
+    for(i := 0 | i <= 10 | i++) {
+
+        ## skip the 5th iteration
+        if (i == 5) {
+            continue
+        }
+
+        std_out(i)
+    }
+
+    ## while loop
+    while(true) {
+        if (counter > 10) {
+            break    
+        }
+
+        std_out(counter)
+        counter++
+    }
+}
+
+main()
+```
+
 ### table of contents
 1. [Installation](#installation)
 2. [Project structure](#proj_struct)
