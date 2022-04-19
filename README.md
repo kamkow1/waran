@@ -34,6 +34,14 @@ main := func() -> {
 
     std_out(hello waran)
 
+    ## arrays
+    my_array := ["string value" 4738 -21.564 true]
+
+    value_from_array1 = my_array[0]
+    value_from_array2 = my_array[2]
+
+    std_out("values from my_array: " value_from_array1 value_from_array2)
+
     ## for loop
     for(i := 0 | i <= 10 | i++) {
 
