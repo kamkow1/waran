@@ -68,6 +68,11 @@ const createStatement = (node: any) => {
         const name = createStatement(node.name);
 
         return `${name}[${index}]`;
+    } else if (node.type == 'while_loop') {
+        const body = createStatement(node.body);
+        const condition = createStatement(node.condition);
+
+        return `while(${condition})${body}`;
     } else if (node.type == 'for_loop') {
         const assignment = createStatement(node.assignment);
         const condition = createStatement(node.loop_condition);
