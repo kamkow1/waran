@@ -31,6 +31,8 @@ declare var is: any;
 declare var not_is: any;
 declare var greater: any;
 declare var lesser: any;
+declare var greater_equal: any;
+declare var lesser_equal: any;
 declare var WS: any;
 
 const lexer = require("../../lexer/lexer").lexer;
@@ -288,6 +290,8 @@ const grammar: Grammar = {
     {"name": "operator", "symbols": [(lexer.has("not_is") ? {type: "not_is"} : not_is)], "postprocess": id},
     {"name": "operator", "symbols": [(lexer.has("greater") ? {type: "greater"} : greater)], "postprocess": id},
     {"name": "operator", "symbols": [(lexer.has("lesser") ? {type: "lesser"} : lesser)], "postprocess": id},
+    {"name": "operator", "symbols": [(lexer.has("greater_equal") ? {type: "greater_equal"} : greater_equal)], "postprocess": id},
+    {"name": "operator", "symbols": [(lexer.has("lesser_equal") ? {type: "lesser_equal"} : lesser_equal)], "postprocess": id},
     {"name": "if_expr", "symbols": ["expr", "_", "operator", "_", "expr"], "postprocess": 
         (data) => {
             return {

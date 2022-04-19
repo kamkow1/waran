@@ -13,6 +13,8 @@ export const lexer = moo.compile({
     _while:         'while',
     func:           'func',
     _bool:          /true|false/,
+    greater_equal:  /\<=/,
+    lesser_equal:   /\>=/,
     greater:        '>',
     lesser:         '<',
     or:             '||',

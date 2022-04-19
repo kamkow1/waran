@@ -55,12 +55,39 @@ app
                 }
 
                 const template = 
-`~ <io>
+`import @io
 
-hello = "hello"
-waran = "waran!"
+counter := 0
 
-std_out(hello waran)`;
+main := func() -> {
+    hello := "hello"
+    waran := "waran!"
+
+    std_out(hello waran)
+
+    ## for loop
+    for(i := 0 | i <= 10 | i++) {
+
+        ## skip the 5th iteration
+        if (i == 5) {
+            continue
+        }
+
+        std_out(i)
+    }
+
+    ## while loop
+    while(true) {
+        if (counter > 10) {
+            break    
+        }
+
+        std_out(counter)
+        counter++
+    }
+}
+
+main()`;
 
                 fs.appendFileSync(mainFile, template);
             });

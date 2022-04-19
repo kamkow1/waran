@@ -270,6 +270,8 @@ operator
     | %not_is {% id %}
     | %greater {% id %}
     | %lesser {% id %}
+    | %greater_equal {% id %}
+    | %lesser_equal {% id %}
 
 if_expr -> expr _ operator _ expr
 {%
