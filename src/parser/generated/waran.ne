@@ -56,18 +56,7 @@ increment_decrement -> %identifier %inc_dec
     }
 %}
 
-condition -> expr _ %luse _ expr
-{%
-    (data) => {
-        return {
-            type: "condition",
-            expr1: data[0],
-            expr2: data[4],
-            sign: data[2]
-        }
-    }
-%}
-|   expr _ %ruse _ expr
+condition -> expr _ operator _ expr
 {%
     (data) => {
         return {
@@ -105,12 +94,12 @@ for_loop -> %_for _ "(" _ var_assign _ "|" _ expr _ "|" _ %identifier %inc_dec _
 %}
 
 use_mod
-    -> %use _ %luse _ %identifier _ %ruse
+    -> %use _ %at %identifier
 {%
     (data) => {
         return {
             type: "use_mod",
-            mod_name: data[4]
+            mod_name: data[3]
         }
     }
 %}
@@ -176,7 +165,7 @@ expr
     |  lambda {% id %}
     |  condition {% id %}
 
-if -> "if" _ "(" _ if_expr _ ")" statement
+if -> %_if _ "(" _ if_expr _ ")" _ statement
 {%
     (data) => {
         return {
@@ -279,6 +268,8 @@ operator
     | %not {% id %}
     | %is {% id %}
     | %not_is {% id %}
+    | %greater {% id %}
+    | %lesser {% id %}
 
 if_expr -> expr _ operator _ expr
 {%

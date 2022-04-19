@@ -5,6 +5,7 @@ export const lexer = moo.compile({
     _else:          'else',
     _break:         'break',
     _continue:      'continue',
+    _if:            'if',
     inc_dec:        /\++|\--/,
     increment:      '++',
     decrement:      '--',
@@ -12,6 +13,8 @@ export const lexer = moo.compile({
     _while:         'while',
     func:           'func',
     _bool:          /true|false/,
+    greater:        '>',
+    lesser:         '<',
     or:             '||',
     and:            '&&',
     not_is:         '!=',
@@ -36,5 +39,6 @@ export const lexer = moo.compile({
     assign:         ':=',
     luse:           '<',
     ruse:           '>',
-    pipe:           '|'
+    pipe:           '|',
+    at:             '@'
 });

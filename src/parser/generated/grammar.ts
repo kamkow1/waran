@@ -10,16 +10,16 @@ declare var _break: any;
 declare var _continue: any;
 declare var identifier: any;
 declare var inc_dec: any;
-declare var luse: any;
-declare var ruse: any;
 declare var _while: any;
 declare var _for: any;
 declare var use: any;
+declare var at: any;
 declare var assign: any;
 declare var string: any;
 declare var number: any;
 declare var _bool: any;
 declare var if_expr: any;
+declare var _if: any;
 declare var _else: any;
 declare var l_sqbr: any;
 declare var r_sqbr: any;
@@ -29,6 +29,8 @@ declare var or: any;
 declare var not: any;
 declare var is: any;
 declare var not_is: any;
+declare var greater: any;
+declare var lesser: any;
 declare var WS: any;
 
 const lexer = require("../../lexer/lexer").lexer;
@@ -106,17 +108,7 @@ const grammar: Grammar = {
             }
         }
         },
-    {"name": "condition", "symbols": ["expr", "_", (lexer.has("luse") ? {type: "luse"} : luse), "_", "expr"], "postprocess": 
-        (data) => {
-            return {
-                type: "condition",
-                expr1: data[0],
-                expr2: data[4],
-                sign: data[2]
-            }
-        }
-        },
-    {"name": "condition", "symbols": ["expr", "_", (lexer.has("ruse") ? {type: "ruse"} : ruse), "_", "expr"], "postprocess": 
+    {"name": "condition", "symbols": ["expr", "_", "operator", "_", "expr"], "postprocess": 
         (data) => {
             return {
                 type: "condition",
@@ -147,11 +139,11 @@ const grammar: Grammar = {
             }
         }
         },
-    {"name": "use_mod", "symbols": [(lexer.has("use") ? {type: "use"} : use), "_", (lexer.has("luse") ? {type: "luse"} : luse), "_", (lexer.has("identifier") ? {type: "identifier"} : identifier), "_", (lexer.has("ruse") ? {type: "ruse"} : ruse)], "postprocess": 
+    {"name": "use_mod", "symbols": [(lexer.has("use") ? {type: "use"} : use), "_", (lexer.has("at") ? {type: "at"} : at), (lexer.has("identifier") ? {type: "identifier"} : identifier)], "postprocess": 
         (data) => {
             return {
                 type: "use_mod",
-                mod_name: data[4]
+                mod_name: data[3]
             }
         }
         },
@@ -209,7 +201,7 @@ const grammar: Grammar = {
     {"name": "expr", "symbols": ["statement"], "postprocess": id},
     {"name": "expr", "symbols": ["lambda"], "postprocess": id},
     {"name": "expr", "symbols": ["condition"], "postprocess": id},
-    {"name": "if", "symbols": [{"literal":"if"}, "_", {"literal":"("}, "_", "if_expr", "_", {"literal":")"}, "statement"], "postprocess": 
+    {"name": "if", "symbols": [(lexer.has("_if") ? {type: "_if"} : _if), "_", {"literal":"("}, "_", "if_expr", "_", {"literal":")"}, "_", "statement"], "postprocess": 
         (data) => {
             return {
                 type: "if",
@@ -294,6 +286,8 @@ const grammar: Grammar = {
     {"name": "operator", "symbols": [(lexer.has("not") ? {type: "not"} : not)], "postprocess": id},
     {"name": "operator", "symbols": [(lexer.has("is") ? {type: "is"} : is)], "postprocess": id},
     {"name": "operator", "symbols": [(lexer.has("not_is") ? {type: "not_is"} : not_is)], "postprocess": id},
+    {"name": "operator", "symbols": [(lexer.has("greater") ? {type: "greater"} : greater)], "postprocess": id},
+    {"name": "operator", "symbols": [(lexer.has("lesser") ? {type: "lesser"} : lesser)], "postprocess": id},
     {"name": "if_expr", "symbols": ["expr", "_", "operator", "_", "expr"], "postprocess": 
         (data) => {
             return {
