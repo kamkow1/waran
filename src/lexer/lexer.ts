@@ -1,6 +1,7 @@
 import moo from 'moo'
 
 export const lexer = moo.compile({
+    use:            'import',
     _else:           'else',
     func:           'func',
     _bool:          /true|false/,
@@ -26,7 +27,6 @@ export const lexer = moo.compile({
     //identifier:     /[a-zA-Z][a-zA-Z_0-9][^and][^or][^is][^not]*/,
     arrow:          '->',
     assign:         ':=',
-    use:            '~',
     luse:           '<',
     ruse:           '>',
 });
