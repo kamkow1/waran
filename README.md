@@ -13,7 +13,7 @@ special thanks to <a href="https://github.com/londek">londek</a> for helping out
 
 ### example waran program
 ```properties
-#import built-in modules
+## import built-in modules
 import @io
 import @math
 
