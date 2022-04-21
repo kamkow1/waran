@@ -132,12 +132,15 @@ const createStatement = (node: any) => {
         const name = createStatement(node.name);
         let value;
         if (node.value) {
-            console.log('value normalnie')
             value = createStatement(node.value);
         }
 
         const shouldAddGetter = node.get;
-        const shouldAddSetter = node.set;
+        let shouldAddSetter = node.set;
+
+        if (terminal.length != 0) {
+            shouldAddSetter = false
+        }
 
         const getter = `get ${name} () {return this.${name}}`;
         const setter = `set ${name} (val) {this.${name} = val}`;
