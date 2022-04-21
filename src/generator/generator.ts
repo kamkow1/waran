@@ -125,6 +125,18 @@ const createStatement = (node: any) => {
         const body = node.body? node.body.map((elem: any) => createStatement(elem)).join('\n') : ''; 
 
         return `class ${name} {\n${body}\n}`;
+    } else if (node.type == 'field') {
+        const _static = node.static;
+        const name = createStatement(node.name);
+        let value;
+        if (node.value.length != 0) {
+            console.log('value normalnie')
+            value = createStatement(node.value);
+        }
+
+        return `${_static ? _static : ''} ${name} ${value ? '=' : ''} ${value ? value : ''};`;
+    } else if (node.type == '_static') {
+        return node.value;
     } else if (node.type == 'identifier') {
         return node.value;
     } else if (node.type == 'number') {

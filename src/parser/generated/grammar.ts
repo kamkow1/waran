@@ -86,12 +86,16 @@ const grammar: Grammar = {
     {"name": "class_field$ebnf$1$subexpression$1", "symbols": [(lexer.has("_static") ? {type: "_static"} : _static), "_"]},
     {"name": "class_field$ebnf$1", "symbols": ["class_field$ebnf$1$subexpression$1"], "postprocess": id},
     {"name": "class_field$ebnf$1", "symbols": [], "postprocess": () => null},
-    {"name": "class_field", "symbols": ["class_field$ebnf$1", (lexer.has("field") ? {type: "field"} : field), "_", (lexer.has("identifier") ? {type: "identifier"} : identifier), "_", (lexer.has("assign") ? {type: "assign"} : assign), "_", "expr"], "postprocess": 
+    {"name": "class_field$ebnf$2$subexpression$1", "symbols": [(lexer.has("assign") ? {type: "assign"} : assign), "_", "expr"]},
+    {"name": "class_field$ebnf$2", "symbols": ["class_field$ebnf$2$subexpression$1"], "postprocess": id},
+    {"name": "class_field$ebnf$2", "symbols": [], "postprocess": () => null},
+    {"name": "class_field", "symbols": ["class_field$ebnf$1", (lexer.has("field") ? {type: "field"} : field), "_", (lexer.has("identifier") ? {type: "identifier"} : identifier), "_", "class_field$ebnf$2"], "postprocess": 
         (data) => {
             return {
                 type: "field",
+                static: data[0] ? data[0][0] : [],
                 name: data[3],
-                expr: data[7]
+                value: data[5] ? data[5][2] : []
             }
         }
         },
