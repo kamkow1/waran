@@ -20,7 +20,7 @@ statements
         }
     %}
 
-obj_prop_ref -> %identifier %dot func_exec
+obj_method_ref -> %identifier %dot func_exec
 {%
     (data) => {
         return {
@@ -91,7 +91,7 @@ statement
     |  %_continue {% id %}
     |  return_statement {% id %}
     |  property {% id %}
-    |  obj_prop_ref {% id %}
+    |  obj_method_ref {% id %}
 
 return_statement -> %_return _ expr
 {%

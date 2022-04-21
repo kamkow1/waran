@@ -80,7 +80,7 @@ const grammar: Grammar = {
             return [...data[0], data[3]];
         }
             },
-    {"name": "obj_prop_ref", "symbols": [(lexer.has("identifier") ? {type: "identifier"} : identifier), (lexer.has("dot") ? {type: "dot"} : dot), "func_exec"], "postprocess": 
+    {"name": "obj_method_ref", "symbols": [(lexer.has("identifier") ? {type: "identifier"} : identifier), (lexer.has("dot") ? {type: "dot"} : dot), "func_exec"], "postprocess": 
         (data) => {
             return {
                 type: "method_call",
@@ -145,7 +145,7 @@ const grammar: Grammar = {
     {"name": "statement", "symbols": [(lexer.has("_continue") ? {type: "_continue"} : _continue)], "postprocess": id},
     {"name": "statement", "symbols": ["return_statement"], "postprocess": id},
     {"name": "statement", "symbols": ["property"], "postprocess": id},
-    {"name": "statement", "symbols": ["obj_prop_ref"], "postprocess": id},
+    {"name": "statement", "symbols": ["obj_method_ref"], "postprocess": id},
     {"name": "return_statement", "symbols": [(lexer.has("_return") ? {type: "_return"} : _return), "_", "expr"], "postprocess": 
         (data) => {
             return {
