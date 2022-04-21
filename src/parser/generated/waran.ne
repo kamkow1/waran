@@ -20,27 +20,17 @@ statements
         }
     %}
 
-code_block -> "{" _ %NL (statements %NL _):?  "}" _
-{%
-    (data) => {
-        return {
-            type: "code_block",
-            body: data[3] ? data[3][0] : []
-        }
-    }
-%}
-
-object -> "{" _ %NL (properties %NL _):? "}" _
+object -> %prc "{" %NL _ (properties %NL _):? "}" _
 {%
     (data) => {
         return {
             type: "object",
-            props: data[3]
+            props: data[4] ? data[4][0] : []
         }
     }
 %}
 
-property -> %identifier _ "->" _ expr
+property -> %identifier _ ":" _ expr
 {%
     (data) => {
         return {
@@ -61,6 +51,16 @@ properties -> property
 {%
     (data) => {
         return [...data[0], data[3]];
+    }
+%}
+
+code_block -> "{" _ %NL (statements %NL _):?  "}" _
+{%
+    (data) => {
+        return {
+            type: "code_block",
+            body: data[3] ? data[3][0] : []
+        }
     }
 %}
 

@@ -4,6 +4,7 @@
 // @ts-ignore
 function id(d: any[]): any { return d[0]; }
 declare var NL: any;
+declare var prc: any;
 declare var identifier: any;
 declare var comment: any;
 declare var ml_comment: any;
@@ -78,29 +79,19 @@ const grammar: Grammar = {
             return [...data[0], data[3]];
         }
             },
-    {"name": "code_block$ebnf$1$subexpression$1", "symbols": ["statements", (lexer.has("NL") ? {type: "NL"} : NL), "_"]},
-    {"name": "code_block$ebnf$1", "symbols": ["code_block$ebnf$1$subexpression$1"], "postprocess": id},
-    {"name": "code_block$ebnf$1", "symbols": [], "postprocess": () => null},
-    {"name": "code_block", "symbols": [{"literal":"{"}, "_", (lexer.has("NL") ? {type: "NL"} : NL), "code_block$ebnf$1", {"literal":"}"}, "_"], "postprocess": 
-        (data) => {
-            return {
-                type: "code_block",
-                body: data[3] ? data[3][0] : []
-            }
-        }
-        },
     {"name": "object$ebnf$1$subexpression$1", "symbols": ["properties", (lexer.has("NL") ? {type: "NL"} : NL), "_"]},
     {"name": "object$ebnf$1", "symbols": ["object$ebnf$1$subexpression$1"], "postprocess": id},
     {"name": "object$ebnf$1", "symbols": [], "postprocess": () => null},
-    {"name": "object", "symbols": [{"literal":"{"}, "_", (lexer.has("NL") ? {type: "NL"} : NL), "object$ebnf$1", {"literal":"}"}, "_"], "postprocess": 
+    {"name": "object", "symbols": [(lexer.has("prc") ? {type: "prc"} : prc), {"literal":"{"}, (lexer.has("NL") ? {type: "NL"} : NL), "_", "object$ebnf$1", {"literal":"}"}, "_"], "postprocess": 
         (data) => {
+            console.log(data[4])
             return {
                 type: "object",
-                props: data[3]
+                props: data[4] ? data[4][0] : []
             }
         }
         },
-    {"name": "property", "symbols": [(lexer.has("identifier") ? {type: "identifier"} : identifier), "_", {"literal":"->"}, "_", "expr"], "postprocess": 
+    {"name": "property", "symbols": [(lexer.has("identifier") ? {type: "identifier"} : identifier), "_", {"literal":":"}, "_", "expr"], "postprocess": 
         (data) => {
             return {
                 type: "obj_prop",
@@ -117,6 +108,17 @@ const grammar: Grammar = {
     {"name": "properties", "symbols": ["properties", {"literal":";"}, (lexer.has("NL") ? {type: "NL"} : NL), "property"], "postprocess": 
         (data) => {
             return [...data[0], data[3]];
+        }
+        },
+    {"name": "code_block$ebnf$1$subexpression$1", "symbols": ["statements", (lexer.has("NL") ? {type: "NL"} : NL), "_"]},
+    {"name": "code_block$ebnf$1", "symbols": ["code_block$ebnf$1$subexpression$1"], "postprocess": id},
+    {"name": "code_block$ebnf$1", "symbols": [], "postprocess": () => null},
+    {"name": "code_block", "symbols": [{"literal":"{"}, "_", (lexer.has("NL") ? {type: "NL"} : NL), "code_block$ebnf$1", {"literal":"}"}, "_"], "postprocess": 
+        (data) => {
+            return {
+                type: "code_block",
+                body: data[3] ? data[3][0] : []
+            }
         }
         },
     {"name": "statement", "symbols": ["var_assign"], "postprocess": id},
