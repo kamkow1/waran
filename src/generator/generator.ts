@@ -127,6 +127,7 @@ const createStatement = (node: any) => {
         return `class ${name} {\n${body}\n}`;
     } else if (node.type == 'field') {
         const _static = node.static;
+        const _private = node.private;
         const name = createStatement(node.name);
         let value;
         if (node.value.length != 0) {
@@ -134,7 +135,9 @@ const createStatement = (node: any) => {
             value = createStatement(node.value);
         }
 
-        return `${_static ? _static : ''} ${name} ${value ? '=' : ''} ${value ? value : ''};`;
+        return `${_static ? createStatement(_static) : ''} ${_private ? '#' : ''}${name} ${value ? '=' : ''} ${value ? value : ''};`;
+    } else if (node.type == '_private') {
+        return node.value;
     } else if (node.type == '_static') {
         return node.value;
     } else if (node.type == 'identifier') {

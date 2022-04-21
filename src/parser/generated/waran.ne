@@ -20,14 +20,15 @@ statements
         }
     %}
 
-class_field -> (%_static _):? %field _ %identifier _ (%assign _ expr):?
+class_field -> (%_private _):? (%_static _):? %field _ %identifier _ (%assign _ expr):?
 {%
     (data) => {
         return {
             type: "field",
-            static: data[0] ? data[0][0] : [],
-            name: data[3],
-            value: data[5] ? data[5][2] : []
+            private: data[0] ? data[0][0] : [],
+            static: data[1] ? data[1][0] : [],
+            name: data[4],
+            value: data[8] ? data[8][2] : []
         }
     }
 %}
