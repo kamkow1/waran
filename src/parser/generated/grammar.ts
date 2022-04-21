@@ -84,7 +84,6 @@ const grammar: Grammar = {
     {"name": "object$ebnf$1", "symbols": [], "postprocess": () => null},
     {"name": "object", "symbols": [(lexer.has("prc") ? {type: "prc"} : prc), {"literal":"{"}, (lexer.has("NL") ? {type: "NL"} : NL), "_", "object$ebnf$1", {"literal":"}"}, "_"], "postprocess": 
         (data) => {
-            console.log(data[4])
             return {
                 type: "object",
                 props: data[4] ? data[4][0] : []
