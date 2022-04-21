@@ -47,5 +47,6 @@ export const lexer = moo.compile({
     at:             '@',
     colon:          ':',
     prc:            '%',
-    dot:            '.'
+    dot:            '.',
+    comma:          ','
 });

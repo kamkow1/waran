@@ -69,7 +69,7 @@ properties -> property
         return [data[0]];
     }
 %}
-|   properties ";" %NL _ property
+|   properties "," %NL _ property
 {%
     (data) => {
         return [...data[0], data[4]];

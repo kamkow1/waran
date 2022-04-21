@@ -123,7 +123,7 @@ const grammar: Grammar = {
             return [data[0]];
         }
         },
-    {"name": "properties", "symbols": ["properties", {"literal":";"}, (lexer.has("NL") ? {type: "NL"} : NL), "_", "property"], "postprocess": 
+    {"name": "properties", "symbols": ["properties", {"literal":","}, (lexer.has("NL") ? {type: "NL"} : NL), "_", "property"], "postprocess": 
         (data) => {
             return [...data[0], data[4]];
         }
