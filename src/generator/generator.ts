@@ -115,6 +115,11 @@ const createStatement = (node: any) => {
         const method = createStatement(node.method);
 
         return `${name}.${method};`;
+    } else if (node.type == 'prop_ref') {
+        const name = createStatement(node.obj_name);
+        const prop = createStatement(node.prop);
+
+        return `${name}.${prop}`;
     } else if (node.type == 'identifier') {
         return node.value;
     } else if (node.type == 'number') {
