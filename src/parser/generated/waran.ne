@@ -20,6 +20,17 @@ statements
         }
     %}
 
+class_def -> %_class _ %identifier _ "{" %NL _ (statements %NL _):? "}" _
+{%
+    (data) => {
+        return {
+            type: "class",
+            name: data[2],
+            body: data[7] ? data[7][0] : []
+        }
+    }
+%}
+
 obj_prop_ref -> %identifier %dot %identifier
 {%
     (data) => {
@@ -104,6 +115,7 @@ statement
     |  property {% id %}
     |  obj_method_ref {% id %}
     |  obj_prop_ref {% id %}
+    |  class_def {% id %}
 
 return_statement -> %_return _ expr
 {%
