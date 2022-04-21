@@ -103,6 +103,8 @@ const createStatement = (node: any) => {
     } else if (node.type == 'return_statement') {
         const val = node.returned_val;
         return `return ${val}`;
+    } else if (node.type == 'obj_prop') {
+        return `${node.name}: ${node.val}`;
     } else if (node.type == 'identifier') {
         return node.value;
     } else if (node.type == 'number') {

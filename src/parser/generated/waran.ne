@@ -30,6 +30,40 @@ code_block -> "{" _ %NL (statements %NL _):?  "}" _
     }
 %}
 
+object -> "{" _ %NL (properties %NL _):? "}" _
+{%
+    (data) => {
+        return {
+            type: "object",
+            props: data[3]
+        }
+    }
+%}
+
+property -> %identifier _ "->" _ expr
+{%
+    (data) => {
+        return {
+            type: "obj_prop",
+            name: data[0],
+            val: data[4]
+        }
+    }
+%}
+
+properties -> property
+{%
+    (data) => {
+        return [data[0]];
+    }
+%}
+|   properties ";" %NL property
+{%
+    (data) => {
+        return [...data[0], data[3]];
+    }
+%}
+
 statement 
     -> var_assign {% id %}
     |  func_exec  {% id %}
@@ -45,6 +79,7 @@ statement
     |  %_break {% id %}
     |  %_continue {% id %}
     |  return_statement {% id %}
+    |  property {% id %}
 
 return_statement -> %_return _ expr
 {%
@@ -175,6 +210,7 @@ expr
     |  statement {% id %}
     |  lambda {% id %}
     |  condition {% id %}
+    |  object {% id %}
 
 if -> %_if _ "(" _ if_expr _ ")" _ statement
 {%

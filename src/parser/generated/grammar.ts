@@ -4,12 +4,12 @@
 // @ts-ignore
 function id(d: any[]): any { return d[0]; }
 declare var NL: any;
+declare var identifier: any;
 declare var comment: any;
 declare var ml_comment: any;
 declare var _break: any;
 declare var _continue: any;
 declare var _return: any;
-declare var identifier: any;
 declare var inc_dec: any;
 declare var _while: any;
 declare var _for: any;
@@ -89,6 +89,36 @@ const grammar: Grammar = {
             }
         }
         },
+    {"name": "object$ebnf$1$subexpression$1", "symbols": ["properties", (lexer.has("NL") ? {type: "NL"} : NL), "_"]},
+    {"name": "object$ebnf$1", "symbols": ["object$ebnf$1$subexpression$1"], "postprocess": id},
+    {"name": "object$ebnf$1", "symbols": [], "postprocess": () => null},
+    {"name": "object", "symbols": [{"literal":"{"}, "_", (lexer.has("NL") ? {type: "NL"} : NL), "object$ebnf$1", {"literal":"}"}, "_"], "postprocess": 
+        (data) => {
+            return {
+                type: "object",
+                props: data[3]
+            }
+        }
+        },
+    {"name": "property", "symbols": [(lexer.has("identifier") ? {type: "identifier"} : identifier), "_", {"literal":"->"}, "_", "expr"], "postprocess": 
+        (data) => {
+            return {
+                type: "obj_prop",
+                name: data[0],
+                val: data[4]
+            }
+        }
+        },
+    {"name": "properties", "symbols": ["property"], "postprocess": 
+        (data) => {
+            return [data[0]];
+        }
+        },
+    {"name": "properties", "symbols": ["properties", {"literal":";"}, (lexer.has("NL") ? {type: "NL"} : NL), "property"], "postprocess": 
+        (data) => {
+            return [...data[0], data[3]];
+        }
+        },
     {"name": "statement", "symbols": ["var_assign"], "postprocess": id},
     {"name": "statement", "symbols": ["func_exec"], "postprocess": id},
     {"name": "statement", "symbols": [(lexer.has("comment") ? {type: "comment"} : comment)], "postprocess": id},
@@ -103,6 +133,7 @@ const grammar: Grammar = {
     {"name": "statement", "symbols": [(lexer.has("_break") ? {type: "_break"} : _break)], "postprocess": id},
     {"name": "statement", "symbols": [(lexer.has("_continue") ? {type: "_continue"} : _continue)], "postprocess": id},
     {"name": "statement", "symbols": ["return_statement"], "postprocess": id},
+    {"name": "statement", "symbols": ["property"], "postprocess": id},
     {"name": "return_statement", "symbols": [(lexer.has("_return") ? {type: "_return"} : _return), "_", "expr"], "postprocess": 
         (data) => {
             return {
@@ -213,6 +244,7 @@ const grammar: Grammar = {
     {"name": "expr", "symbols": ["statement"], "postprocess": id},
     {"name": "expr", "symbols": ["lambda"], "postprocess": id},
     {"name": "expr", "symbols": ["condition"], "postprocess": id},
+    {"name": "expr", "symbols": ["object"], "postprocess": id},
     {"name": "if", "symbols": [(lexer.has("_if") ? {type: "_if"} : _if), "_", {"literal":"("}, "_", "if_expr", "_", {"literal":")"}, "_", "statement"], "postprocess": 
         (data) => {
             return {
