@@ -128,14 +128,25 @@ const createStatement = (node: any) => {
     } else if (node.type == 'field') {
         const _static = node.static;
         const _private = node.private;
+        const terminal = node.terminal;
         const name = createStatement(node.name);
         let value;
-        if (node.value.length != 0) {
+        if (node.value) {
             console.log('value normalnie')
             value = createStatement(node.value);
         }
 
-        return `${_static ? createStatement(_static) : ''} ${_private ? '#' : ''}${name} ${value ? '=' : ''} ${value ? value : ''};`;
+        const shouldAddGetter = node.get;
+        const shouldAddSetter = node.set;
+
+        const getter = `get ${name} () {return this.${name}}`;
+        const setter = `set ${name} (val) {this.${name} = val}`;
+
+        return `${_static ? createStatement(_static) : ''} ${_private ? '#' : ''}${name} ${value ? '=' : ''} ${value ? value : ''};
+        ${shouldAddGetter ? getter : ''}
+        ${shouldAddSetter ? setter : ''}`;
+    } else if (node.type == 'terminal') {
+        return node.value;
     } else if (node.type == '_private') {
         return node.value;
     } else if (node.type == '_static') {

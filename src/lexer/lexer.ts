@@ -12,6 +12,8 @@ export const lexer = moo.compile({
     _static:        'static',
     _private:       'private',
     terminal:       'terminal',
+    _get:           'get',
+    _set:           'set',
     inc_dec:        /\++|\--/,
     increment:      '++',
     decrement:      '--',
@@ -53,5 +55,6 @@ export const lexer = moo.compile({
     colon:          ':',
     prc:            '%',
     dot:            '.',
-    comma:          ','
+    comma:          ',',
+    hash:           '#'
 });
