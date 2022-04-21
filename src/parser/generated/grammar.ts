@@ -5,6 +5,7 @@
 function id(d: any[]): any { return d[0]; }
 declare var NL: any;
 declare var _private: any;
+declare var terminal: any;
 declare var _static: any;
 declare var field: any;
 declare var identifier: any;
@@ -87,19 +88,23 @@ const grammar: Grammar = {
     {"name": "class_field$ebnf$1$subexpression$1", "symbols": [(lexer.has("_private") ? {type: "_private"} : _private), "_"]},
     {"name": "class_field$ebnf$1", "symbols": ["class_field$ebnf$1$subexpression$1"], "postprocess": id},
     {"name": "class_field$ebnf$1", "symbols": [], "postprocess": () => null},
-    {"name": "class_field$ebnf$2$subexpression$1", "symbols": [(lexer.has("_static") ? {type: "_static"} : _static), "_"]},
+    {"name": "class_field$ebnf$2$subexpression$1", "symbols": [(lexer.has("terminal") ? {type: "terminal"} : terminal), "_"]},
     {"name": "class_field$ebnf$2", "symbols": ["class_field$ebnf$2$subexpression$1"], "postprocess": id},
     {"name": "class_field$ebnf$2", "symbols": [], "postprocess": () => null},
-    {"name": "class_field$ebnf$3$subexpression$1", "symbols": [(lexer.has("assign") ? {type: "assign"} : assign), "_", "expr"]},
+    {"name": "class_field$ebnf$3$subexpression$1", "symbols": [(lexer.has("_static") ? {type: "_static"} : _static), "_"]},
     {"name": "class_field$ebnf$3", "symbols": ["class_field$ebnf$3$subexpression$1"], "postprocess": id},
     {"name": "class_field$ebnf$3", "symbols": [], "postprocess": () => null},
-    {"name": "class_field", "symbols": ["class_field$ebnf$1", "class_field$ebnf$2", (lexer.has("field") ? {type: "field"} : field), "_", (lexer.has("identifier") ? {type: "identifier"} : identifier), "_", "class_field$ebnf$3"], "postprocess": 
+    {"name": "class_field$ebnf$4$subexpression$1", "symbols": [(lexer.has("assign") ? {type: "assign"} : assign), "_", "expr"]},
+    {"name": "class_field$ebnf$4", "symbols": ["class_field$ebnf$4$subexpression$1"], "postprocess": id},
+    {"name": "class_field$ebnf$4", "symbols": [], "postprocess": () => null},
+    {"name": "class_field", "symbols": ["class_field$ebnf$1", "class_field$ebnf$2", "class_field$ebnf$3", (lexer.has("field") ? {type: "field"} : field), "_", (lexer.has("identifier") ? {type: "identifier"} : identifier), "_", "class_field$ebnf$4"], "postprocess": 
         (data) => {
             return {
                 type: "field",
+                terminal: data[1] ? data[1][0] : [],
                 private: data[0] ? data[0][0] : [],
-                static: data[1] ? data[1][0] : [],
-                name: data[4],
+                static: data[2] ? data[2][0] : [],
+                name: data[5],
                 value: data[8] ? data[8][2] : []
             }
         }

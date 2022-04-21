@@ -11,6 +11,7 @@ export const lexer = moo.compile({
     field:          'field',
     _static:        'static',
     _private:       'private',
+    terminal:       'terminal',
     inc_dec:        /\++|\--/,
     increment:      '++',
     decrement:      '--',
