@@ -20,6 +20,17 @@ statements
         }
     %}
 
+obj_prop_ref -> %identifier %dot %identifier
+{%
+    (data) => {
+        return {
+            type: "prop_ref",
+            obj_name: data[0],
+            prop: data[2]
+        }
+    }
+%}
+
 obj_method_ref -> %identifier %dot func_exec
 {%
     (data) => {
@@ -58,10 +69,10 @@ properties -> property
         return [data[0]];
     }
 %}
-|   properties ";" %NL property
+|   properties ";" %NL _ property
 {%
     (data) => {
-        return [...data[0], data[3]];
+        return [...data[0], data[4]];
     }
 %}
 
@@ -92,6 +103,7 @@ statement
     |  return_statement {% id %}
     |  property {% id %}
     |  obj_method_ref {% id %}
+    |  obj_prop_ref {% id %}
 
 return_statement -> %_return _ expr
 {%

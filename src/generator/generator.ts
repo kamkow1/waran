@@ -136,6 +136,7 @@ const createStatement = (node: any) => {
     } else if (node.type == 'or') {
         return node.value;
     }   else {
+        console.log(JSON.stringify(node, null, 4))
         console.log(clc.redBright('unhandled ast node'));
         process.exit(0);
     }

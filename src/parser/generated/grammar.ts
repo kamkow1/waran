@@ -80,6 +80,15 @@ const grammar: Grammar = {
             return [...data[0], data[3]];
         }
             },
+    {"name": "obj_prop_ref", "symbols": [(lexer.has("identifier") ? {type: "identifier"} : identifier), (lexer.has("dot") ? {type: "dot"} : dot), (lexer.has("identifier") ? {type: "identifier"} : identifier)], "postprocess": 
+        (data) => {
+            return {
+                type: "prop_ref",
+                obj_name: data[0],
+                prop: data[2]
+            }
+        }
+        },
     {"name": "obj_method_ref", "symbols": [(lexer.has("identifier") ? {type: "identifier"} : identifier), (lexer.has("dot") ? {type: "dot"} : dot), "func_exec"], "postprocess": 
         (data) => {
             return {
@@ -114,9 +123,9 @@ const grammar: Grammar = {
             return [data[0]];
         }
         },
-    {"name": "properties", "symbols": ["properties", {"literal":";"}, (lexer.has("NL") ? {type: "NL"} : NL), "property"], "postprocess": 
+    {"name": "properties", "symbols": ["properties", {"literal":";"}, (lexer.has("NL") ? {type: "NL"} : NL), "_", "property"], "postprocess": 
         (data) => {
-            return [...data[0], data[3]];
+            return [...data[0], data[4]];
         }
         },
     {"name": "code_block$ebnf$1$subexpression$1", "symbols": ["statements", (lexer.has("NL") ? {type: "NL"} : NL), "_"]},
@@ -146,6 +155,7 @@ const grammar: Grammar = {
     {"name": "statement", "symbols": ["return_statement"], "postprocess": id},
     {"name": "statement", "symbols": ["property"], "postprocess": id},
     {"name": "statement", "symbols": ["obj_method_ref"], "postprocess": id},
+    {"name": "statement", "symbols": ["obj_prop_ref"], "postprocess": id},
     {"name": "return_statement", "symbols": [(lexer.has("_return") ? {type: "_return"} : _return), "_", "expr"], "postprocess": 
         (data) => {
             return {
