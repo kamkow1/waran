@@ -20,6 +20,17 @@ statements
         }
     %}
 
+class_field -> (%_static _):? %field _ %identifier _ %assign _ expr
+{%
+    (data) => {
+        return {
+            type: "field",
+            name: data[3],
+            expr: data[7]
+        }
+    }
+%}
+
 class_def -> %_class _ %identifier _ "{" %NL _ (statements %NL _):? "}" _
 {%
     (data) => {
@@ -116,6 +127,7 @@ statement
     |  obj_method_ref {% id %}
     |  obj_prop_ref {% id %}
     |  class_def {% id %}
+    |  class_field {% id %}
 
 return_statement -> %_return _ expr
 {%

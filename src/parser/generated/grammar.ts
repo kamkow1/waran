@@ -4,8 +4,11 @@
 // @ts-ignore
 function id(d: any[]): any { return d[0]; }
 declare var NL: any;
-declare var _class: any;
+declare var _static: any;
+declare var field: any;
 declare var identifier: any;
+declare var assign: any;
+declare var _class: any;
 declare var dot: any;
 declare var prc: any;
 declare var comment: any;
@@ -18,7 +21,6 @@ declare var _while: any;
 declare var _for: any;
 declare var use: any;
 declare var at: any;
-declare var assign: any;
 declare var string: any;
 declare var number: any;
 declare var _bool: any;
@@ -81,6 +83,18 @@ const grammar: Grammar = {
             return [...data[0], data[3]];
         }
             },
+    {"name": "class_field$ebnf$1$subexpression$1", "symbols": [(lexer.has("_static") ? {type: "_static"} : _static), "_"]},
+    {"name": "class_field$ebnf$1", "symbols": ["class_field$ebnf$1$subexpression$1"], "postprocess": id},
+    {"name": "class_field$ebnf$1", "symbols": [], "postprocess": () => null},
+    {"name": "class_field", "symbols": ["class_field$ebnf$1", (lexer.has("field") ? {type: "field"} : field), "_", (lexer.has("identifier") ? {type: "identifier"} : identifier), "_", (lexer.has("assign") ? {type: "assign"} : assign), "_", "expr"], "postprocess": 
+        (data) => {
+            return {
+                type: "field",
+                name: data[3],
+                expr: data[7]
+            }
+        }
+        },
     {"name": "class_def$ebnf$1$subexpression$1", "symbols": ["statements", (lexer.has("NL") ? {type: "NL"} : NL), "_"]},
     {"name": "class_def$ebnf$1", "symbols": ["class_def$ebnf$1$subexpression$1"], "postprocess": id},
     {"name": "class_def$ebnf$1", "symbols": [], "postprocess": () => null},
@@ -170,6 +184,7 @@ const grammar: Grammar = {
     {"name": "statement", "symbols": ["obj_method_ref"], "postprocess": id},
     {"name": "statement", "symbols": ["obj_prop_ref"], "postprocess": id},
     {"name": "statement", "symbols": ["class_def"], "postprocess": id},
+    {"name": "statement", "symbols": ["class_field"], "postprocess": id},
     {"name": "return_statement", "symbols": [(lexer.has("_return") ? {type: "_return"} : _return), "_", "expr"], "postprocess": 
         (data) => {
             return {

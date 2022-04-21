@@ -120,6 +120,11 @@ const createStatement = (node: any) => {
         const prop = createStatement(node.prop);
 
         return `${name}.${prop}`;
+    } else if (node.type == 'class') {
+        const name = createStatement(node.name);
+        const body = node.body? node.body.map((elem: any) => createStatement(elem)).join('\n') : ''; 
+
+        return `class ${name} {\n${body}\n}`;
     } else if (node.type == 'identifier') {
         return node.value;
     } else if (node.type == 'number') {
