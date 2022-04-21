@@ -110,6 +110,11 @@ const createStatement = (node: any) => {
         const name = createStatement(node.name);
         const value = createStatement(node.val);
         return `${name}: ${value}`;
+    } else if (node.type == 'method_call') {
+        const name = createStatement(node.obj_name);
+        const method = createStatement(node.method);
+
+        return `${name}.${method};`;
     } else if (node.type == 'identifier') {
         return node.value;
     } else if (node.type == 'number') {

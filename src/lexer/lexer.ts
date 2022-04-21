@@ -46,5 +46,6 @@ export const lexer = moo.compile({
     pipe:           '|',
     at:             '@',
     colon:          ':',
-    prc:            '%'
+    prc:            '%',
+    dot:            '.'
 });

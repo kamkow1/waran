@@ -20,6 +20,17 @@ statements
         }
     %}
 
+obj_prop_ref -> %identifier %dot func_exec
+{%
+    (data) => {
+        return {
+            type: "method_call",
+            obj_name: data[0],
+            method: data[2]
+        }
+    }
+%}
+
 object -> %prc "{" %NL _ (properties %NL _):? "}" _
 {%
     (data) => {
@@ -80,6 +91,7 @@ statement
     |  %_continue {% id %}
     |  return_statement {% id %}
     |  property {% id %}
+    |  obj_prop_ref {% id %}
 
 return_statement -> %_return _ expr
 {%

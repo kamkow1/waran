@@ -4,8 +4,9 @@
 // @ts-ignore
 function id(d: any[]): any { return d[0]; }
 declare var NL: any;
-declare var prc: any;
 declare var identifier: any;
+declare var dot: any;
+declare var prc: any;
 declare var comment: any;
 declare var ml_comment: any;
 declare var _break: any;
@@ -79,6 +80,15 @@ const grammar: Grammar = {
             return [...data[0], data[3]];
         }
             },
+    {"name": "obj_prop_ref", "symbols": [(lexer.has("identifier") ? {type: "identifier"} : identifier), (lexer.has("dot") ? {type: "dot"} : dot), "func_exec"], "postprocess": 
+        (data) => {
+            return {
+                type: "method_call",
+                obj_name: data[0],
+                method: data[2]
+            }
+        }
+        },
     {"name": "object$ebnf$1$subexpression$1", "symbols": ["properties", (lexer.has("NL") ? {type: "NL"} : NL), "_"]},
     {"name": "object$ebnf$1", "symbols": ["object$ebnf$1$subexpression$1"], "postprocess": id},
     {"name": "object$ebnf$1", "symbols": [], "postprocess": () => null},
@@ -135,6 +145,7 @@ const grammar: Grammar = {
     {"name": "statement", "symbols": [(lexer.has("_continue") ? {type: "_continue"} : _continue)], "postprocess": id},
     {"name": "statement", "symbols": ["return_statement"], "postprocess": id},
     {"name": "statement", "symbols": ["property"], "postprocess": id},
+    {"name": "statement", "symbols": ["obj_prop_ref"], "postprocess": id},
     {"name": "return_statement", "symbols": [(lexer.has("_return") ? {type: "_return"} : _return), "_", "expr"], "postprocess": 
         (data) => {
             return {
