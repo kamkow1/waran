@@ -13,6 +13,7 @@ export const lexer = moo.compile({
     _static:        'static',
     _private:       'private',
     terminal:       'terminal',
+    _from:          'from',
     _new:           'new',
     _get:           'get',
     _set:           'set',

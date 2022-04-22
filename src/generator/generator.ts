@@ -123,8 +123,14 @@ const createStatement = (node: any) => {
     } else if (node.type == 'class') {
         const name = createStatement(node.name);
         const body = createStatement(node.body);
+        let base;
+        if (typeof node.base_class === 'object') {
+            base = createStatement(node.base_class);
+        }
+        
+        const _extends = `${base ? `extends ${base}` : ''}`;
 
-        return `class ${name} ${body}`;
+        return `class ${name} ${_extends} ${body}`;
     } else if (node.type == 'field') {
         const _static = node.static;
         const _private = node.private;
@@ -184,7 +190,9 @@ const createStatement = (node: any) => {
         return node.value;
     } else if (node.type == 'or') {
         return node.value;
-    }   else {
+    } else if (node.length == 0) {
+        return '';
+    } else {
         console.log(JSON.stringify(node, null, 4))
         console.log(clc.redBright('unhandled ast node'));
         process.exit(0);

@@ -83,13 +83,14 @@ class_field -> %field _ (%_private _):? (%terminal _):? (%_static _):? _ %identi
     }
 %}
 
-class_def -> %_class _ %identifier _ code_block
+class_def -> %_class _ %identifier _ (%_from _ %identifier _):? code_block
 {%
     (data) => {
         return {
             type: "class",
             name: data[2],
-            body: data[4]
+            base_class: data[4] ? data[4][2] : [],
+            body: data[5]
         }
     }
 %}

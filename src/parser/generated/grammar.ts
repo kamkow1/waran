@@ -15,6 +15,7 @@ declare var field: any;
 declare var terminal: any;
 declare var assign: any;
 declare var _class: any;
+declare var _from: any;
 declare var dot: any;
 declare var prc: any;
 declare var comment: any;
@@ -172,12 +173,16 @@ const grammar: Grammar = {
             }
         }
         },
-    {"name": "class_def", "symbols": [(lexer.has("_class") ? {type: "_class"} : _class), "_", (lexer.has("identifier") ? {type: "identifier"} : identifier), "_", "code_block"], "postprocess": 
+    {"name": "class_def$ebnf$1$subexpression$1", "symbols": [(lexer.has("_from") ? {type: "_from"} : _from), "_", (lexer.has("identifier") ? {type: "identifier"} : identifier), "_"]},
+    {"name": "class_def$ebnf$1", "symbols": ["class_def$ebnf$1$subexpression$1"], "postprocess": id},
+    {"name": "class_def$ebnf$1", "symbols": [], "postprocess": () => null},
+    {"name": "class_def", "symbols": [(lexer.has("_class") ? {type: "_class"} : _class), "_", (lexer.has("identifier") ? {type: "identifier"} : identifier), "_", "class_def$ebnf$1", "code_block"], "postprocess": 
         (data) => {
             return {
                 type: "class",
                 name: data[2],
-                body: data[4]
+                base_class: data[4] ? data[4][2] : [],
+                body: data[5]
             }
         }
         },
