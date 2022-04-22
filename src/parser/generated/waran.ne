@@ -42,7 +42,7 @@ setter -> %_set _ %identifier _ lambda
     }
 %}
 
-new_object -> %_new _ %identifier _ "(" _ (params _):? ")"
+new_object -> %_new _ %identifier _ "(" _ (args _):? ")"
 {%
     (data) => {
         return {
@@ -95,13 +95,14 @@ class_def -> %_class _ %identifier _ (%_from _ %identifier _):? code_block
     }
 %}
 
-obj_prop_ref -> %identifier %dot %identifier
+obj_prop_ref -> %identifier %dot %identifier _ (%assign _ expr _):?
 {%
     (data) => {
         return {
             type: "prop_ref",
             obj_name: data[0],
-            prop: data[2]
+            prop: data[2],
+            val: data[4] ? data[4][2] : []
         }
     }
 %}

@@ -108,7 +108,7 @@ const grammar: Grammar = {
             }
         }
         },
-    {"name": "new_object$ebnf$1$subexpression$1", "symbols": ["params", "_"]},
+    {"name": "new_object$ebnf$1$subexpression$1", "symbols": ["args", "_"]},
     {"name": "new_object$ebnf$1", "symbols": ["new_object$ebnf$1$subexpression$1"], "postprocess": id},
     {"name": "new_object$ebnf$1", "symbols": [], "postprocess": () => null},
     {"name": "new_object", "symbols": [(lexer.has("_new") ? {type: "_new"} : _new), "_", (lexer.has("identifier") ? {type: "identifier"} : identifier), "_", {"literal":"("}, "_", "new_object$ebnf$1", {"literal":")"}], "postprocess": 
@@ -186,12 +186,16 @@ const grammar: Grammar = {
             }
         }
         },
-    {"name": "obj_prop_ref", "symbols": [(lexer.has("identifier") ? {type: "identifier"} : identifier), (lexer.has("dot") ? {type: "dot"} : dot), (lexer.has("identifier") ? {type: "identifier"} : identifier)], "postprocess": 
+    {"name": "obj_prop_ref$ebnf$1$subexpression$1", "symbols": [(lexer.has("assign") ? {type: "assign"} : assign), "_", "expr", "_"]},
+    {"name": "obj_prop_ref$ebnf$1", "symbols": ["obj_prop_ref$ebnf$1$subexpression$1"], "postprocess": id},
+    {"name": "obj_prop_ref$ebnf$1", "symbols": [], "postprocess": () => null},
+    {"name": "obj_prop_ref", "symbols": [(lexer.has("identifier") ? {type: "identifier"} : identifier), (lexer.has("dot") ? {type: "dot"} : dot), (lexer.has("identifier") ? {type: "identifier"} : identifier), "_", "obj_prop_ref$ebnf$1"], "postprocess": 
         (data) => {
             return {
                 type: "prop_ref",
                 obj_name: data[0],
-                prop: data[2]
+                prop: data[2],
+                val: data[4] ? data[4][2] : []
             }
         }
         },

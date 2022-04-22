@@ -8,7 +8,7 @@ const createJS = (ast: any) => {
     const lines = [];
     for (const statement of ast) {
         const line = createStatement(statement);
-        lines.push(line);
+        lines.push(line + '\n');
     }
 
     return lines.join('\n');
@@ -109,7 +109,7 @@ const createStatement = (node: any) => {
     } else if (node.type == 'obj_prop') {
         const name = createStatement(node.name);
         const value = createStatement(node.val);
-        return `${name}: ${value}`;
+        return `${name}: ${value},`;
     } else if (node.type == 'method_call') {
         const name = createStatement(node.obj_name);
         const method = createStatement(node.method);
@@ -118,6 +118,10 @@ const createStatement = (node: any) => {
     } else if (node.type == 'prop_ref') {
         const name = createStatement(node.obj_name);
         const prop = createStatement(node.prop);
+        const val = createStatement(node.val);
+        if (val.length > 0) {
+            return `${name}.${prop} = ${val};`;
+        }
 
         return `${name}.${prop}`;
     } else if (node.type == 'class') {
@@ -161,6 +165,10 @@ const createStatement = (node: any) => {
         const arr  = params.map((param: any) => createStatement(param));
         const paramNames = arr.join(', ');
         const body = createStatement(node.body);
+
+        if (name == 'ctor') {
+            return `constructor(${paramNames}) ${body}`;
+        }
 
         return `${_static ? 'static' : ''} ${_private ? '#' : ''}${name} (${paramNames}) ${body}`;
     } else if (node.type == 'new_object') {
