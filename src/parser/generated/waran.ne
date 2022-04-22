@@ -118,12 +118,12 @@ obj_method_ref -> %identifier %dot func_exec
     }
 %}
 
-object -> %prc "{" %NL _ (properties %NL _):? "}" _
+object -> %prc "{" _ (%NL):? (_ properties _):? (%NL):? _ "}" _
 {%
     (data) => {
         return {
             type: "object",
-            props: data[4] ? data[4][0] : []
+            props: data[4] ? data[4][1] : []
         }
     }
 %}

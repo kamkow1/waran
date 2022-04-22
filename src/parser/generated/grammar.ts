@@ -208,14 +208,20 @@ const grammar: Grammar = {
             }
         }
         },
-    {"name": "object$ebnf$1$subexpression$1", "symbols": ["properties", (lexer.has("NL") ? {type: "NL"} : NL), "_"]},
+    {"name": "object$ebnf$1$subexpression$1", "symbols": [(lexer.has("NL") ? {type: "NL"} : NL)]},
     {"name": "object$ebnf$1", "symbols": ["object$ebnf$1$subexpression$1"], "postprocess": id},
     {"name": "object$ebnf$1", "symbols": [], "postprocess": () => null},
-    {"name": "object", "symbols": [(lexer.has("prc") ? {type: "prc"} : prc), {"literal":"{"}, (lexer.has("NL") ? {type: "NL"} : NL), "_", "object$ebnf$1", {"literal":"}"}, "_"], "postprocess": 
+    {"name": "object$ebnf$2$subexpression$1", "symbols": ["_", "properties", "_"]},
+    {"name": "object$ebnf$2", "symbols": ["object$ebnf$2$subexpression$1"], "postprocess": id},
+    {"name": "object$ebnf$2", "symbols": [], "postprocess": () => null},
+    {"name": "object$ebnf$3$subexpression$1", "symbols": [(lexer.has("NL") ? {type: "NL"} : NL)]},
+    {"name": "object$ebnf$3", "symbols": ["object$ebnf$3$subexpression$1"], "postprocess": id},
+    {"name": "object$ebnf$3", "symbols": [], "postprocess": () => null},
+    {"name": "object", "symbols": [(lexer.has("prc") ? {type: "prc"} : prc), {"literal":"{"}, "_", "object$ebnf$1", "object$ebnf$2", "object$ebnf$3", "_", {"literal":"}"}, "_"], "postprocess": 
         (data) => {
             return {
                 type: "object",
-                props: data[4] ? data[4][0] : []
+                props: data[4] ? data[4][1] : []
             }
         }
         },
