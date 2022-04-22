@@ -58,46 +58,45 @@ app
 `import @io
 import @math
 
-add_five := func(number) -> {
-    result := add(number 5)
-    return result
-}
+class Program {
+    method static main() {
+        hello := "hello"
+        waran := "waran!"
 
-counter := 0
+        ## calling custom function
+        ## prints 9 to the console
 
-main := func() -> {
-    hello := "hello"
-    waran := "waran!"
+        std_out(hello waran)
 
-    ## calling custom function
-    ## prints 9 to the console
-    std_out(add_five(4)) 
+        ## for loop
+        for(i := 0 | i <= 10 | i++) {
 
-    std_out(hello waran)
+            ## skip the 5th iteration
+            if (i == 5) {
+                continue
+            }
 
-    ## for loop
-    for(i := 0 | i <= 10 | i++) {
-
-        ## skip the 5th iteration
-        if (i == 5) {
-            continue
+            std_out(i)
         }
 
-        std_out(i)
-    }
+        ## while loop
+        while(true) {
+            if (counter > 10) {
+                break    
+            }
 
-    ## while loop
-    while(true) {
-        if (counter > 10) {
-            break    
+            std_out(counter)
+            counter++
         }
 
-        std_out(counter)
-        counter++
+
+        my_array := ["string value" 4738 -21.564 true]
+
+        std_out(my_array[2])
     }
 }
 
-main()`;
+Program.main()`;
 
                 fs.appendFileSync(mainFile, template);
             });
