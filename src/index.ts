@@ -56,43 +56,10 @@ app
 
                 const template = 
 `import @io
-import @math
 
 class Program {
     method static main() {
-        hello := "hello"
-        waran := "waran!"
-
-        ## calling custom function
-        ## prints 9 to the console
-
-        std_out(hello waran)
-
-        ## for loop
-        for(i := 0 | i <= 10 | i++) {
-
-            ## skip the 5th iteration
-            if (i == 5) {
-                continue
-            }
-
-            std_out(i)
-        }
-
-        ## while loop
-        while(true) {
-            if (counter > 10) {
-                break    
-            }
-
-            std_out(counter)
-            counter++
-        }
-
-
-        my_array := ["string value" 4738 -21.564 true]
-
-        std_out(my_array[2])
+        std_out("hello waran")
     }
 }
 
