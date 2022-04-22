@@ -7,6 +7,7 @@ declare var NL: any;
 declare var _get: any;
 declare var identifier: any;
 declare var _set: any;
+declare var _new: any;
 declare var method: any;
 declare var _private: any;
 declare var _static: any;
@@ -103,6 +104,18 @@ const grammar: Grammar = {
                 type: "setter",
                 prop_name: data[2],
                 func: data[4]
+            }
+        }
+        },
+    {"name": "new_object$ebnf$1$subexpression$1", "symbols": ["params", "_"]},
+    {"name": "new_object$ebnf$1", "symbols": ["new_object$ebnf$1$subexpression$1"], "postprocess": id},
+    {"name": "new_object$ebnf$1", "symbols": [], "postprocess": () => null},
+    {"name": "new_object", "symbols": [(lexer.has("_new") ? {type: "_new"} : _new), "_", (lexer.has("identifier") ? {type: "identifier"} : identifier), "_", {"literal":"("}, "_", "new_object$ebnf$1", {"literal":")"}], "postprocess": 
+        (data) => {
+            return {
+                type: "new_object",
+                class_name: data[2],
+                params: data[6] ? data[6][0] : []
             }
         }
         },
@@ -360,6 +373,7 @@ const grammar: Grammar = {
     {"name": "expr", "symbols": ["lambda"], "postprocess": id},
     {"name": "expr", "symbols": ["condition"], "postprocess": id},
     {"name": "expr", "symbols": ["object"], "postprocess": id},
+    {"name": "expr", "symbols": ["new_object"], "postprocess": id},
     {"name": "if", "symbols": [(lexer.has("_if") ? {type: "_if"} : _if), "_", {"literal":"("}, "_", "if_expr", "_", {"literal":")"}, "_", "statement"], "postprocess": 
         (data) => {
             return {

@@ -157,6 +157,13 @@ const createStatement = (node: any) => {
         const body = createStatement(node.body);
 
         return `${_static ? 'static' : ''} ${_private ? '#' : ''}${name} (${paramNames}) ${body}`;
+    } else if (node.type == 'new_object') {
+        const className = createStatement(node.class_name);
+        const params = node.params;
+        const arr  = params.map((param: any) => createStatement(param));
+        const paramNames = arr.join(', ');
+        
+        return `new ${className}(${paramNames})`;
     } else if (node.type == 'identifier') {
         return node.value;
     } else if (node.type == 'number') {

@@ -42,6 +42,17 @@ setter -> %_set _ %identifier _ lambda
     }
 %}
 
+new_object -> %_new _ %identifier _ "(" _ (params _):? ")"
+{%
+    (data) => {
+        return {
+            type: "new_object",
+            class_name: data[2],
+            params: data[6] ? data[6][0] : []
+        }
+    }
+%}
+
 method -> %method _ (%_private _):? (%_static _):? _ %identifier _ "(" _ (params _):? ")" _ code_block
 {%
     (data) => {
@@ -303,6 +314,7 @@ expr
     |  lambda {% id %}
     |  condition {% id %}
     |  object {% id %}
+    |  new_object {% id %}
 
 if -> %_if _ "(" _ if_expr _ ")" _ statement
 {%
