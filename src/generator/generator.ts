@@ -114,7 +114,7 @@ const createStatement = (node: any) => {
         const name = createStatement(node.obj_name);
         const method = createStatement(node.method);
 
-        return `${name}.${method};`;
+        return `${name}.${method}`;
     } else if (node.type == 'prop_ref') {
         const name = createStatement(node.obj_name);
         const prop = createStatement(node.prop);
