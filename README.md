@@ -21,12 +21,8 @@ class Program {
         hello := "hello"
         waran := "waran!"
 
-        ## calling custom function
-        ## prints 9 to the console
-
         std_out(hello waran)
 
-        ## for loop
         for(i := 0 | i <= 10 | i++) {
 
             ## skip the 5th iteration
@@ -37,7 +33,6 @@ class Program {
             std_out(i)
         }
 
-        ## while loop
         while(true) {
             if (counter > 10) {
                 break    
