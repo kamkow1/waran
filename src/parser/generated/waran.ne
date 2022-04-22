@@ -42,6 +42,20 @@ setter -> %_set _ %identifier _ lambda
     }
 %}
 
+method -> %method _ (%_private _):? (%_static _):? _ %identifier _ "(" _ (params _):? ")" _ code_block
+{%
+    (data) => {
+        return {
+            type: "method",
+            private: data[2] ? true : false,
+            static: data[3] ? true : false,
+            name: data[5],
+            params: data[9] ? data[9][0] : [],
+            body: data[12]
+        }
+    }
+%}
+
 class_field -> %field _ (%_private _):? (%terminal _):? (%_static _):? _ %identifier _ (%assign _ expr _):? ("#" %_get):? _ ("#" %_set):?
 {%
     (data) => {

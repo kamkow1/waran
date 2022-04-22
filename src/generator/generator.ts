@@ -147,6 +147,16 @@ const createStatement = (node: any) => {
         return `${_static ? 'static' : ''} ${_private ? '#' : ''}${name} ${value ? '=' : ''} ${value ? value : ''};
         ${get ? getter : ''}
         ${set ? setter : ''}`;
+    } else if (node.type == 'method') {
+        const _static = node.static;
+        const _private = node.private;
+        const name = createStatement(node.name);
+        const params = node.params;
+        const arr  = params.map((param: any) => createStatement(param));
+        const paramNames = arr.join(', ');
+        const body = createStatement(node.body);
+
+        return `${_static ? 'static' : ''} ${_private ? '#' : ''}${name} (${paramNames}) ${body}`;
     } else if (node.type == 'identifier') {
         return node.value;
     } else if (node.type == 'number') {

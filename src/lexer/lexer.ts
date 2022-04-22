@@ -9,6 +9,7 @@ export const lexer = moo.compile({
     _if:            'if',
     _class:         'class',
     field:          'field',
+    method:         'method',
     _static:        'static',
     _private:       'private',
     terminal:       'terminal',

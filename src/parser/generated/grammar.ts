@@ -7,10 +7,11 @@ declare var NL: any;
 declare var _get: any;
 declare var identifier: any;
 declare var _set: any;
-declare var field: any;
+declare var method: any;
 declare var _private: any;
-declare var terminal: any;
 declare var _static: any;
+declare var field: any;
+declare var terminal: any;
 declare var assign: any;
 declare var _class: any;
 declare var dot: any;
@@ -102,6 +103,27 @@ const grammar: Grammar = {
                 type: "setter",
                 prop_name: data[2],
                 func: data[4]
+            }
+        }
+        },
+    {"name": "method$ebnf$1$subexpression$1", "symbols": [(lexer.has("_private") ? {type: "_private"} : _private), "_"]},
+    {"name": "method$ebnf$1", "symbols": ["method$ebnf$1$subexpression$1"], "postprocess": id},
+    {"name": "method$ebnf$1", "symbols": [], "postprocess": () => null},
+    {"name": "method$ebnf$2$subexpression$1", "symbols": [(lexer.has("_static") ? {type: "_static"} : _static), "_"]},
+    {"name": "method$ebnf$2", "symbols": ["method$ebnf$2$subexpression$1"], "postprocess": id},
+    {"name": "method$ebnf$2", "symbols": [], "postprocess": () => null},
+    {"name": "method$ebnf$3$subexpression$1", "symbols": ["params", "_"]},
+    {"name": "method$ebnf$3", "symbols": ["method$ebnf$3$subexpression$1"], "postprocess": id},
+    {"name": "method$ebnf$3", "symbols": [], "postprocess": () => null},
+    {"name": "method", "symbols": [(lexer.has("method") ? {type: "method"} : method), "_", "method$ebnf$1", "method$ebnf$2", "_", (lexer.has("identifier") ? {type: "identifier"} : identifier), "_", {"literal":"("}, "_", "method$ebnf$3", {"literal":")"}, "_", "code_block"], "postprocess": 
+        (data) => {
+            return {
+                type: "method",
+                private: data[2] ? true : false,
+                static: data[3] ? true : false,
+                name: data[5],
+                params: data[9] ? data[9][0] : [],
+                body: data[12]
             }
         }
         },
