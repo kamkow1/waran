@@ -139,7 +139,10 @@ const createStatement = (node: any) => {
 
         const getter = `get ${name} () {\nreturn this.${name}\n}`;
         const setter = `set ${name} (val) {\nthis.${name} = val\n}`;
-        console.log(!terminal)
+        
+        if (terminal && set) {
+            throw new Error('cannot have a terminal field with a setter');
+        }
 
         return `${_static ? 'static' : ''} ${_private ? '#' : ''}${name} ${value ? '=' : ''} ${value ? value : ''};
         ${get ? getter : ''}
