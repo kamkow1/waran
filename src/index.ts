@@ -1,6 +1,6 @@
 #! /usr/bin/env node
 import { Command } from 'commander'
-import fs from 'fs'
+import fs, { fchownSync } from 'fs'
 import { runParse } from './parser/parser'
 import clc from 'cli-color'
 import inquirer from 'inquirer'
@@ -9,7 +9,7 @@ import { createDirConfig, createInfo, createProjectConfig } from './cli/cmd/init
 import { setupDirs, setupConfigJson } from './cli/cmd/init/dirSetup'
 import { loadConfig } from './utils/configLoader'
 import { generate } from './generator/generator'
-import { exec, spawn } from 'child_process'
+import { ChildProcess, exec, spawn } from 'child_process'
 import UglifyJS from 'uglify-js'
 import path from 'path'
 import os from 'os'
@@ -49,21 +49,35 @@ app
                 fs.mkdirSync(libDir);
 
                 const runningOs = os.platform().toString();
-                const pathToPs1 = path.resolve(__dirname, '../init.ps1');
-                const pathToSh = path.resolve(__dirname, '../init.sh');
+                const pathToPs1Init = path.resolve(__dirname, '../init.ps1');
+                const pathToShInit = path.resolve(__dirname, '../init.sh');
+
+                let init: ChildProcess;
 
                 switch (runningOs) {
                     case 'win32':
-                        exec(`${pathToPs1} ${build}`, {'shell':'powershell.exe'});
+                        init = exec(`${pathToPs1Init} ${build}`, {'shell':'powershell.exe'});
                         break;
                 
                     case 'linux':
-                        exec(`${pathToSh} ${build}`, {'shell':'bash'});
+                        init = exec(`${pathToShInit} ${build}`, {'shell':'bash'});
                         break; 
                 }
 
-                
-                
+                init.on('exit', () => {
+                    let packageConfig = JSON.parse(fs.readFileSync(path.resolve(build, 'package.json')).toString());
+                    packageConfig.main = 'main.js';
+                    packageConfig.scripts.start = 'node ./main.js';
+
+                    fs.writeFileSync(path.resolve(build, 'package.json'), JSON.stringify(packageConfig, null, 4));
+
+                    console.info('created directories successfully');
+                });
+
+                console.info('installing dependencies...');
+
+                console.log(build)
+                exec(`cd ${build}; npm i express`);
 
                 const libs = fs.readdirSync(path.join(__dirname, '/runtime/libs/'));
 
@@ -85,6 +99,8 @@ class Program {
 Program.main()`;
 
                 fs.appendFileSync(mainFile, template);
+
+                console.info('created project successfully!\nenjoy coding!');
             });
     });
 
