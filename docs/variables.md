@@ -42,3 +42,11 @@ std_out(v7.property1)
 
 v7.method1()
 ```
+
+### use the value
+
+```properties
+some_value := "text"
+
+std_out(some_value)
+```
