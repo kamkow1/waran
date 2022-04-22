@@ -129,22 +129,21 @@ const createStatement = (node: any) => {
         const _static = node.static;
         const _private = node.private;
         const terminal = node.terminal;
+        const get = node.get;
+        const set = node.set;
         const name = createStatement(node.name);
         let value;
         if (node.value.length != 0) {
             value = createStatement(node.value);
         }
 
-        const getter = `get ${name} () {return this.${name}}`;
-        const setter = `set ${name} (val) {this.${name} = val}`;
+        const getter = `get ${name} () {\nreturn this.${name}\n}`;
+        const setter = `set ${name} (val) {\nthis.${name} = val\n}`;
+        console.log(!terminal)
 
-        return `${_static ? createStatement(_static) : ''} ${_private ? '#' : ''}${name} ${value ? '=' : ''} ${value ? value : ''};`;
-    } else if (node.type == 'terminal') {
-        return node.value;
-    } else if (node.type == '_private') {
-        return node.value;
-    } else if (node.type == '_static') {
-        return node.value;
+        return `${_static ? 'static' : ''} ${_private ? '#' : ''}${name} ${value ? '=' : ''} ${value ? value : ''};
+        ${get ? getter : ''}
+        ${set ? setter : ''}`;
     } else if (node.type == 'identifier') {
         return node.value;
     } else if (node.type == 'number') {

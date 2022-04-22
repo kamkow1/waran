@@ -42,17 +42,19 @@ setter -> %_set _ %identifier _ lambda
     }
 %}
 
-class_field -> %field _ (%_private _):? (%terminal _):? (%_static _):? _ %identifier _ (%assign _ expr _):?
+class_field -> %field _ (%_private _):? (%terminal _):? (%_static _):? _ %identifier _ (%assign _ expr _):? ("#" %_get):? _ ("#" %_set):?
 {%
     (data) => {
         return {
             type: "field",
-            terminal: data[3] ? data[3][0] : [],
-            private: data[2] ? data[2][0] : [],
-            static: data[4] ? data[4][0] : [],
+            terminal: data[3] ? true : false,
+            private: data[2] ? true : false,
+            static: data[4] ? true : false,
+            get: data[9] !== null && data[9][0] ? true : false,
+            set: data[11] !== null && data[11][0] ? true : false,
             name: data[6],
             value: data[8] ? data[8][2] : []
-        };
+        }
     }
 %}
 
@@ -153,8 +155,9 @@ statement
     |  obj_prop_ref {% id %}
     |  class_def {% id %}
     |  class_field {% id %}
-    |  getter {% id %}
-    |  setter {% id %}
+    |  method {% id %}
+    |  %_get {% id %}
+    |  %_set {% id %}
 
 return_statement -> %_return _ expr
 {%
