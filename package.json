@@ -1,6 +1,6 @@
 {
   "name": "waran",
-  "version": "1.2.5",
+  "version": "1.2.6",
   "description": "a compiled programming language",
   "main": "./build/index.js",
   "bin": {
