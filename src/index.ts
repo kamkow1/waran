@@ -12,6 +12,7 @@ import { generate } from './generator/generator'
 import { exec, spawn } from 'child_process'
 import UglifyJS from 'uglify-js'
 import path from 'path'
+import os from 'os'
 
 const app = new Command();
 
@@ -46,6 +47,24 @@ app
 
                 fs.mkdirSync(runtimeDir);
                 fs.mkdirSync(libDir);
+
+                const runningOs = os.platform().toString();
+                const pathToPs1 = path.resolve(__dirname, '../init.ps1');
+                const pathToSh = path.resolve(__dirname, '../init.sh');
+
+                switch (runningOs) {
+                    case 'win32':
+                        exec(`${pathToPs1} ${build}`, {'shell':'powershell.exe'});
+                        break;
+                
+                    case 'linux':
+                        exec(`${pathToSh} ${build}`, {'shell':'bash'});
+                        break; 
+                }
+
+                
+                
+
                 const libs = fs.readdirSync(path.join(__dirname, '/runtime/libs/'));
 
                 for(let lib of libs) {
