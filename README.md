@@ -13,58 +13,48 @@ special thanks to <a href="https://github.com/londek">londek</a> for helping out
 
 ### example waran program
 ```properties
-## import built-in modules
 import @io
 import @math
 
-add_five := func(number) -> {
-    result := add(number 5)
-    return result
-}
+class Program {
+    method static main() {
+        hello := "hello"
+        waran := "waran!"
 
-counter := 0
+        ## calling custom function
+        ## prints 9 to the console
 
-main := func() -> {
-    hello := "hello"
-    waran := "waran!"
+        std_out(hello waran)
 
-    ## calling custom function
-    ## prints 9 to the console
-    std_out(add_five(4)) 
+        ## for loop
+        for(i := 0 | i <= 10 | i++) {
 
-    std_out(hello waran)
+            ## skip the 5th iteration
+            if (i == 5) {
+                continue
+            }
 
-    ## arrays
-    my_array := ["string value" 4738 -21.564 true]
-
-    value_from_array1 = my_array[0]
-    value_from_array2 = my_array[2]
-
-    std_out("values from my_array: " value_from_array1 value_from_array2)
-
-    ## for loop
-    for(i := 0 | i <= 10 | i++) {
-
-        ## skip the 5th iteration
-        if (i == 5) {
-            continue
+            std_out(i)
         }
 
-        std_out(i)
-    }
+        ## while loop
+        while(true) {
+            if (counter > 10) {
+                break    
+            }
 
-    ## while loop
-    while(true) {
-        if (counter > 10) {
-            break    
+            std_out(counter)
+            counter++
         }
 
-        std_out(counter)
-        counter++
+
+        my_array := ["string value" 4738 -21.564 true]
+
+        std_out(my_array[2])
     }
 }
 
-main()
+Program.main()
 ```
 
 ### table of contents
