@@ -122,32 +122,23 @@ const createStatement = (node: any) => {
         return `${name}.${prop}`;
     } else if (node.type == 'class') {
         const name = createStatement(node.name);
-        const body = node.body? node.body.map((elem: any) => createStatement(elem)).join('\n') : ''; 
+        const body = createStatement(node.body);
 
-        return `class ${name} {\n${body}\n}`;
+        return `class ${name} ${body}`;
     } else if (node.type == 'field') {
         const _static = node.static;
         const _private = node.private;
         const terminal = node.terminal;
         const name = createStatement(node.name);
         let value;
-        if (node.value) {
+        if (node.value.length != 0) {
             value = createStatement(node.value);
-        }
-
-        const shouldAddGetter = node.get;
-        let shouldAddSetter = node.set;
-
-        if (terminal.length != 0) {
-            shouldAddSetter = false
         }
 
         const getter = `get ${name} () {return this.${name}}`;
         const setter = `set ${name} (val) {this.${name} = val}`;
 
-        return `${_static ? createStatement(_static) : ''} ${_private ? '#' : ''}${name} ${value ? '=' : ''} ${value ? value : ''};
-        ${shouldAddGetter ? getter : ''}
-        ${shouldAddSetter ? setter : ''}`;
+        return `${_static ? createStatement(_static) : ''} ${_private ? '#' : ''}${name} ${value ? '=' : ''} ${value ? value : ''};`;
     } else if (node.type == 'terminal') {
         return node.value;
     } else if (node.type == '_private') {

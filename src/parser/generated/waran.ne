@@ -42,29 +42,27 @@ setter -> %_set _ %identifier _ lambda
     }
 %}
 
-class_field -> (%_private _):? (%terminal _):? (%_static _):? _ %identifier _ (%assign _ expr):? %NL _ ("#" %_get _):? ("#" %_set _):?
+class_field -> %field _ (%_private _):? (%terminal _):? (%_static _):? _ %identifier _ (%assign _ expr _):?
 {%
     (data) => {
         return {
             type: "field",
-            terminal: data[1] ? data[1][0] : [],
-            private: data[0] ? data[0][0] : [],
-            static: data[2] ? data[2][0] : [],
-            get: data[9] ? true : false,
-            set: data[10] ? true : false,
-            name: data[4],
-            value: data[6] ? data[6][2] : []
-        }
+            terminal: data[3] ? data[3][0] : [],
+            private: data[2] ? data[2][0] : [],
+            static: data[4] ? data[4][0] : [],
+            name: data[6],
+            value: data[8] ? data[8][2] : []
+        };
     }
 %}
 
-class_def -> %_class _ %identifier _ "{" %NL _ (statements %NL _):? "}" _
+class_def -> %_class _ %identifier _ code_block
 {%
     (data) => {
         return {
             type: "class",
             name: data[2],
-            body: data[7] ? data[7][0] : []
+            body: data[4]
         }
     }
 %}
@@ -157,8 +155,6 @@ statement
     |  class_field {% id %}
     |  getter {% id %}
     |  setter {% id %}
-    |  %_get {% id %}
-    |  %_set {% id %}
 
 return_statement -> %_return _ expr
 {%

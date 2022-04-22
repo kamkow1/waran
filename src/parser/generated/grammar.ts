@@ -7,6 +7,7 @@ declare var NL: any;
 declare var _get: any;
 declare var identifier: any;
 declare var _set: any;
+declare var field: any;
 declare var _private: any;
 declare var terminal: any;
 declare var _static: any;
@@ -113,38 +114,27 @@ const grammar: Grammar = {
     {"name": "class_field$ebnf$3$subexpression$1", "symbols": [(lexer.has("_static") ? {type: "_static"} : _static), "_"]},
     {"name": "class_field$ebnf$3", "symbols": ["class_field$ebnf$3$subexpression$1"], "postprocess": id},
     {"name": "class_field$ebnf$3", "symbols": [], "postprocess": () => null},
-    {"name": "class_field$ebnf$4$subexpression$1", "symbols": [(lexer.has("assign") ? {type: "assign"} : assign), "_", "expr"]},
+    {"name": "class_field$ebnf$4$subexpression$1", "symbols": [(lexer.has("assign") ? {type: "assign"} : assign), "_", "expr", "_"]},
     {"name": "class_field$ebnf$4", "symbols": ["class_field$ebnf$4$subexpression$1"], "postprocess": id},
     {"name": "class_field$ebnf$4", "symbols": [], "postprocess": () => null},
-    {"name": "class_field$ebnf$5$subexpression$1", "symbols": [{"literal":"#"}, (lexer.has("_get") ? {type: "_get"} : _get), "_"]},
-    {"name": "class_field$ebnf$5", "symbols": ["class_field$ebnf$5$subexpression$1"], "postprocess": id},
-    {"name": "class_field$ebnf$5", "symbols": [], "postprocess": () => null},
-    {"name": "class_field$ebnf$6$subexpression$1", "symbols": [{"literal":"#"}, (lexer.has("_set") ? {type: "_set"} : _set), "_"]},
-    {"name": "class_field$ebnf$6", "symbols": ["class_field$ebnf$6$subexpression$1"], "postprocess": id},
-    {"name": "class_field$ebnf$6", "symbols": [], "postprocess": () => null},
-    {"name": "class_field", "symbols": ["class_field$ebnf$1", "class_field$ebnf$2", "class_field$ebnf$3", "_", (lexer.has("identifier") ? {type: "identifier"} : identifier), "_", "class_field$ebnf$4", (lexer.has("NL") ? {type: "NL"} : NL), "_", "class_field$ebnf$5", "class_field$ebnf$6"], "postprocess": 
+    {"name": "class_field", "symbols": [(lexer.has("field") ? {type: "field"} : field), "_", "class_field$ebnf$1", "class_field$ebnf$2", "class_field$ebnf$3", "_", (lexer.has("identifier") ? {type: "identifier"} : identifier), "_", "class_field$ebnf$4"], "postprocess": 
         (data) => {
             return {
                 type: "field",
-                terminal: data[1] ? data[1][0] : [],
-                private: data[0] ? data[0][0] : [],
-                static: data[2] ? data[2][0] : [],
-                get: data[9] ? true : false,
-                set: data[10] ? true : false,
-                name: data[4],
-                value: data[6] ? data[6][2] : []
-            }
+                terminal: data[3] ? data[3][0] : [],
+                private: data[2] ? data[2][0] : [],
+                static: data[4] ? data[4][0] : [],
+                name: data[6],
+                value: data[8] ? data[8][2] : []
+            };
         }
         },
-    {"name": "class_def$ebnf$1$subexpression$1", "symbols": ["statements", (lexer.has("NL") ? {type: "NL"} : NL), "_"]},
-    {"name": "class_def$ebnf$1", "symbols": ["class_def$ebnf$1$subexpression$1"], "postprocess": id},
-    {"name": "class_def$ebnf$1", "symbols": [], "postprocess": () => null},
-    {"name": "class_def", "symbols": [(lexer.has("_class") ? {type: "_class"} : _class), "_", (lexer.has("identifier") ? {type: "identifier"} : identifier), "_", {"literal":"{"}, (lexer.has("NL") ? {type: "NL"} : NL), "_", "class_def$ebnf$1", {"literal":"}"}, "_"], "postprocess": 
+    {"name": "class_def", "symbols": [(lexer.has("_class") ? {type: "_class"} : _class), "_", (lexer.has("identifier") ? {type: "identifier"} : identifier), "_", "code_block"], "postprocess": 
         (data) => {
             return {
                 type: "class",
                 name: data[2],
-                body: data[7] ? data[7][0] : []
+                body: data[4]
             }
         }
         },
@@ -228,8 +218,6 @@ const grammar: Grammar = {
     {"name": "statement", "symbols": ["class_field"], "postprocess": id},
     {"name": "statement", "symbols": ["getter"], "postprocess": id},
     {"name": "statement", "symbols": ["setter"], "postprocess": id},
-    {"name": "statement", "symbols": [(lexer.has("_get") ? {type: "_get"} : _get)], "postprocess": id},
-    {"name": "statement", "symbols": [(lexer.has("_set") ? {type: "_set"} : _set)], "postprocess": id},
     {"name": "return_statement", "symbols": [(lexer.has("_return") ? {type: "_return"} : _return), "_", "expr"], "postprocess": 
         (data) => {
             return {
