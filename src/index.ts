@@ -93,14 +93,17 @@ app
 
 app
     .command('compile')
-    .argument('<string>', 'path to .wr file')
-    .action(pathStr => {
-        const name = path.basename(pathStr);
+    .option('-p, --path [pathStr]')
+    .action(data => {
+        if (data.path === undefined) {
+            data.path = "src/main.wr";
+        }
+        const name = path.basename(data.path);
 
         if (!name.includes('.wr'))
             return console.error('file extension not recognized! only .wr files can be compiled');
 
-        const code = fs.readFileSync(pathStr).toString();
+        const code = fs.readFileSync(data.path).toString();
 
         const ast = runParse(code);
 
