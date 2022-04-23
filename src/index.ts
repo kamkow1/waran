@@ -115,12 +115,12 @@ app
         fs.writeFileSync(outputFile, JSON.stringify(ast, null, '\t'));
 
         const js =  generate(ast);
-        //const minifiedJs = UglifyJS.minify(js).code;
+        const minifiedJs = UglifyJS.minify(js).code;
 
         const buildDir = config.dirs.build;
         const buildFile = path.join(buildDir, name.replace('.wr', '.js'));
 
-        fs.writeFileSync(buildFile, js);
+        fs.writeFileSync(buildFile, minifiedJs);
     })
 
 app
