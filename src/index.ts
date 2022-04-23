@@ -13,6 +13,7 @@ import { ChildProcess, exec, spawn } from 'child_process'
 import UglifyJS from 'uglify-js'
 import path from 'path'
 import os from 'os'
+import { template } from './utils/template'
 
 const app = new Command();
 
@@ -76,9 +77,6 @@ app
 
                 console.info('installing dependencies...');
 
-                console.log(build)
-                exec(`cd ${build}; npm i express`);
-
                 const libs = fs.readdirSync(path.join(__dirname, '/runtime/libs/'));
 
                 for(let lib of libs) {
@@ -86,17 +84,6 @@ app
                     const libCode = fs.readFileSync(libPath).toString();
                     fs.appendFileSync(path.join(libDir, lib), libCode);
                 }
-
-                const template = 
-`import @io
-
-class Program {
-    method static main() {
-        std_out("hello waran")
-    }
-}
-
-Program.main()`;
 
                 fs.appendFileSync(mainFile, template);
 
